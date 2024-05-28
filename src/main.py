@@ -33,14 +33,19 @@ class TableManager(QWidget):
         self.form = QVBoxLayout()
         left_panel.addLayout(self.form)
 
-        # Right panel for selected items
+        # Add Button
+        add_button = QPushButton("Add")
+        add_button.clicked.connect(self.updateTable)
+        left_panel.addWidget(add_button)
+
+        # Right panel for table display
         right_panel = QVBoxLayout()
 
-        self.selected_items_label = QLabel("Selected Items")
-        right_panel.addWidget(self.selected_items_label)
+        self.table_label = QLabel("Table")
+        right_panel.addWidget(self.table_label)
 
-        self.selected_items_list = QListWidget()
-        right_panel.addWidget(self.selected_items_list)
+        self.table_lines_list = QListWidget()
+        right_panel.addWidget(self.table_lines_list)
 
         splitter = QSplitter(Qt.Horizontal)
         splitter.addWidget(QWidget())  # Placeholder for future expansion
@@ -61,9 +66,13 @@ class TableManager(QWidget):
 
         self.setLayout(layout)
 
+        self.selected_opcode = None
+        self.table_entries = []
+
     def showOpcodePopup(self):
         def on_select(opcode):
             self.input_opcode.input.setText(opcode["code"])
+            self.selected_opcode = opcode
             self.generateForm(opcode["fields"])
 
         self.popup = OpcodeSelector()
@@ -95,6 +104,33 @@ class TableManager(QWidget):
                 inp = QTextEdit()
                 inp.setPlaceholderText("Enter Dots")
                 self.form.addWidget(inp)
+
+    def updateTable(self):
+        if not self.selected_opcode:
+            return
+
+        entry = self.formatEntry()
+        if entry:
+            self.table_entries.append(entry)
+            self.updateTableDisplay()
+
+    def formatEntry(self):
+        if not self.selected_opcode:
+            return None
+
+        entry = self.selected_opcode["code"]
+        for i in range(self.form.count()):
+            widget = self.form.itemAt(i).widget()
+            if isinstance(widget, QTextEdit) or isinstance(widget, ButtonTextInput):
+                text = widget.toPlainText() if isinstance(widget, QTextEdit) else widget.input.text()
+                if text.strip():
+                    entry += " " + text.strip()
+        return entry
+
+    def updateTableDisplay(self):
+        self.table_lines_list.clear()
+        for entry in self.table_entries:
+            self.table_lines_list.addItem(entry)
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
