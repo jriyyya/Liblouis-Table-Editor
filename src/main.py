@@ -113,8 +113,8 @@ class TableManager(QWidget):
                 unicode_display.setPlaceholderText("Selected Character")
 
                 unicode_input = QLineEdit()
-                unicode_input.setReadOnly(True)
                 unicode_input.setPlaceholderText("Unicode Value")
+                unicode_input.textChanged.connect(lambda text: self.updateDisplayCharacter(unicode_display, text))
 
                 select_button = QPushButton("Select Unicode")
                 select_button.clicked.connect(lambda: self.showUnicodePopup(unicode_display, unicode_input))
@@ -138,6 +138,13 @@ class TableManager(QWidget):
     def setUnicode(self, unicode_display, unicode_input, char, code):
         unicode_display.setText(char)
         unicode_input.setText(code)
+
+    def updateDisplayCharacter(self, unicode_display, text):
+        try:
+            char = chr(int(text.replace('\\x', ''), 16))
+            unicode_display.setText(char)
+        except ValueError:
+            unicode_display.clear()
 
     def updateTable(self):
         if not self.selected_opcode:
