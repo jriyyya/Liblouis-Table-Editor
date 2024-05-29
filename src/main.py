@@ -43,6 +43,7 @@ class TableManager(QWidget):
 
         # Left panel for table editor
         left_panel = QVBoxLayout()
+        left_panel.setAlignment(Qt.AlignTop | Qt.AlignLeft)
 
         self.input_opcode = ButtonTextInput()
         self.input_opcode.input.setReadOnly(True)
