@@ -1,5 +1,6 @@
 import sys
 import os
+import re
 from utils.view import clearLayout
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
@@ -134,12 +135,21 @@ class TableManager(QWidget):
             if field == "dots":
                 self.dots_type_combo = QComboBox()
                 self.dots_type_combo.addItems(["Standard Braille (6 dots)", "Extended Braille (8 dots)"])
+                self.dots_type_combo.currentTextChanged.connect(self.updateDotsInputPlaceholder)
                 self.form.addWidget(self.dots_type_combo)
+
                 dots_container = QHBoxLayout()
 
-                self.dots_input = QTextEdit()
-                self.dots_input.setPlaceholderText("Enter Dots")
-                dots_container.addWidget(self.dots_input)
+                self.dots_input = QLineEdit()
+                self.dots_input.setPlaceholderText("Enter Dots (1-6)")
+                self.dots_input.setValidator(QRegExpValidator(QRegExp("^(?=\d{1,6}$)1?2?3?4?5?6?$")))
+                self.dots_input.textChanged.connect(self.updateBrailleDotsDisplay)
+                dots_container.addWidget(self.dots_input, 1)
+
+                self.dots_display = QLabel()
+                self.dots_display.setAlignment(Qt.AlignCenter)
+                self.dots_display.setText("○ ○\n○ ○\n○ ○")  # Default empty dots representation
+                dots_container.addWidget(self.dots_display, 1)
 
                 self.form.addLayout(dots_container)
 
@@ -159,6 +169,44 @@ class TableManager(QWidget):
             unicode_display.setText(char)
         except ValueError:
             unicode_display.clear()
+
+    def updateDotsInputPlaceholder(self, text):
+        if "6 dots" in text:
+            self.dots_input.setPlaceholderText("Enter Dots (1-6)")
+        else:
+            self.dots_input.setPlaceholderText("Enter Dots (1-8)")
+
+    def updateBrailleDotsDisplay(self):
+        text = self.dots_input.text()
+        text = ''.join(sorted(set(text)))  # Remove duplicates and sort
+        if not text.isdigit():
+            self.dots_input.setText('')
+            self.resetBrailleDotsDisplay()
+            return
+        dots = [int(d) for d in text if d in '123456']
+
+        braille_representation = [['○', '○'], ['○', '○'], ['○', '○']]
+        if 1 in dots:
+            braille_representation[0][0] = '●'
+        if 2 in dots:
+            braille_representation[1][0] = '●'
+        if 3 in dots:
+            braille_representation[2][0] = '●'
+        if 4 in dots:
+            braille_representation[0][1] = '●'
+        if 5 in dots:
+            braille_representation[1][1] = '●'
+        if 6 in dots:
+            braille_representation[2][1] = '●'
+
+        self.dots_display.setText(
+            f"{braille_representation[0][0]} {braille_representation[0][1]}\n"
+            f"{braille_representation[1][0]} {braille_representation[1][1]}\n"
+            f"{braille_representation[2][0]} {braille_representation[2][1]}"
+        )
+    
+    def resetBrailleDotsDisplay(self):
+        self.dots_display.setText("○ ○\n○ ○\n○ ○")
 
     def updateTable(self):
         if not self.selected_opcode:
