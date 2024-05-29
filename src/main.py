@@ -1,4 +1,6 @@
+
 import sys
+import os
 from utils.view import clearLayout
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
@@ -73,6 +75,10 @@ class TableManager(QWidget):
 
         right_panel_widget = QWidget()
         right_panel_widget.setLayout(right_panel)
+
+        save_button = QPushButton("Save")
+        save_button.clicked.connect(self.save_table)
+        right_panel.addWidget(save_button)
 
         # Create QSplitter and add left and right panels
         splitter = QSplitter(Qt.Horizontal)
@@ -185,6 +191,18 @@ class TableManager(QWidget):
 
     def removeEntry(self, entry):
         self.table_entries.remove(entry)
+        self.updateTableDisplay()
+    
+    def save_table(self):
+        table_text = "\n".join(self.table_lines_list.itemWidget(self.table_lines_list.item(index)).label.text() for index in range(self.table_lines_list.count()))
+        file_path = os.path.join(os.path.dirname(__file__), "assets", "data", "table.txt")
+        with open(file_path, "w") as file:
+            file.write(table_text)
+
+        QMessageBox.information(self, "Table Saved", "Table saved as table.txt")
+
+        # Clear the table entries
+        self.table_entries.clear()
         self.updateTableDisplay()
 
 if __name__ == '__main__':
