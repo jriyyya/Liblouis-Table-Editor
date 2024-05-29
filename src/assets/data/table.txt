@@ -1,2 +1,2 @@
-sufword \x0004 2
-digit \x0031 23
+space \x002D 23
+space \x0012 67

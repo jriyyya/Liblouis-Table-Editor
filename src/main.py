@@ -1,4 +1,3 @@
-
 import sys
 import os
 from utils.view import clearLayout
@@ -132,9 +131,16 @@ class TableManager(QWidget):
                 self.form.addLayout(unicode_container)
 
             if field == "dots":
-                inp = QTextEdit()
-                inp.setPlaceholderText("Enter Dots")
-                self.form.addWidget(inp)
+                self.dots_type_combo = QComboBox()
+                self.dots_type_combo.addItems(["Standard Braille (6 dots)", "Extended Braille (8 dots)"])
+                self.form.addWidget(self.dots_type_combo)
+                dots_container = QHBoxLayout()
+
+                self.dots_input = QTextEdit()
+                self.dots_input.setPlaceholderText("Enter Dots")
+                dots_container.addWidget(self.dots_input)
+
+                self.form.addLayout(dots_container)
 
     def showUnicodePopup(self, unicode_display, unicode_input):
         self.popup = UnicodeSelector()
@@ -143,7 +149,7 @@ class TableManager(QWidget):
 
     def setUnicode(self, unicode_display, unicode_input, char, code):
         unicode_display.setText(char)
-        unicode_input.setText(code)
+        unicode_input.setText(f"\\x{code:04X}")  # Format Unicode as \x0000
 
     def updateDisplayCharacter(self, unicode_display, text):
         try:
@@ -178,6 +184,8 @@ class TableManager(QWidget):
                 text = unicode_input.text()
                 if text.strip():
                     entry += " " + text.strip()
+        dots_type = self.dots_type_combo.currentText()
+        entry += " (" + dots_type + ")"
         return entry
 
     def updateTableDisplay(self):
@@ -192,7 +200,7 @@ class TableManager(QWidget):
     def removeEntry(self, entry):
         self.table_entries.remove(entry)
         self.updateTableDisplay()
-    
+
     def save_table(self):
         table_text = "\n".join(self.table_lines_list.itemWidget(self.table_lines_list.item(index)).label.text() for index in range(self.table_lines_list.count()))
         file_path = os.path.join(os.path.dirname(__file__), "assets", "data", "table.txt")
