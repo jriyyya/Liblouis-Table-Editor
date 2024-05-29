@@ -3,7 +3,7 @@
         {
             "code": "word",
             "fields": [
-                "characters",
+                "unicode",
                 "dots"
             ],
             "description": "Replace the characters with the dot pattern if they are a word, that is, are surrounded by whitespace and/or punctuation."
@@ -11,7 +11,7 @@
         {
             "code": "syllable",
             "fields": [
-                "characters",
+                "unicode",
                 "dots"
             ],
             "description": "As its name indicates, this opcode defines a 'syllable' which must be represented by exactly the dot patterns given. Contractions may not cross the boundaries of this 'syllable' either from left or right. The character string defined by this opcode need not be a lexical syllable, though it usually will be. The equal sign in the following example means that the the default representation for each character within the sequence is to be used"
@@ -19,7 +19,7 @@
         {
             "code": "joinword",
             "fields": [
-                "characters",
+                "unicode",
                 "dots"
             ],
             "description": "Replace the characters with the dot pattern if they are a word which is followed by whitespace and a letter. In addition remove the whitespace. For example, en-us-g2.ctb has joinword to 235. This means that if the word ‘to’ is followed by another word the contraction is to be used and the space is to be omitted. If these conditions are not met, the word is translated according to any other opcodes that may apply to it."
@@ -27,7 +27,7 @@
         {
             "code": "lowword",
             "fields": [
-                "characters",
+                "unicode",
                 "dots"
             ],
             "description": "Replace the characters with the dot pattern if they are a word preceded and followed by whitespace. No punctuation either before or after the word is allowed. The term lowword derives from the fact that in English these contractions are written in the lower part of the cell."
@@ -35,14 +35,14 @@
         {
             "code": "contraction",
             "fields": [
-                "characters"
+                "unicode"
             ],
             "description": "If you look at en-us-g2.ctb you will see that some words are actually contracted into some of their own letters. A famous example among braille transcribers is ‘also’, which is contracted as ‘al’. But this is also the name of a person. To take another example, ‘altogether’ is contracted as ‘alt’, but this is the abbreviation for the alternate key on a computer keyboard. Similarly ‘could’ is contracted into ‘cd’, but this is the abbreviation for compact disk. To prevent confusion in such cases, the letter sign is placed before such letter combinations when they actually are abbreviations, not contractions. The contraction opcode tells the translator to do this."
         },
         {
             "code": "sufword",
             "fields": [
-                "characters",
+                "unicode",
                 "dots"
             ],
             "description": "Replace the characters with the dot pattern if they are either a word or at the beginning of a word."
@@ -50,7 +50,7 @@
         {
             "code": "prfword",
             "fields": [
-                "characters",
+                "unicode",
                 "dots"
             ],
             "description": "Replace the characters with the dot pattern if they are either a word or at the end of a word."
@@ -58,7 +58,7 @@
         {
             "code": "begword",
             "fields": [
-                "characters",
+                "unicode",
                 "dots"
             ],
             "description": "Replace the characters with the dot pattern if they are at the beginning of a word."
@@ -66,7 +66,7 @@
         {
             "code": "begmidword",
             "fields": [
-                "characters",
+                "unicode",
                 "dots"
             ],
             "description": "Replace the characters with the dot pattern if they are either at the beginning or in the middle of a word."
@@ -74,7 +74,7 @@
         {
             "code": "midword",
             "fields": [
-                "characters",
+                "unicode",
                 "dots"
             ],
             "description": "Replace the characters with the dot pattern if they are in the middle of a word."
@@ -82,7 +82,7 @@
         {
             "code": "midendword",
             "fields": [
-                "characters",
+                "unicode",
                 "dots"
             ],
             "description": "Replace the characters with the dot pattern if they are either in the middle or at the end of a word."
@@ -90,7 +90,7 @@
         {
             "code": "endword",
             "fields": [
-                "characters",
+                "unicode",
                 "dots"
             ],
             "description": "Replace the characters with the dot pattern if they are at the end of a word."
@@ -98,7 +98,7 @@
         {
             "code": "partword",
             "fields": [
-                "characters",
+                "unicode",
                 "dots"
             ],
             "description": "Replace the characters with the dot pattern if the characters are anywhere in a word, that is, if they are proceeded or followed by a letter."
@@ -113,7 +113,7 @@
         {
             "code": "prepunc",
             "fields": [
-                "characters",
+                "unicode",
                 "dots"
             ],
             "description": "Replace the characters with the dot pattern if they are part of punctuation at the beginning of a word."
@@ -121,7 +121,7 @@
         {
             "code": "postpunc",
             "fields": [
-                "characters",
+                "unicode",
                 "dots"
             ],
             "description": "Replace the characters with the dot pattern if they are part of punctuation at the end of a word."
@@ -129,7 +129,7 @@
         {
             "code": "begnum",
             "fields": [
-                "characters",
+                "unicode",
                 "dots"
             ],
             "description": "Replace the characters with the dot pattern if they are at the beginning of a number, that is, before all its digits."
@@ -137,7 +137,7 @@
         {
             "code": "midnum",
             "fields": [
-                "characters",
+                "unicode",
                 "dots"
             ],
             "description": "Replace the characters with the dot pattern if they are in the middle of a number."
@@ -145,7 +145,7 @@
         {
             "code": "endnum",
             "fields": [
-                "characters",
+                "unicode",
                 "dots"
             ],
             "description": "Replace the characters with the dot pattern if they are at the end of a number."
@@ -153,7 +153,7 @@
         {
             "code": "joinnum",
             "fields": [
-                "characters",
+                "unicode",
                 "dots"
             ],
             "description": "Replace the characters with the dot pattern. In addition, if whitespace and a number follows omit the whitespace. This opcode can be used to join currency symbols to numbers."
@@ -234,7 +234,7 @@
             "code": "attribute",
             "fields": [
                 "name",
-                "characters"
+                "unicode"
             ],
             "description": "Add characters to a character class. The class may be one of the predefined classes listed above, a user-defined class previously created with this opcode, or a new one. The name operand must contain only letters (a-z and A-Z, case matters). For historical reasons and to support the match opcode (see match) it can also be a number between 0 and 7. The characters operand must be specified as a string. Each character in the string, as well as its dot counterpart if it occupies a single cell, is added to the character class."
         }

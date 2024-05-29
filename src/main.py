@@ -21,12 +21,10 @@ class TableEntryWidget(QWidget):
 
         self.remove_button = QPushButton("Remove")
         self.remove_button.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Fixed)
-        self.remove_button.setStyleSheet("padding: 4px; margin: 1px;")  # Reduce padding and margin
+        self.remove_button.setStyleSheet("padding: 4px; margin: 1px;")
         layout.addWidget(self.remove_button)
 
-        layout.setContentsMargins(5, 5, 5, 5)  # Remove margins around the layout
-        # layout.setSpacing(5)  # Set spacing between widgets
-
+        layout.setContentsMargins(5, 5, 5, 5)
         self.setLayout(layout)
 
         self.remove_button.clicked.connect(lambda: remove_callback(entry))
@@ -108,22 +106,38 @@ class TableManager(QWidget):
                 self.form.addWidget(inp)
 
             if field == "unicode":
-                inp = ButtonTextInput()
-                inp.input.setReadOnly(True)
-                inp.input.setPlaceholderText("Select Unicode")
-                inp.button.setText("Select")
-                i = inp.input
-                def open_popup():
-                    self.popup = UnicodeSelector()
-                    self.popup.on_select(lambda code: i.setText(code))
-                    self.popup.show()
-                inp.button.clicked.connect(open_popup)
-                self.form.addWidget(inp)
+                unicode_container = QHBoxLayout()
+
+                unicode_display = QLineEdit()
+                unicode_display.setReadOnly(True)
+                unicode_display.setPlaceholderText("Selected Character")
+
+                unicode_input = QLineEdit()
+                unicode_input.setReadOnly(True)
+                unicode_input.setPlaceholderText("Unicode Value")
+
+                select_button = QPushButton("Select Unicode")
+                select_button.clicked.connect(lambda: self.showUnicodePopup(unicode_display, unicode_input))
+
+                unicode_container.addWidget(unicode_display)
+                unicode_container.addWidget(unicode_input)
+                unicode_container.addWidget(select_button)
+
+                self.form.addLayout(unicode_container)
 
             if field == "dots":
                 inp = QTextEdit()
                 inp.setPlaceholderText("Enter Dots")
                 self.form.addWidget(inp)
+
+    def showUnicodePopup(self, unicode_display, unicode_input):
+        self.popup = UnicodeSelector()
+        self.popup.on_select(lambda char, code: self.setUnicode(unicode_display, unicode_input, char, code))
+        self.popup.show()
+
+    def setUnicode(self, unicode_display, unicode_input, char, code):
+        unicode_display.setText(char)
+        unicode_input.setText(code)
 
     def updateTable(self):
         if not self.selected_opcode:
@@ -140,9 +154,15 @@ class TableManager(QWidget):
 
         entry = self.selected_opcode["code"]
         for i in range(self.form.count()):
-            widget = self.form.itemAt(i).widget()
-            if isinstance(widget, QTextEdit) or isinstance(widget, ButtonTextInput):
-                text = widget.toPlainText() if isinstance(widget, QTextEdit) else widget.input.text()
+            item = self.form.itemAt(i)
+            widget = item.widget() if item.widget() else item.layout()
+            if isinstance(widget, QTextEdit):
+                text = widget.toPlainText()
+                if text.strip():
+                    entry += " " + text.strip()
+            elif isinstance(widget, QHBoxLayout):
+                unicode_input = widget.itemAt(1).widget()
+                text = unicode_input.text()
                 if text.strip():
                     entry += " " + text.strip()
         return entry

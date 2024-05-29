@@ -1,43 +1,62 @@
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
-from utils.QtAsync import AsyncTask, coroutine
 
 class UnicodeSelector(QWidget):
-    def __init__(self, parent = None):
+    def __init__(self, parent=None):
         super().__init__(parent)
 
         self.setWindowTitle('Unicode Viewer')
+        self.resize(400, 600)
 
         layout = QVBoxLayout()
 
-        search = QLineEdit()
-        search.setPlaceholderText("Search for Unicode / Character")
+        self.search = QLineEdit()
+        self.search.setPlaceholderText("Search for Unicode / Character")
+        self.search.textChanged.connect(self.filter_list)
 
         label = QLabel("Double click code to select")
 
         self.unicodes_list = QListWidget()
-        self.unicodes_list.itemClicked.connect(lambda x : search.setText(x.text()))
+        self.unicodes_list.itemDoubleClicked.connect(self.on_item_double_clicked)
 
-        layout.addWidget(search)
+        layout.addWidget(self.search)
         layout.addWidget(label)
         layout.addWidget(self.unicodes_list)
 
-        self.populate_list()
-
         self.setLayout(layout)
 
-    def populate_list(self):
-        def addCode(code):
-            txt = f"{chr(code)} (U+{code:04X})"
-            item = QListWidgetItem(txt)
-            item.setToolTip(f"Select {txt}")
+        self.full_unicode_list = []
+        self.filtered_unicode_list = []
+        self.callback = None
+        self.populate_full_list()
+        self.filter_list()
+
+    def populate_full_list(self):
+        self.full_unicode_list = [
+            (chr(code), f"\\x{code:04X}", f"{chr(code)} (U+{code:04X})")
+            for code in range(0x0000, 0xFFFF)
+        ]
+
+    def filter_list(self):
+        search_text = self.search.text().lower()
+        self.filtered_unicode_list = [
+            item for item in self.full_unicode_list
+            if search_text in item[0].lower() or search_text in item[1].lower()
+        ]
+        self.update_list()
+
+    def update_list(self):
+        self.unicodes_list.clear()
+        for char, unicode_code, display_text in self.filtered_unicode_list[:1000]:
+            item = QListWidgetItem(display_text)
+            item.setData(Qt.UserRole, (char, unicode_code))
             self.unicodes_list.addItem(item)
 
-        for code in range(0x0000, 0xFFFF):
-            addCode(code)
+    def on_item_double_clicked(self, item):
+        if self.callback:
+            char, code = item.data(Qt.UserRole)
+            self.callback(char, code)
+        self.hide()
 
     def on_select(self, cb):
-        def callback(code):
-            cb(code)
-            self.hide()
-        self.unicodes_list.itemDoubleClicked.connect(lambda x : callback(x.text()))
+        self.callback = cb
