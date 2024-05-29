@@ -150,7 +150,8 @@ class TableManager(QWidget):
 
     def setUnicode(self, unicode_display, unicode_input, char, code):
         unicode_display.setText(char)
-        unicode_input.setText(f"\\x{code:04X}")  # Format Unicode as \x0000
+        code_value = int(code[2:], 16)
+        unicode_input.setText(f"\\x{code_value:04X}")  # Format the integer as a hexadecimal string
 
     def updateDisplayCharacter(self, unicode_display, text):
         try:
