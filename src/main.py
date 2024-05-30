@@ -116,8 +116,9 @@ class TableManager(QWidget):
                 unicode_container = QHBoxLayout()
 
                 unicode_display = QLineEdit()
-                unicode_display.setReadOnly(True)
                 unicode_display.setPlaceholderText("Selected Character")
+                unicode_display.setMaxLength(1)
+                unicode_display.textChanged.connect(lambda text: self.updateUnicodeInput(text, unicode_input))
 
                 unicode_input = QLineEdit()
                 unicode_input.setPlaceholderText("Unicode Value")
@@ -165,6 +166,13 @@ class TableManager(QWidget):
         unicode_display.setText(char)
         code_value = int(code[2:], 16)
         unicode_input.setText(f"\\x{code_value:04X}")  # Format the integer as a hexadecimal string
+    
+
+    def updateUnicodeInput(self, text, unicode_input):
+        if text:
+            unicode_input.setText('\\x' + '{:04X}'.format(ord(text)))
+        else:
+            unicode_input.clear()
 
     def updateDisplayCharacter(self, unicode_display, text):
         try:
