@@ -217,8 +217,11 @@ class TableManager(QWidget):
 
         entry = self.formatEntry()
         if entry:
-            self.table_entries.append(entry)
-            self.updateTableDisplay()
+            if entry in self.table_entries:
+                QMessageBox.warning(self, "Duplicate Entry", "The entry is already in the table.")
+            else:
+                self.table_entries.append(entry)
+                self.updateTableDisplay()
 
     def formatEntry(self):
         if not self.selected_opcode:
