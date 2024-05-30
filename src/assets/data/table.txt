@@ -1,3 +1,8 @@
-math \x002F 123
-math \x002C 12
-math \x0026 16
+punctuation \x0021 2346
+punctuation \x0022 5
+sign \x0023 3456
+sign \x0024 1246
+sign \x0025 146
+sign \x0026 12346
+punctuation \x0027 3
+punctuation \x2019 3

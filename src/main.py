@@ -81,6 +81,10 @@ class TableManager(QWidget):
         save_button.clicked.connect(self.save_table)
         right_panel.addWidget(save_button)
 
+        load_button = QPushButton("Load Table")
+        load_button.clicked.connect(self.load_table)
+        right_panel.addWidget(load_button)
+
         # Create QSplitter and add left and right panels
         splitter = QSplitter(Qt.Horizontal)
         splitter.addWidget(left_panel_widget)
@@ -279,6 +283,18 @@ class TableManager(QWidget):
 
         # Clear the table entries
         self.table_entries.clear()
+        self.updateTableDisplay()
+
+    def load_table(self):
+        file_path, _ = QFileDialog.getOpenFileName(self, "Load Table", "", "Text Files (*.txt)")
+        if file_path:
+            with open(file_path, "r") as file:
+                table_text = file.read()
+                self.populate_table(table_text)
+
+    def populate_table(self, table_text):
+        entries = table_text.split("\n")
+        self.table_entries.extend(entries)
         self.updateTableDisplay()
 
 if __name__ == '__main__':
