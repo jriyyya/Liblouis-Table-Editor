@@ -121,6 +121,7 @@ class TableManager(QWidget):
 
                 unicode_input = QLineEdit()
                 unicode_input.setPlaceholderText("Unicode Value")
+                unicode_input.setProperty("includeInEntry", True)
                 unicode_input.textChanged.connect(lambda text: self.updateDisplayCharacter(unicode_display, text))
 
                 select_button = QPushButton("Select Unicode")
@@ -142,7 +143,8 @@ class TableManager(QWidget):
 
                 self.dots_input = QLineEdit()
                 self.dots_input.setPlaceholderText("Enter Dots (1-6)")
-                self.dots_input.setValidator(QRegExpValidator(QRegExp("^(?=\d{1,6}$)1?2?3?4?5?6?$")))
+                self.dots_input.setValidator(QRegExpValidator(QRegExp("^(?=\\d{1,6}$)1?2?3?4?5?6?$")))
+                self.dots_input.setProperty("includeInEntry", True)
                 self.dots_input.textChanged.connect(self.updateBrailleDotsDisplay)
                 dots_container.addWidget(self.dots_input, 1)
 
@@ -152,6 +154,7 @@ class TableManager(QWidget):
                 dots_container.addWidget(self.dots_display, 1)
 
                 self.form.addLayout(dots_container)
+
 
     def showUnicodePopup(self, unicode_display, unicode_input):
         self.popup = UnicodeSelector()
@@ -222,20 +225,24 @@ class TableManager(QWidget):
             return None
 
         entry = self.selected_opcode["code"]
-        for i in range(self.form.count()):
-            item = self.form.itemAt(i)
-            widget = item.widget() if item.widget() else item.layout()
-            if isinstance(widget, QTextEdit):
-                text = widget.toPlainText()
-                if text.strip():
-                    entry += " " + text.strip()
-            elif isinstance(widget, QHBoxLayout):
-                unicode_input = widget.itemAt(1).widget()
-                text = unicode_input.text()
-                if text.strip():
-                    entry += " " + text.strip()
-        dots_type = self.dots_type_combo.currentText()
-        entry += " (" + dots_type + ")"
+
+        def traverse_layout(layout):
+            nonlocal entry
+            for i in range(layout.count()):
+                item = layout.itemAt(i)
+                widget = item.widget()
+                if widget:
+                    if isinstance(widget, QTextEdit):
+                        text = widget.toPlainText()
+                        if text.strip():
+                            entry += " " + text.strip()
+                    elif isinstance(widget, QLineEdit):
+                        if not widget.isReadOnly() and widget.property("includeInEntry") and widget.text().strip():
+                            entry += " " + widget.text().strip()
+                elif item.layout():
+                    traverse_layout(item.layout())
+
+        traverse_layout(self.form)
         return entry
 
     def updateTableDisplay(self):
