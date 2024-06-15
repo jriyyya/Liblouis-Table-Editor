@@ -1,6 +1,7 @@
-## Liblouis Table Editor [WIP]
+## Liblouis Table Editor
 
 ### UI Draft for the Editor
-![image](https://github.com/jriyyya/Liblouis-Table-Editor/assets/96080203/6dc39cc5-a03d-490c-bd6e-167e4dc7be47)
+Hand Drawn Screen
+![image](https://github.com/jriyyya/Liblouis-Table-Editor/assets/96080203/41ebb17e-2558-426c-8915-4ac0882a38e4)
 
-![image](https://github.com/jriyyya/Liblouis-Table-Editor/assets/96080203/99c4febd-6fa6-4e2c-853d-cb8c4bb32de7)
+QT Designer Screen [WIP]
