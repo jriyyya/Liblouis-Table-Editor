@@ -34,6 +34,12 @@ Help menu (Icons will be there!)
 ![image](https://github.com/jriyyya/Liblouis-Table-Editor/assets/96080203/5c62870f-a025-4b15-b7f1-79d9106ce136)
 
 
+QFileDialog Class - Similar will be used for new table, open table etc present in File menu where we can set the name and select the location, through this we are able to elimate the New table modal
+
+![image](https://github.com/jriyyya/Liblouis-Table-Editor/assets/96080203/fdeb863d-620e-4609-885c-d0d791b81428)
+
+
+
 
 
 
