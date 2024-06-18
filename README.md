@@ -39,10 +39,8 @@ QFileDialog Class - Similar will be used for new table, open table etc present i
 ![image](https://github.com/jriyyya/Liblouis-Table-Editor/assets/96080203/fdeb863d-620e-4609-885c-d0d791b81428)
 
 
-
-
-
-
+Duplicate Entries highlighted with red
+![image](https://github.com/jriyyya/Liblouis-Table-Editor/assets/96080203/e8af330e-46b7-4457-ba07-7a606f2e79bb)
 
 
 
