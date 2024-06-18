@@ -15,7 +15,8 @@
 
 On Right click of any entry
 
-![image](https://github.com/jriyyya/Liblouis-Table-Editor/assets/96080203/284fff3c-297b-45c7-ae95-97a949628940)
+![image](https://github.com/jriyyya/Liblouis-Table-Editor/assets/96080203/e5f49004-3f0e-4d19-aef0-10d34920611f)
+
 
 File menu (Icons will be there!)
 
