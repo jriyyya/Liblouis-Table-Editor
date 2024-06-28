@@ -68,6 +68,7 @@
             "code": "math",
             "fields": [
                 "unicode",
+                "dots",
                 "dots"
             ],
             "description": ""
