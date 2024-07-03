@@ -44,7 +44,7 @@ class TableEditor(QWidget):
             QTextEdit {
                 background: #FFFFFF;
                 padding: 10px;
-                font-family: Arial, sans-serif;
+                font-family: Verdana, sans-serif;
                 font-size: 16px;  /* Larger font size */
                 color: black;  /* Text color */
             }

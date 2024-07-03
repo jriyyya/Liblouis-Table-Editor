@@ -53,9 +53,9 @@ class TableManager(QWidget):
         self.tab_widget.removeTab(index)
 
     def apply_styles(self):
-        self.setStyleSheet("""
+        styles = """
             QWidget {
-                font-family: Arial, sans-serif;
+                font-family: Verdana, sans-serif;
                 font-size: 16px;  /* Larger font size */
             }
             QTabWidget::pane {
@@ -102,8 +102,12 @@ class TableManager(QWidget):
                 padding: 10px;
                 color: black;  /* Text color */
             }
-        """)
-
+            QTextEdit::placeholder {
+                color: #888888;
+            }
+        """
+        
+        self.setStyleSheet(styles)
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
