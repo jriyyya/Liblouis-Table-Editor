@@ -1,5 +1,5 @@
-# table_editor.py
-from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QTextEdit
+from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QTextEdit, QSizePolicy
+from components.AddEntryWidget import createAddEntryWidget
 
 class TableEditor(QWidget):
     def __init__(self, parent=None):
@@ -18,10 +18,12 @@ class TableEditor(QWidget):
         self.table_preview.setPlaceholderText("Table Preview")
         top_layout.addWidget(self.table_preview)
 
-        # Add entry component (right)
-        self.add_entry = QTextEdit(self)
-        self.add_entry.setPlaceholderText("Add Entry")
-        top_layout.addWidget(self.add_entry)
+        # Add entry widget (right)
+        self.add_entry_widget = createAddEntryWidget()
+        top_layout.addWidget(self.add_entry_widget)
+
+        # Set size policy for AddEntryWidget
+        self.add_entry_widget.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 
         # Add the horizontal layout to the main layout
         main_layout.addLayout(top_layout)
@@ -55,5 +57,5 @@ class TableEditor(QWidget):
 
         # Apply styles to individual text edits
         self.table_preview.setStyleSheet("QTextEdit { background: #FFFFFF; }")
-        self.add_entry.setStyleSheet("QTextEdit { background: #FFFFFF; }")
+        self.add_entry_widget.setStyleSheet("QTextEdit { background: #FFFFFF; }")
         self.testing.setStyleSheet("QTextEdit { background: #FFFFFF; }")
