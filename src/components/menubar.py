@@ -1,17 +1,32 @@
-from PyQt5.QtWidgets import QMenuBar, QAction
-from PyQt5.QtGui import QIcon
+# menubar.py
 import os
+from PyQt5.QtWidgets import QMenuBar, QAction, QMenu, QFileDialog, QMessageBox
+from PyQt5.QtGui import QIcon
+from PyQt5.QtCore import Qt
 
-def create_action(parent, title, icon_path=None, shortcut=None):
+def create_action(parent, title, icon_path=None, shortcut=None, status_tip=None, triggered=None):
     action = QAction(title, parent)
     if icon_path:
         action.setIcon(QIcon(icon_path))
     if shortcut:
         action.setShortcut(shortcut)
+    if status_tip:
+        action.setStatusTip(status_tip)
+    if triggered:
+        action.triggered.connect(triggered)
     return action
 
 def add_menu_with_actions(menubar, title, actions):
     menu = menubar.addMenu(title)
+    for action in actions:
+        if action == 'separator':
+            menu.addSeparator()
+        else:
+            menu.addAction(action)
+    return menu
+
+def create_menu(parent, title, actions):
+    menu = QMenu(title, parent)
     for action in actions:
         if action == 'separator':
             menu.addSeparator()
@@ -25,30 +40,30 @@ def create_menubar(parent):
     # Base path for icons
     icon_base_path = os.path.join(os.path.dirname(__file__), '..', 'assets', 'icons')
 
-    # Define menu structure with icon paths
+    # Define menu structure with icon paths and actions
     menu_structure = {
         'File': [
-            ('New', os.path.join(icon_base_path, 'new.png'), 'Ctrl+N'),
-            ('Open', os.path.join(icon_base_path, 'open.png'), 'Ctrl+O'),
-            ('Save', os.path.join(icon_base_path, 'save.png'), 'Ctrl+S'),
-            ('Save As', os.path.join(icon_base_path, 'save_as.png'), 'Ctrl+Shift+S')
+            ('New', os.path.join(icon_base_path, 'new.png'), 'Ctrl+N', None, lambda: open_new_file_dialog(parent)),
+            ('Open', os.path.join(icon_base_path, 'open.png'), 'Ctrl+O', None, None),
+            ('Save', os.path.join(icon_base_path, 'save.png'), 'Ctrl+S', None, None),
+            ('Save As', os.path.join(icon_base_path, 'save_as.png'), 'Ctrl+Shift+S', None, None)
         ],
         'Edit': [
-            ('Undo', os.path.join(icon_base_path, 'undo.png'), 'Ctrl+Z'),
-            ('Redo', os.path.join(icon_base_path, 'redo.png'), 'Ctrl+Y'),
+            ('Undo', os.path.join(icon_base_path, 'undo.png'), 'Ctrl+Z', None, None),
+            ('Redo', os.path.join(icon_base_path, 'redo.png'), 'Ctrl+Y', None, None),
             'separator',
-            ('Go to Entry', os.path.join(icon_base_path, 'go_to_entry.png'), 'Ctrl+I'),
-            ('Find', os.path.join(icon_base_path, 'find.png'), 'Ctrl+F'),
-            ('Find and Replace', os.path.join(icon_base_path, 'find_replace.png'), 'Ctrl+H')
+            ('Go to Entry', os.path.join(icon_base_path, 'go_to_entry.png'), 'Ctrl+I', None, None),
+            ('Find', os.path.join(icon_base_path, 'find.png'), 'Ctrl+F', None, None),
+            ('Find and Replace', os.path.join(icon_base_path, 'find_replace.png'), 'Ctrl+H', None, None)
         ],
         'Tools': [
-            ('Increase Font Size', os.path.join(icon_base_path, 'increase_font.png'), 'Ctrl+]'),
-            ('Decrease Font Size', os.path.join(icon_base_path, 'decrease_font.png'), 'Ctrl+[')
+            ('Increase Font Size', os.path.join(icon_base_path, 'increase_font.png'), 'Ctrl+]', None, None),
+            ('Decrease Font Size', os.path.join(icon_base_path, 'decrease_font.png'), 'Ctrl+[', None, None)
         ],
         'Help': [
-            ('About', os.path.join(icon_base_path, 'about.png'), None),
-            ('Report a bug', os.path.join(icon_base_path, 'report_bug.png'), None),
-            ('User Guide', os.path.join(icon_base_path, 'user_guide.png'), None)
+            ('About', os.path.join(icon_base_path, 'about.png'), None, None, None),
+            ('Report a bug', os.path.join(icon_base_path, 'report_bug.png'), None, None, None),
+            ('User Guide', os.path.join(icon_base_path, 'user_guide.png'), None, None, None)
         ]
     }
 
@@ -59,8 +74,29 @@ def create_menubar(parent):
             if action == 'separator':
                 action_list.append('separator')
             else:
-                title, icon_path, shortcut = action
-                action_list.append(create_action(parent, title, icon_path, shortcut))
+                title, icon_path, shortcut, status_tip, triggered = action
+                action_list.append(create_action(parent, title, icon_path, shortcut, status_tip, triggered))
         add_menu_with_actions(menubar, menu_title, action_list)
 
     return menubar
+
+def open_new_file_dialog(parent):
+    file_dialog = QFileDialog(parent)
+    file_dialog.setFileMode(QFileDialog.AnyFile)
+    file_dialog.setAcceptMode(QFileDialog.AcceptSave)
+    
+    if file_dialog.exec_():
+        file_names = file_dialog.selectedFiles()
+        if file_names:
+            file_path = file_names[0]
+            try:
+                with open(file_path, 'w') as file:
+                    file.write("Initial content")  # Write initial content if needed
+                file_name = os.path.basename(file_path)
+                parent.add_tab(file_name, "Initial content")  # Add the new file to the tabs
+            except Exception as e:
+                QMessageBox.warning(parent, 'Error', f'Failed to create file: {str(e)}')
+        else:
+            QMessageBox.warning(parent, 'Error', 'No file selected.')
+
+    file_dialog.deleteLater()
