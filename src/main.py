@@ -14,7 +14,7 @@ class TableManager(QWidget):
         self.resize(WINDOW_WIDTH, WINDOW_HEIGHT)
 
         layout = QVBoxLayout()
-        layout.setContentsMargins(0, 0, 0, 0)
+        layout.setContentsMargins(0, 0, 0, 0)  # Remove margins
 
         # Create menubar
         menubar = create_menubar(self)
@@ -24,6 +24,9 @@ class TableManager(QWidget):
 
         # Tab widget for file contents
         self.tab_widget = QTabWidget()
+        self.tab_widget.setTabsClosable(True)  # Make tabs closable
+        self.tab_widget.tabCloseRequested.connect(self.close_tab)  # Connect close event
+
         layout.addWidget(self.tab_widget)
 
         self.setLayout(layout)
@@ -31,7 +34,8 @@ class TableManager(QWidget):
     def add_tab(self, file_name, file_content):
         new_tab = QWidget()
         layout = QVBoxLayout()
-        
+        layout.setContentsMargins(0, 0, 0, 0)  # Remove margins for each tab
+
         # Create an instance of TableEditor
         table_editor = TableEditor()
         table_editor.set_content(file_content)
@@ -40,6 +44,9 @@ class TableManager(QWidget):
         new_tab.setLayout(layout)
         
         self.tab_widget.addTab(new_tab, file_name)
+
+    def close_tab(self, index):
+        self.tab_widget.removeTab(index)
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
