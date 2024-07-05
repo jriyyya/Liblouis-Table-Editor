@@ -62,7 +62,6 @@ class TableManager(QWidget):
                 background: #F0F8FF;
             }
             QTabBar::tab {
-                background: #1082B9;
                 padding: 8px 10px;  /* Reduced vertical padding */
                 min-width: 100px;
                 font-weight: bold;
