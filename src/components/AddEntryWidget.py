@@ -13,12 +13,19 @@ def createAddEntryWidget(parent=None):
     layout = QVBoxLayout(widget)
     layout.setAlignment(Qt.AlignTop)
 
-    # Create Opcode input
     input_opcode = ButtonTextInput()
     input_opcode.input.setReadOnly(True)
     input_opcode.input.setPlaceholderText("Select Opcode")
     input_opcode.button.setText("Select")
-    layout.addWidget(input_opcode)
+
+    opcode_layout = QHBoxLayout()
+
+    input_opcode.input.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
+    
+    opcode_layout.addWidget(input_opcode.input)
+    opcode_layout.addWidget(input_opcode.button)
+
+    layout.addLayout(opcode_layout)
 
     def showOpcodePopup():
         def on_select(opcode):
@@ -31,7 +38,6 @@ def createAddEntryWidget(parent=None):
 
     input_opcode.button.clicked.connect(showOpcodePopup)
 
-    # Add form layout
     form_layout = QVBoxLayout()
     layout.addLayout(form_layout)
 
@@ -79,6 +85,7 @@ def createAddEntryWidget(parent=None):
                 unicode_display.textChanged.connect(lambda text: updateUnicodeInput(text, unicode_input))
 
                 select_button = QPushButton("Select Unicode")
+                select_button.setFixedHeight(unicode_input.sizeHint().height())  # Set button height to input height
                 select_button.clicked.connect(lambda: showUnicodePopup(unicode_display, unicode_input))
 
                 unicode_container.addWidget(unicode_display)
@@ -149,7 +156,7 @@ def createAddEntryWidget(parent=None):
                 form_layout.addLayout(dots_container)
 
     add_button = QPushButton("Add")
-    layout.addWidget(add_button)
+    layout.addWidget(add_button, alignment=Qt.AlignTop)
 
     widget.setLayout(layout)
     
