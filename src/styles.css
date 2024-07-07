@@ -12,7 +12,7 @@ QTabWidget::pane {
 QTabBar::tab {
   padding: 8px 10px; /* Reduced vertical padding */
   min-width: 100px;
-  color: black; /* Text color */
+  color: #1a1a1a; /* Text color */
 }
 
 QTabBar::tab:selected {
@@ -31,12 +31,12 @@ QMenuBar {
 QMenuBar::item {
   background: transparent;
   padding: 5px 15px;
-  color: black; /* Text color */
+  color: #1a1a1a; /* Text color */
 }
 
 QMenuBar::item:selected {
   background: #d4e9f7; /* Light shade of blue */
-  color: black; /* Ensure text color remains black */
+  color: #1a1a1a; /* Ensure text color remains black */
 }
 
 QMenu {
@@ -44,48 +44,75 @@ QMenu {
 }
 
 QMenu::item {
-  color: black; /* Ensure text color remains black */
+  color: #1a1a1a; /* Ensure text color remains black */
 }
 
 QMenu::item:selected {
   background: #d4e9f7; /* Light shade of blue */
-  color: black; /* Ensure text color remains black */
+  color: #1a1a1a; /* Ensure text color remains black */
 }
 
-QTextEdit {
+QTextEdit,
+QLineEdit,
+QLabel {
   background: #ffffff;
   padding: 10px;
-  color: #888888;
+  color: #1a1a1a;
 }
 
 QLineEdit {
-  background: #ffffff;
-  padding: 10px;
-  border: 1px solid #1082b9;
+  border: 1px solid #b0c6cf; /* Lighter border color */
   border-radius: 5px;
-  color: black;
   margin-bottom: 10px;
+  margin-left: 0px;
 }
+
 QLabel {
   margin-bottom: 5px; /* Add margin below label */
 }
+
 QListWidget {
   background: #ffffff;
-  border: 1px solid #1082b9;
+  border: 1px solid #b0c6cf; /* Lighter border color */
   border-radius: 5px;
   padding: 5px;
-  color: black;
+  color: #1a1a1a;
 }
+
 QListWidget::item {
   padding: 5px;
 }
+
 QListView::item {
   padding: 5px;
 }
+
 QListWidget::item:hover {
   background: #d4e9f7;
 }
+
 QListWidget::item:selected {
   background: #1082b9;
   color: white;
+}
+
+QComboBox {
+  background: #ffffff;
+  padding: 10px;
+  border: 1px solid #b0c6cf; /* Lighter border color */
+  border-radius: 5px;
+  color: #1a1a1a;
+}
+
+QPushButton {
+  background-color: #f0f8ff;
+  border: 1px solid #b0c6cf; /* Lighter border color */
+  border-radius: 5px;
+  padding: 10px;
+  min-width: 100px;
+  color: #1a1a1a;
+}
+
+QPushButton:hover {
+  background-color: #d4e9f7;
 }
