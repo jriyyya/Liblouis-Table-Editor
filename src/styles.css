@@ -55,9 +55,37 @@ QMenu::item:selected {
 QTextEdit {
   background: #ffffff;
   padding: 10px;
-  color: black; /* Text color */
+  color: #888888;
 }
 
-QTextEdit::placeholder {
-  color: #888888;
+QLineEdit {
+  background: #ffffff;
+  padding: 10px;
+  border: 1px solid #1082b9;
+  border-radius: 5px;
+  color: black;
+  margin-bottom: 10px;
+}
+QLabel {
+  margin-bottom: 5px; /* Add margin below label */
+}
+QListWidget {
+  background: #ffffff;
+  border: 1px solid #1082b9;
+  border-radius: 5px;
+  padding: 5px;
+  color: black;
+}
+QListWidget::item {
+  padding: 5px;
+}
+QListView::item {
+  padding: 5px;
+}
+QListWidget::item:hover {
+  background: #d4e9f7;
+}
+QListWidget::item:selected {
+  background: #1082b9;
+  color: white;
 }

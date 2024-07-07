@@ -6,76 +6,12 @@ from components.ButtonTextInput import ButtonTextInput
 from components.OpcodeSelector import OpcodeSelector
 from components.UnicodeSelector import UnicodeSelector
 from utils.view import clearLayout
+from utils.ApplyStyles import apply_styles
 
 def createAddEntryWidget(parent=None):
     widget = QWidget(parent)
     layout = QVBoxLayout(widget)
     layout.setAlignment(Qt.AlignTop)
-
-    # Define your style sheet for all components
-    style_sheet = """
-        QWidget {
-            background-color: #F0F0F0;
-            padding: 10px;
-            border: 1px solid #DDDDDD;
-            border-radius: 5px;
-        }
-        QLineEdit {
-            background-color: #FFFFFF;
-            padding: 5px;
-            border: 1px solid #CCCCCC;
-            border-radius: 3px;
-            font-family: Arial, sans-serif;
-            font-size: 14px;
-        }
-        QLineEdit::placeholder {
-            color: #AAAAAA;
-        }
-        QTextEdit {
-            background-color: #FFFFFF;
-            padding: 5px;
-            border: 1px solid #CCCCCC;
-            border-radius: 3px;
-            font-family: Arial, sans-serif;
-            font-size: 14px;
-        }
-        QTextEdit::placeholder {
-            color: #AAAAAA;
-        }
-        QComboBox {
-            background-color: #FFFFFF;
-            padding: 5px;
-            border: 1px solid #CCCCCC;
-            border-radius: 3px;
-            font-family: Arial, sans-serif;
-            font-size: 14px;
-        }
-        QComboBox::placeholder {
-            color: #AAAAAA;
-        }
-        QPushButton {
-            background-color: #4CAF50;
-            color: white;
-            padding: 8px 12px;
-            border: none;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 14px;
-            margin: 4px 2px;
-            cursor: pointer;
-            border-radius: 4px;
-        }
-        QPushButton:hover {
-            background-color: #45a049;
-        }
-        QLabel {
-            font-size: 16px;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-    """
-    widget.setStyleSheet(style_sheet)
 
     # Create Opcode input
     input_opcode = ButtonTextInput()
@@ -216,4 +152,6 @@ def createAddEntryWidget(parent=None):
     layout.addWidget(add_button)
 
     widget.setLayout(layout)
+    
+    apply_styles(widget)
     return widget
