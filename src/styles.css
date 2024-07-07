@@ -1,63 +1,63 @@
 /* styles.qss */
 
 QWidget {
-    font-family: Verdana, sans-serif;
-    font-size: 16px;  /* Larger font size */
+  font-family: Verdana, sans-serif;
+  font-size: 16px; /* Larger font size */
 }
 
 QTabWidget::pane {
-    background: #F0F8FF;
+  background: #f0f8ff;
 }
 
 QTabBar::tab {
-    padding: 8px 10px;  /* Reduced vertical padding */
-    min-width: 100px;
-    color: black;  /* Text color */
+  padding: 8px 10px; /* Reduced vertical padding */
+  min-width: 100px;
+  color: black; /* Text color */
 }
 
 QTabBar::tab:selected {
-    background: #D4E9F7;  /* Light shade of blue */
-    border-bottom-color: #D4E9F7;
+  background: #d4e9f7; /* Light shade of blue */
+  border-bottom-color: #d4e9f7;
 }
 
 QTabBar::tab:hover {
-    background: #D4E9F7;  /* Light shade of blue */
+  background: #d4e9f7; /* Light shade of blue */
 }
 
 QMenuBar {
-    background: #F0F8FF;
+  background: #f0f8ff;
 }
 
 QMenuBar::item {
-    background: transparent;
-    padding: 5px 15px;
-    color: black;  /* Text color */
+  background: transparent;
+  padding: 5px 15px;
+  color: black; /* Text color */
 }
 
 QMenuBar::item:selected {
-    background: #D4E9F7;  /* Light shade of blue */
-    color: black;  /* Ensure text color remains black */
+  background: #d4e9f7; /* Light shade of blue */
+  color: black; /* Ensure text color remains black */
 }
 
 QMenu {
-    background: #F0F8FF;
+  background: #f0f8ff;
 }
 
 QMenu::item {
-    color: black;  /* Ensure text color remains black */
+  color: black; /* Ensure text color remains black */
 }
 
 QMenu::item:selected {
-    background: #D4E9F7;  /* Light shade of blue */
-    color: black;  /* Ensure text color remains black */
+  background: #d4e9f7; /* Light shade of blue */
+  color: black; /* Ensure text color remains black */
 }
 
 QTextEdit {
-    background: #FFFFFF;
-    padding: 10px;
-    color: black;  /* Text color */
+  background: #ffffff;
+  padding: 10px;
+  color: black; /* Text color */
 }
 
 QTextEdit::placeholder {
-    color: #888888;
+  color: #888888;
 }

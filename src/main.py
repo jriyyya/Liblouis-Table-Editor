@@ -5,6 +5,7 @@ from PyQt5.QtCore import Qt, QFile, QTextStream  # Import QFile and QTextStream
 from config import WINDOW_WIDTH, WINDOW_HEIGHT
 from components.Menubar import create_menubar
 from components.TableEditor import TableEditor
+from utils.Apply_Styles import apply_styles
 
 class TableManager(QWidget):
     def __init__(self):
@@ -31,7 +32,7 @@ class TableManager(QWidget):
 
         self.setLayout(layout)
 
-        self.apply_stylesheet("./src/styles.css")
+        apply_styles(self)
 
     def add_tab(self, file_name, file_content):
         new_tab = QWidget()
@@ -50,17 +51,6 @@ class TableManager(QWidget):
     def close_tab(self, index):
         self.tab_widget.removeTab(index)
 
-    def apply_stylesheet(self, path):
-        style_file = QFile(path)
-        if not style_file.open(QFile.ReadOnly | QFile.Text):
-            print(f"Failed to open stylesheet: {path}")
-            return
-        
-        style_stream = QTextStream(style_file)
-        style_sheet = style_stream.readAll()
-        self.setStyleSheet(style_sheet)
-        
-        style_file.close()
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

@@ -1,4 +1,5 @@
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QTextEdit, QSizePolicy
+from utils.Apply_Styles import apply_styles
 from components.AddEntryWidget import createAddEntryWidget
 
 class TableEditor(QWidget):
@@ -36,26 +37,8 @@ class TableEditor(QWidget):
         # Set the main layout for the widget
         self.setLayout(main_layout)
 
-        self.apply_styles()
+        # Apply styles using the utility function
+        apply_styles(self)
 
     def set_content(self, content):
         self.table_preview.setPlainText(content)
-
-    def apply_styles(self):
-        self.setStyleSheet("""
-            QTextEdit {
-                background: #FFFFFF;
-                padding: 10px;
-                font-family: Verdana, sans-serif;
-                font-size: 16px;  /* Larger font size */
-                color: black;  /* Text color */
-            }
-            QTextEdit::placeholder {
-                color: #888888;
-            }
-        """)
-
-        # Apply styles to individual text edits
-        self.table_preview.setStyleSheet("QTextEdit { background: #FFFFFF; }")
-        self.add_entry_widget.setStyleSheet("QTextEdit { background: #FFFFFF; }")
-        self.testing.setStyleSheet("QTextEdit { background: #FFFFFF; }")
