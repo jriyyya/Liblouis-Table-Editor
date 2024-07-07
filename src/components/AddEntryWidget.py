@@ -1,6 +1,7 @@
-from PyQt5.QtWidgets import QWidget, QVBoxLayout, QPushButton, QHBoxLayout, QTextEdit, QLineEdit, QComboBox, QLabel
+from PyQt5.QtWidgets import QWidget, QVBoxLayout, QPushButton, QHBoxLayout, QTextEdit, QLineEdit, QComboBox, QLabel, QSizePolicy
 from PyQt5.QtCore import Qt, QRegExp
 from PyQt5.QtGui import QRegExpValidator
+
 from components.ButtonTextInput import ButtonTextInput
 from components.OpcodeSelector import OpcodeSelector
 from components.UnicodeSelector import UnicodeSelector
@@ -8,17 +9,18 @@ from utils.view import clearLayout
 
 def createAddEntryWidget(parent=None):
     widget = QWidget(parent)
-    layout = QVBoxLayout()
+    layout = QVBoxLayout(widget)
     layout.setAlignment(Qt.AlignTop)
 
-    widget.setStyleSheet("""
+    # Define your style sheet for all components
+    style_sheet = """
         QWidget {
             background-color: #F0F0F0;
             padding: 10px;
             border: 1px solid #DDDDDD;
             border-radius: 5px;
         }
-        QTextEdit, QLineEdit, QComboBox {
+        QLineEdit {
             background-color: #FFFFFF;
             padding: 5px;
             border: 1px solid #CCCCCC;
@@ -26,7 +28,29 @@ def createAddEntryWidget(parent=None):
             font-family: Arial, sans-serif;
             font-size: 14px;
         }
-        QTextEdit::placeholder, QLineEdit::placeholder, QComboBox::placeholder {
+        QLineEdit::placeholder {
+            color: #AAAAAA;
+        }
+        QTextEdit {
+            background-color: #FFFFFF;
+            padding: 5px;
+            border: 1px solid #CCCCCC;
+            border-radius: 3px;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+        }
+        QTextEdit::placeholder {
+            color: #AAAAAA;
+        }
+        QComboBox {
+            background-color: #FFFFFF;
+            padding: 5px;
+            border: 1px solid #CCCCCC;
+            border-radius: 3px;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+        }
+        QComboBox::placeholder {
             color: #AAAAAA;
         }
         QPushButton {
@@ -50,13 +74,15 @@ def createAddEntryWidget(parent=None):
             font-weight: bold;
             margin-bottom: 5px;
         }
-    """)
+    """
+    widget.setStyleSheet(style_sheet)
 
     # Create Opcode input
     input_opcode = ButtonTextInput()
     input_opcode.input.setReadOnly(True)
     input_opcode.input.setPlaceholderText("Select Opcode")
     input_opcode.button.setText("Select")
+    layout.addWidget(input_opcode)
 
     def showOpcodePopup():
         def on_select(opcode):
@@ -68,8 +94,8 @@ def createAddEntryWidget(parent=None):
         popup.show()
 
     input_opcode.button.clicked.connect(showOpcodePopup)
-    layout.addWidget(input_opcode)
 
+    # Add form layout
     form_layout = QVBoxLayout()
     layout.addLayout(form_layout)
 
@@ -168,7 +194,7 @@ def createAddEntryWidget(parent=None):
                 dots_type_combo = QComboBox()
                 dots_type_combo.addItems(["Standard Braille (6 dots)", "Extended Braille (8 dots)"])
                 dots_type_combo.currentTextChanged.connect(updateDotsInputPlaceholder)
-                layout.addWidget(dots_type_combo)
+                form_layout.addWidget(dots_type_combo)
 
                 dots_container = QHBoxLayout()
 

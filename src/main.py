@@ -1,9 +1,7 @@
-# main.py
 import sys
-import os
-from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QTabWidget, QFileDialog, QMessageBox
+from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QTabWidget
 from PyQt5.QtGui import QPalette, QColor
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QFile, QTextStream  # Import QFile and QTextStream
 from config import WINDOW_WIDTH, WINDOW_HEIGHT
 from components.Menubar import create_menubar
 from components.TableEditor import TableEditor
@@ -33,12 +31,12 @@ class TableManager(QWidget):
 
         self.setLayout(layout)
 
-        self.apply_styles()
+        self.apply_stylesheet("./src/styles.css")
 
     def add_tab(self, file_name, file_content):
         new_tab = QWidget()
         layout = QVBoxLayout()
-        layout.setContentsMargins(0, 0, 0, 0)  # Remove margins for each tab
+        layout.setContentsMargins(0, 0, 0, 0)
 
         # Create an instance of TableEditor
         table_editor = TableEditor()
@@ -52,60 +50,17 @@ class TableManager(QWidget):
     def close_tab(self, index):
         self.tab_widget.removeTab(index)
 
-    def apply_styles(self):
-        styles = """
-            QWidget {
-                font-family: Verdana, sans-serif;
-                font-size: 16px;  /* Larger font size */
-            }
-            QTabWidget::pane {
-                background: #F0F8FF;
-            }
-            QTabBar::tab {
-                padding: 8px 10px;  /* Reduced vertical padding */
-                min-width: 100px;
-                color: black;  /* Text color */
-            }
-            QTabBar::tab:selected {
-                background: #D4E9F7;  /* Light shade of blue */
-                border-bottom-color: #D4E9F7;
-            }
-            QTabBar::tab:hover {
-                background: #D4E9F7;  /* Light shade of blue */
-            }
-            QMenuBar {
-                background: #F0F8FF;
-            }
-            QMenuBar::item {
-                background: transparent;
-                padding: 5px 15px;
-                color: black;  /* Text color */
-            }
-            QMenuBar::item:selected {
-                background: #D4E9F7;  /* Light shade of blue */
-                color: black;  /* Ensure text color remains black */
-            }
-            QMenu {
-                background: #F0F8FF;
-            }
-            QMenu::item {
-                color: black;  /* Ensure text color remains black */
-            }
-            QMenu::item:selected {
-                background: #D4E9F7;  /* Light shade of blue */
-                color: black;  /* Ensure text color remains black */
-            }
-            QTextEdit {
-                background: #FFFFFF;
-                padding: 10px;
-                color: black;  /* Text color */
-            }
-            QTextEdit::placeholder {
-                color: #888888;
-            }
-        """
+    def apply_stylesheet(self, path):
+        style_file = QFile(path)
+        if not style_file.open(QFile.ReadOnly | QFile.Text):
+            print(f"Failed to open stylesheet: {path}")
+            return
         
-        self.setStyleSheet(styles)
+        style_stream = QTextStream(style_file)
+        style_sheet = style_stream.readAll()
+        self.setStyleSheet(style_sheet)
+        
+        style_file.close()
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
