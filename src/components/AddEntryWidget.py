@@ -8,46 +8,56 @@ from components.UnicodeSelector import UnicodeSelector
 from utils.view import clearLayout
 from utils.ApplyStyles import apply_styles
 
-def createAddEntryWidget(parent=None):
-    widget = QWidget(parent)
-    layout = QVBoxLayout(widget)
-    layout.setAlignment(Qt.AlignTop)
+class AddEntryWidget(QWidget):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.initUI()
 
-    input_opcode = ButtonTextInput()
-    input_opcode.input.setReadOnly(True)
-    input_opcode.input.setPlaceholderText("Select Opcode")
-    input_opcode.button.setText("Select")
+    def initUI(self):
+        layout = QVBoxLayout(self)
+        layout.setAlignment(Qt.AlignTop)
 
-    opcode_layout = QHBoxLayout()
+        self.input_opcode = ButtonTextInput()
+        self.input_opcode.input.setReadOnly(True)
+        self.input_opcode.input.setPlaceholderText("Select Opcode")
+        self.input_opcode.button.setText("Select")
 
-    input_opcode.input.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
-    
-    opcode_layout.addWidget(input_opcode.input)
-    opcode_layout.addWidget(input_opcode.button)
+        opcode_layout = QHBoxLayout()
 
-    layout.addLayout(opcode_layout)
+        self.input_opcode.input.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
+        
+        opcode_layout.addWidget(self.input_opcode.input)
+        opcode_layout.addWidget(self.input_opcode.button)
 
-    def showOpcodePopup():
+        layout.addLayout(opcode_layout)
+
+        self.input_opcode.button.clicked.connect(self.showOpcodePopup)
+
+        self.form_layout = QVBoxLayout()
+        layout.addLayout(self.form_layout)
+
+        self.add_button = QPushButton("Add")
+        layout.addWidget(self.add_button, alignment=Qt.AlignTop)
+
+        self.setLayout(layout)
+        apply_styles(self)
+
+    def showOpcodePopup(self):
         def on_select(opcode):
-            input_opcode.input.setText(opcode["code"])
-            generateForm(opcode["fields"])
+            self.input_opcode.input.setText(opcode["code"])
+            self.generateForm(opcode["fields"])
 
-        popup = OpcodeSelector()
-        popup.on_select(on_select)
-        popup.show()
+        self.popup = OpcodeSelector()
+        self.popup.on_select(on_select)
+        self.popup.show()
 
-    input_opcode.button.clicked.connect(showOpcodePopup)
-
-    form_layout = QVBoxLayout()
-    layout.addLayout(form_layout)
-
-    def generateForm(fields):
-        clearLayout(form_layout)
+    def generateForm(self, fields):
+        clearLayout(self.form_layout)
         for field in fields:
             if field == "characters":
                 inp = QTextEdit()
                 inp.setPlaceholderText("add characters (string)")
-                form_layout.addWidget(inp)
+                self.form_layout.addWidget(inp)
 
             elif field == "unicode":
                 def updateUnicodeInput(text, unicode_input):
@@ -64,9 +74,9 @@ def createAddEntryWidget(parent=None):
                         unicode_display.clear()
 
                 def showUnicodePopup(unicode_display, unicode_input):
-                    popup = UnicodeSelector()
-                    popup.on_select(lambda char, code: setUnicode(unicode_display, unicode_input, char, code))
-                    popup.show()
+                    self.unicode_popup = UnicodeSelector()
+                    self.unicode_popup.on_select(lambda char, code: setUnicode(unicode_display, unicode_input, char, code))
+                    self.unicode_popup.show()
 
                 def setUnicode(unicode_display, unicode_input, char, code):
                     unicode_display.setText(char)
@@ -85,14 +95,13 @@ def createAddEntryWidget(parent=None):
                 unicode_display.textChanged.connect(lambda text: updateUnicodeInput(text, unicode_input))
 
                 select_button = QPushButton("Select Unicode")
-                select_button.setFixedHeight(unicode_input.sizeHint().height())  # Set button height to input height
                 select_button.clicked.connect(lambda: showUnicodePopup(unicode_display, unicode_input))
 
                 unicode_container.addWidget(unicode_display)
                 unicode_container.addWidget(unicode_input)
                 unicode_container.addWidget(select_button)
 
-                form_layout.addLayout(unicode_container)
+                self.form_layout.addLayout(unicode_container)
 
             elif field == "dots":
                 def updateBrailleDotsDisplay():
@@ -137,7 +146,7 @@ def createAddEntryWidget(parent=None):
                 dots_type_combo = QComboBox()
                 dots_type_combo.addItems(["Standard Braille (6 dots)", "Extended Braille (8 dots)"])
                 dots_type_combo.currentTextChanged.connect(updateDotsInputPlaceholder)
-                form_layout.addWidget(dots_type_combo)
+                self.form_layout.addWidget(dots_type_combo)
 
                 dots_container = QHBoxLayout()
 
@@ -153,12 +162,7 @@ def createAddEntryWidget(parent=None):
                 dots_display.setText("○ ○\n○ ○\n○ ○")  # Default empty dots representation
                 dots_container.addWidget(dots_display, 1)
 
-                form_layout.addLayout(dots_container)
+                self.form_layout.addLayout(dots_container)
 
-    add_button = QPushButton("Add")
-    layout.addWidget(add_button, alignment=Qt.AlignTop)
-
-    widget.setLayout(layout)
-    
-    apply_styles(widget)
-    return widget
+def createAddEntryWidget(parent=None):
+    return AddEntryWidget(parent)
