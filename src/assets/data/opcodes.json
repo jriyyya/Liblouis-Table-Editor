@@ -6,7 +6,7 @@
                 "unicode",
                 "dots"
             ],
-            "description": ""
+            "description": "space: This is description"
         },
         {
             "code": "punctuation",
@@ -14,7 +14,7 @@
                 "unicode",
                 "dots"
             ],
-            "description": ""
+            "description": "punctuation: This is description"
         },
         {
             "code": "digit",
@@ -22,7 +22,7 @@
                 "unicode",
                 "dots"
             ],
-            "description": ""
+            "description": "digit: This is description"
         },
         {
             "code": "lowercase",
@@ -30,7 +30,7 @@
                 "unicode",
                 "dots"
             ],
-            "description": ""
+            "description": "lowercase: This is description"
         },
         {
             "code": "letter",
@@ -38,7 +38,7 @@
                 "unicode",
                 "dots"
             ],
-            "description": "uppercase"
+            "description": "letter: uppercase"
         },
         {
             "code": "word",
@@ -46,7 +46,7 @@
                 "unicode",
                 "dots"
             ],
-            "description": ""
+            "description": "word: This is description"
         },
         {
             "code": "litdigit",
@@ -54,7 +54,7 @@
                 "unicode",
                 "dots"
             ],
-            "description": ""
+            "description": "litdigit: This is description"
         },
         {
             "code": "sign",
@@ -62,7 +62,7 @@
                 "unicode",
                 "dots"
             ],
-            "description": ""
+            "description": "sign: This is description"
         },
         {
             "code": "math",
@@ -71,7 +71,7 @@
                 "dots",
                 "dots"
             ],
-            "description": ""
+            "description": "math: This is description"
         }
     ]
 }

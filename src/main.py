@@ -109,7 +109,7 @@ class TableManager(QWidget):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-
+    
     # Set application palette
     palette = QPalette()
     palette.setColor(QPalette.Window, QColor(240, 248, 255))  # Light blue background
