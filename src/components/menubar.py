@@ -1,8 +1,6 @@
-# menubar.py
 import os
 from PyQt5.QtWidgets import QMenuBar, QAction, QMenu, QFileDialog, QMessageBox
 from PyQt5.QtGui import QIcon
-from PyQt5.QtCore import Qt
 
 def create_action(parent, title, icon_path=None, shortcut=None, status_tip=None, triggered=None):
     action = QAction(title, parent)
@@ -44,7 +42,7 @@ def create_menubar(parent):
     menu_structure = {
         'File': [
             ('New', os.path.join(icon_base_path, 'new.png'), 'Ctrl+N', None, lambda: open_new_file_dialog(parent)),
-            ('Open', os.path.join(icon_base_path, 'open.png'), 'Ctrl+O', None, None),
+            ('Open', os.path.join(icon_base_path, 'open.png'), 'Ctrl+O', None, lambda: open_file_dialog(parent)),
             ('Save', os.path.join(icon_base_path, 'save.png'), 'Ctrl+S', None, None),
             ('Save As', os.path.join(icon_base_path, 'save_as.png'), 'Ctrl+Shift+S', None, None)
         ],
@@ -96,6 +94,27 @@ def open_new_file_dialog(parent):
                 parent.add_tab(file_name, "Initial content")  # Add the new file to the tabs
             except Exception as e:
                 QMessageBox.warning(parent, 'Error', f'Failed to create file: {str(e)}')
+        else:
+            QMessageBox.warning(parent, 'Error', 'No file selected.')
+
+    file_dialog.deleteLater()
+
+def open_file_dialog(parent):
+    file_dialog = QFileDialog(parent)
+    file_dialog.setFileMode(QFileDialog.ExistingFile)
+    file_dialog.setNameFilter("Text Files (*.txt);;All Files (*)")
+    
+    if file_dialog.exec_():
+        file_names = file_dialog.selectedFiles()
+        if file_names:
+            file_path = file_names[0]
+            try:
+                with open(file_path, 'r') as file:
+                    content = file.read()
+                file_name = os.path.basename(file_path)
+                parent.add_tab(file_name, content)  # Add the opened file to the tabs
+            except Exception as e:
+                QMessageBox.warning(parent, 'Error', f'Failed to open file: {str(e)}')
         else:
             QMessageBox.warning(parent, 'Error', 'No file selected.')
 

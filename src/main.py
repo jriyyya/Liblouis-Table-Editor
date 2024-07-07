@@ -64,7 +64,6 @@ class TableManager(QWidget):
             QTabBar::tab {
                 padding: 8px 10px;  /* Reduced vertical padding */
                 min-width: 100px;
-                font-weight: bold;
                 color: black;  /* Text color */
             }
             QTabBar::tab:selected {
