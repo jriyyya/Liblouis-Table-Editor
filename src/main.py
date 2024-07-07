@@ -5,7 +5,7 @@ from PyQt5.QtCore import Qt, QFile, QTextStream  # Import QFile and QTextStream
 from config import WINDOW_WIDTH, WINDOW_HEIGHT
 from components.Menubar import create_menubar
 from components.TableEditor import TableEditor
-from utils.Apply_Styles import apply_styles
+from utils.ApplyStyles import apply_styles
 
 class TableManager(QWidget):
     def __init__(self):

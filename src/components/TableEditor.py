@@ -1,5 +1,5 @@
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QTextEdit, QSizePolicy
-from utils.Apply_Styles import apply_styles
+from utils.ApplyStyles import apply_styles
 from components.AddEntryWidget import createAddEntryWidget
 
 class TableEditor(QWidget):
