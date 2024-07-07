@@ -1,7 +1,8 @@
 
+import math
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
-import math
+from utils.ApplyStyles import apply_styles
 
 class UnicodeSelector(QWidget):
     def __init__(self, parent=None):
@@ -46,6 +47,7 @@ class UnicodeSelector(QWidget):
         self.items_per_page = 50  # Adjust as needed
         self.populate_full_list()
         self.update_pagination()
+        apply_styles(self)
 
     def populate_full_list(self):
         self.full_unicode_list = [

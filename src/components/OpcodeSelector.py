@@ -1,7 +1,8 @@
+import json
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
-import json
+from utils.ApplyStyles import apply_styles
 
 data = json.load(open('./src/assets/data/opcodes.json', 'r'))
 opcodes = data["codes"]
@@ -39,7 +40,7 @@ class OpcodeSelector(QWidget):
         self.populate_list()
 
         self.setLayout(layout)
-        self.apply_styles()
+        apply_styles(self)
 
     def populate_list(self):
         self.list.clear()
@@ -74,42 +75,3 @@ class OpcodeSelector(QWidget):
             self.hide()
         self.list.itemDoubleClicked.connect(lambda x: callback(opcodes[int(x.text().split('.')[0])]))
 
-    def apply_styles(self):
-        styles = """
-            QWidget {
-                font-family: Verdana, sans-serif;
-                font-size: 16px;
-            }
-            QLineEdit {
-                background: #FFFFFF;
-                padding: 10px;  /* Add padding inside search bar */
-                border: 1px solid #1082B9;
-                border-radius: 5px;
-                color: black;
-                margin-bottom: 10px;  /* Add margin below search bar */
-            }
-            QLabel {
-                margin-bottom: 5px;  /* Add margin below label */
-            }
-            QListWidget {
-                background: #FFFFFF;
-                border: 1px solid #1082B9;
-                border-radius: 5px;
-                padding: 5px;
-                color: black;
-            }
-            QListWidget::item {
-                padding: 5px;
-            }
-            QListView::item {
-                padding: 5px; 
-            }
-            QListWidget::item:hover {
-                background: #D4E9F7;
-            }
-            QListWidget::item:selected {
-                background: #1082B9;
-                color: white;
-            }
-        """
-        self.setStyleSheet(styles)
