@@ -1,6 +1,7 @@
-from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QTextEdit, QSizePolicy
+from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QSizePolicy, QTextEdit
 from utils.ApplyStyles import apply_styles
 from components.AddEntry.AddEntryWidget import createAddEntryWidget
+from components.TablePreview import TablePreview  # Assuming TablePreview is in components.TablePreview
 
 class TableEditor(QWidget):
     def __init__(self, parent=None):
@@ -12,8 +13,7 @@ class TableEditor(QWidget):
 
         top_layout = QHBoxLayout()
 
-        self.table_preview = QTextEdit(self)
-        self.table_preview.setPlaceholderText("Table Preview")
+        self.table_preview = TablePreview(self)
         top_layout.addWidget(self.table_preview)
 
         self.add_entry_widget = createAddEntryWidget()
@@ -31,5 +31,23 @@ class TableEditor(QWidget):
 
         apply_styles(self)
 
+        self.add_entry_widget.add_button.clicked.connect(self.add_entry_to_table)
+
+    def add_entry_to_table(self):
+        entry_data = self.add_entry_widget.collect_entry_data()
+        formatted_entry = ' '.join(entry_data)
+        self.table_preview.add_entry(formatted_entry)
+
     def set_content(self, content):
         self.table_preview.setPlainText(content)
+
+    def add_tab(self, file_name, content):
+        new_tab = QWidget(self)
+        layout = QVBoxLayout(new_tab)
+
+        table_preview = TablePreview(self)
+        table_preview.setPlainText(content)
+        layout.addWidget(table_preview)
+
+        new_tab.setLayout(layout)
+        self.tab_widget.addTab(new_tab, file_name)

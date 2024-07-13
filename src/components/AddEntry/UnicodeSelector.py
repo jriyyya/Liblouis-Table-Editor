@@ -92,7 +92,7 @@ class UnicodeSelector(QWidget):
         self.update_pagination()
 
     def on_item_double_clicked(self, item):
-        if self.callback:
+        if self.callback and callable(self.callback):
             char, code = item.data(Qt.UserRole)
             self.callback(char, code)
         self.hide()

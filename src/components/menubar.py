@@ -1,5 +1,5 @@
 import os
-from PyQt5.QtWidgets import QMenuBar, QAction, QMenu, QFileDialog, QMessageBox
+from PyQt5.QtWidgets import QMenuBar, QAction, QFileDialog, QMessageBox
 from PyQt5.QtGui import QIcon
 
 def create_action(parent, title, icon_path=None, shortcut=None, status_tip=None, triggered=None):

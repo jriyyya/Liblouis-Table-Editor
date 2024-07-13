@@ -1,7 +1,7 @@
 import sys
 from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QTabWidget
 from PyQt5.QtGui import QPalette, QColor
-from PyQt5.QtCore import Qt, QFile, QTextStream  # Import QFile and QTextStream
+from PyQt5.QtCore import Qt
 from config import WINDOW_WIDTH, WINDOW_HEIGHT
 from components.Menubar import create_menubar
 from components.TableEditor import TableEditor
@@ -17,11 +17,9 @@ class TableManager(QWidget):
         layout = QVBoxLayout()
         layout.setContentsMargins(0, 0, 0, 0)  # Remove margins
 
-        # Create menubar
-        menubar = create_menubar(self)
+        self.menubar = create_menubar(self)
 
-        # Set the menubar
-        layout.setMenuBar(menubar)
+        layout.setMenuBar(self.menubar)
 
         # Tab widget for file contents
         self.tab_widget = QTabWidget()
