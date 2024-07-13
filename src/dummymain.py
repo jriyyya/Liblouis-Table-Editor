@@ -6,8 +6,8 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 
-from components.UnicodeSelector import UnicodeSelector
-from components.OpcodeSelector import OpcodeSelector
+from components.AddEntry.UnicodeSelector import UnicodeSelector
+from components.AddEntry.OpcodeSelector import OpcodeSelector
 from components.ButtonTextInput import ButtonTextInput
 
 from config import WINDOW_WIDTH, WINDOW_HEIGHT 
