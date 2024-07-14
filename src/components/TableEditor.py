@@ -1,7 +1,7 @@
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QSizePolicy, QTextEdit
 from utils.ApplyStyles import apply_styles
 from components.AddEntry.AddEntryWidget import createAddEntryWidget
-from components.TablePreview import TablePreview  # Assuming TablePreview is in components.TablePreview
+from components.TablePreview import TablePreview
 
 class TableEditor(QWidget):
     def __init__(self, parent=None):
