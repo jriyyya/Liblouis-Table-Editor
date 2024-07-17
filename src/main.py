@@ -18,7 +18,6 @@ class TableManager(QWidget):
         layout.setContentsMargins(0, 0, 0, 0)  # Remove margins
 
         self.menubar = create_menubar(self)
-
         layout.setMenuBar(self.menubar)
 
         # Tab widget for file contents
@@ -32,27 +31,28 @@ class TableManager(QWidget):
 
         apply_styles(self)
 
+        # Create an instance of TableEditor
+        self.table_editor = TableEditor()
+
     def add_tab(self, file_name, file_content):
         new_tab = QWidget()
         layout = QVBoxLayout()
         layout.setContentsMargins(0, 0, 0, 0)
 
-        # Create an instance of TableEditor
-        table_editor = TableEditor()
-        table_editor.set_content(file_content)
-        
-        layout.addWidget(table_editor)
+        # Set the content in TableEditor
+        self.table_editor.set_content(file_content)
+
+        layout.addWidget(self.table_editor)
         new_tab.setLayout(layout)
-        
+
         self.tab_widget.addTab(new_tab, file_name)
 
     def close_tab(self, index):
         self.tab_widget.removeTab(index)
 
-
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    
+
     # Set application palette
     palette = QPalette()
     palette.setColor(QPalette.Window, QColor(240, 248, 255))  # Light blue background

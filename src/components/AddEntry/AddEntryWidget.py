@@ -34,13 +34,13 @@ class AddEntryWidget(QWidget):
 
         self.form_layout = QVBoxLayout()
         layout.addLayout(self.form_layout)
-
-        self.add_button = QPushButton("Add")
-        layout.addWidget(self.add_button, alignment=Qt.AlignTop)
-
+        
         self.comment_input = QLineEdit()
         self.comment_input.setPlaceholderText("Add a comment (optional)")
         layout.addWidget(self.comment_input)
+
+        self.add_button = QPushButton("Add")
+        layout.addWidget(self.add_button, alignment=Qt.AlignTop)
 
         self.setLayout(layout)
         apply_styles(self)
@@ -56,14 +56,14 @@ class AddEntryWidget(QWidget):
 
     def generateForm(self, fields):
         clearLayout(self.form_layout)
-        self.field_inputs = []
+        self.field_inputs = {}
 
         for field in fields:
             if field == "characters":
                 inp = QTextEdit()
                 inp.setPlaceholderText("Add characters (string)")
                 self.form_layout.addWidget(inp)
-                self.field_inputs.append(inp)
+                self.field_inputs[field] = inp
 
             elif field == "unicode":
                 unicode_container = QHBoxLayout()
@@ -85,7 +85,7 @@ class AddEntryWidget(QWidget):
                 unicode_container.addWidget(select_button)
 
                 self.form_layout.addLayout(unicode_container)
-                self.field_inputs.append(unicode_input)
+                self.field_inputs[field] = unicode_input
 
             elif field == "dots":
                 dots_type_combo = QComboBox()
@@ -108,15 +108,17 @@ class AddEntryWidget(QWidget):
                 dots_container.addWidget(dots_display, 1)
 
                 self.form_layout.addLayout(dots_container)
-                self.field_inputs.append(dots_input)
+                self.field_inputs[field] = dots_input
 
     def collect_entry_data(self):
-        entry_data = [self.input_opcode.input.text()]
-        for field_input in self.field_inputs:
-            entry_data.append(field_input.text())
+        entry_data = {
+            "opcode": self.input_opcode.input.text()
+        }
+        for field, field_input in self.field_inputs.items():
+            entry_data[field] = field_input.text()
         comment = self.comment_input.text()
         if comment:
-            entry_data.append(comment)
+            entry_data["comment"] = comment
         return entry_data
 
     def updateUnicodeInput(self, text, unicode_input):

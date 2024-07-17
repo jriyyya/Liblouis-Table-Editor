@@ -1,6 +1,7 @@
 import os
 from PyQt5.QtWidgets import QMenuBar, QAction, QFileDialog, QMessageBox
 from PyQt5.QtGui import QIcon
+import json
 
 def create_action(parent, title, icon_path=None, shortcut=None, status_tip=None, triggered=None):
     action = QAction(title, parent)
@@ -23,15 +24,6 @@ def add_menu_with_actions(menubar, title, actions):
             menu.addAction(action)
     return menu
 
-def create_menu(parent, title, actions):
-    menu = QMenu(title, parent)
-    for action in actions:
-        if action == 'separator':
-            menu.addSeparator()
-        else:
-            menu.addAction(action)
-    return menu
-
 def create_menubar(parent):
     menubar = QMenuBar(parent)
 
@@ -43,8 +35,8 @@ def create_menubar(parent):
         'File': [
             ('New', os.path.join(icon_base_path, 'new.png'), 'Ctrl+N', None, lambda: open_new_file_dialog(parent)),
             ('Open', os.path.join(icon_base_path, 'open.png'), 'Ctrl+O', None, lambda: open_file_dialog(parent)),
-            ('Save', os.path.join(icon_base_path, 'save.png'), 'Ctrl+S', None, None),
-            ('Save As', os.path.join(icon_base_path, 'save_as.png'), 'Ctrl+Shift+S', None, None)
+            ('Save', os.path.join(icon_base_path, 'save.png'), 'Ctrl+S', None, lambda: save_file_dialog(parent)),
+            ('Save As', os.path.join(icon_base_path, 'save_as.png'), 'Ctrl+Shift+S', None, lambda: save_as_file_dialog(parent))
         ],
         'Edit': [
             ('Undo', os.path.join(icon_base_path, 'undo.png'), 'Ctrl+Z', None, None),
@@ -82,6 +74,7 @@ def open_new_file_dialog(parent):
     file_dialog = QFileDialog(parent)
     file_dialog.setFileMode(QFileDialog.AnyFile)
     file_dialog.setAcceptMode(QFileDialog.AcceptSave)
+    file_dialog.setNameFilter("JSON Files (*.json);;All Files (*)")
     
     if file_dialog.exec_():
         file_names = file_dialog.selectedFiles()
@@ -89,9 +82,10 @@ def open_new_file_dialog(parent):
             file_path = file_names[0]
             try:
                 with open(file_path, 'w') as file:
-                    file.write("Initial content")  # Write initial content if needed
+                    json.dump([], file)  # Save an empty list as the initial content
                 file_name = os.path.basename(file_path)
-                parent.add_tab(file_name, "Initial content")  # Add the new file to the tabs
+                parent.table_editor.load_entries(file_path)  # Load the new file into the TableEditor
+                parent.add_tab(file_name, parent.table_editor.get_content())  # Add tab with file content
             except Exception as e:
                 QMessageBox.warning(parent, 'Error', f'Failed to create file: {str(e)}')
         else:
@@ -102,19 +96,48 @@ def open_new_file_dialog(parent):
 def open_file_dialog(parent):
     file_dialog = QFileDialog(parent)
     file_dialog.setFileMode(QFileDialog.ExistingFile)
-    file_dialog.setNameFilter("Text Files (*.txt);;All Files (*)")
+    file_dialog.setNameFilter("JSON Files (*.json);;All Files (*)")
     
     if file_dialog.exec_():
         file_names = file_dialog.selectedFiles()
         if file_names:
             file_path = file_names[0]
             try:
-                with open(file_path, 'r') as file:
-                    content = file.read()
-                file_name = os.path.basename(file_path)
-                parent.add_tab(file_name, content)  # Add the opened file to the tabs
+                parent.table_editor.load_entries(file_path)  # Load the selected file into the TableEditor
+                parent.add_tab(os.path.basename(file_path), parent.table_editor.get_content())  # Add tab with file content
             except Exception as e:
                 QMessageBox.warning(parent, 'Error', f'Failed to open file: {str(e)}')
+        else:
+            QMessageBox.warning(parent, 'Error', 'No file selected.')
+
+    file_dialog.deleteLater()
+
+
+def save_file_dialog(parent):
+    file_path = parent.current_file_path  # Assuming you have a way to keep track of the current file path
+    if file_path:
+        try:
+            parent.table_editor.save_entries(file_path)
+        except Exception as e:
+            QMessageBox.warning(parent, 'Error', f'Failed to save file: {str(e)}')
+    else:
+        save_as_file_dialog(parent)
+
+def save_as_file_dialog(parent):
+    file_dialog = QFileDialog(parent)
+    file_dialog.setFileMode(QFileDialog.AnyFile)
+    file_dialog.setAcceptMode(QFileDialog.AcceptSave)
+    file_dialog.setNameFilter("JSON Files (*.json);;All Files (*)")
+    
+    if file_dialog.exec_():
+        file_names = file_dialog.selectedFiles()
+        if file_names:
+            file_path = file_names[0]
+            try:
+                parent.table_editor.save_entries(file_path)
+                parent.current_file_path = file_path  # Update the current file path
+            except Exception as e:
+                QMessageBox.warning(parent, 'Error', f'Failed to save file: {str(e)}')
         else:
             QMessageBox.warning(parent, 'Error', 'No file selected.')
 

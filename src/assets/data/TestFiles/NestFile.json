@@ -1,0 +1,14 @@
+[
+    {
+        "opcode": "something",
+        "unicode": "f",
+        "braille": "12",
+        "comment": "1 comment"
+    },
+    {
+        "opcode": "another",
+        "unicode": "g",
+        "braille": "34",
+        "comment": "another comment"
+    }
+]

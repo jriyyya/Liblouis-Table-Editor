@@ -16,7 +16,10 @@ class TablePreview(QTextEdit):
         self.update_content()
 
     def update_content(self):
-        new_content = "\n".join(self.entries)
+        new_content = "\n".join(
+            f"{entry['opcode']} {entry.get('unicode', '')} {entry.get('dots', '')} {entry.get('comment', '')}"
+            for entry in self.entries
+        )
         self.setPlainText(new_content)
 
     def showContextMenu(self, pos):
@@ -40,14 +43,21 @@ class TablePreview(QTextEdit):
 
         menu.exec_(self.mapToGlobal(pos))
 
-    def duplicate_entry(self, entry):
-        self.add_entry(entry)
+    def duplicate_entry(self, entry_text):
+        for entry in self.entries:
+            if self.entry_to_text(entry) == entry_text:
+                duplicated_entry = entry.copy()
+                self.entries.append(duplicated_entry)
+                self.update_content()
+                break
 
-    def edit_entry(self, entry):
-        self.delete_entry(entry)
-        self.parent().parent().add_entry_widget.input_opcode.input.setText(entry)
+    def edit_entry(self, entry_text):
+        # Implement editing logic here
+        pass
 
-    def delete_entry(self, entry):
-        if entry in self.entries:
-            self.entries.remove(entry)
-            self.update_content()
+    def delete_entry(self, entry_text):
+        self.entries = [entry for entry in self.entries if self.entry_to_text(entry) != entry_text]
+        self.update_content()
+
+    def entry_to_text(self, entry):
+        return f"{entry['opcode']} {entry.get('unicode', '')} {entry.get('dots', '')} {entry.get('comment', '')}"
