@@ -1,9 +1,10 @@
 import json
 from PyQt5.QtWidgets import (
-    QWidget, QVBoxLayout, QPushButton, QFileDialog
+    QWidget, QVBoxLayout, QHBoxLayout , QSizePolicy, QTextEdit
 )
 from components.AddEntry.AddEntryWidget import createAddEntryWidget
 from components.TablePreview import TablePreview
+from utils.ApplyStyles import apply_styles
 
 class TableEditor(QWidget):
     def __init__(self, parent=None):
@@ -11,16 +12,30 @@ class TableEditor(QWidget):
         self.initUI()
 
     def initUI(self):
-        layout = QVBoxLayout()
+        
+        main_layout = QVBoxLayout()
+
+        top_layout = QHBoxLayout()
+
+        self.table_preview = TablePreview(self)
+        top_layout.addWidget(self.table_preview)
 
         self.add_entry_widget = createAddEntryWidget()
+        
         self.add_entry_widget.add_button.clicked.connect(self.add_entry)
-        layout.addWidget(self.add_entry_widget)
+        top_layout.addWidget(self.add_entry_widget)
 
-        self.table_preview = TablePreview()
-        layout.addWidget(self.table_preview)
+        self.add_entry_widget.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 
-        self.setLayout(layout)
+        main_layout.addLayout(top_layout)
+
+        self.testing = QTextEdit(self)
+        self.testing.setPlaceholderText("Testing")
+        main_layout.addWidget(self.testing)
+
+        self.setLayout(main_layout)
+
+        apply_styles(self)
 
     def add_entry(self):
         entry_data = self.add_entry_widget.collect_entry_data()
