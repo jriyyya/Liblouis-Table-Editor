@@ -1,63 +1,49 @@
-from PyQt5.QtWidgets import QTextEdit, QMenu, QAction
+from PyQt5.QtWidgets import QWidget, QVBoxLayout, QScrollArea, QFrame
 from PyQt5.QtCore import Qt
+from components.AddEntry.EntryWidget import EntryWidget
+from utils.ApplyStyles import apply_styles
 
-class TablePreview(QTextEdit):
+class TablePreview(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.setReadOnly(True)
-
         self.entries = []
+        apply_styles(self)
+        self.initUI()
+
+    def initUI(self):
+        self.setStyleSheet("background-color: white; border: none;")  # Set white background and no border
         
-        self.setContextMenuPolicy(Qt.CustomContextMenu)
-        self.customContextMenuRequested.connect(self.showContextMenu)
+        self.layout = QVBoxLayout(self)
+        
+        # Create a scroll area
+        self.scroll_area = QScrollArea(self)
+        self.scroll_area.setWidgetResizable(True)
+        
+        # Container widget for scroll area contents
+        self.scroll_widget = QWidget()
+        self.scroll_layout = QVBoxLayout(self.scroll_widget)
+        self.scroll_layout.setAlignment(Qt.AlignTop)  # Align widgets to the top
+        
+        self.scroll_area.setWidget(self.scroll_widget)
+        
+        # Add the scroll area to the main layout
+        self.layout.addWidget(self.scroll_area)
+        self.setLayout(self.layout)
 
     def add_entry(self, entry):
         self.entries.append(entry)
         self.update_content()
 
     def update_content(self):
-        new_content = "\n".join(
-            f"{entry['opcode']} {entry.get('unicode', '')} {entry.get('dots', '')} {entry.get('comment', '')}"
-            for entry in self.entries
-        )
-        self.setPlainText(new_content)
+        self.clear_layout()
 
-    def showContextMenu(self, pos):
-        cursor = self.cursorForPosition(pos)
-        cursor.select(cursor.LineUnderCursor)
-        selected_text = cursor.selectedText()
-
-        menu = QMenu(self)
-
-        duplicate_action = QAction('Duplicate', self)
-        duplicate_action.triggered.connect(lambda: self.duplicate_entry(selected_text))
-        menu.addAction(duplicate_action)
-
-        edit_action = QAction('Edit', self)
-        edit_action.triggered.connect(lambda: self.edit_entry(selected_text))
-        menu.addAction(edit_action)
-
-        delete_action = QAction('Delete', self)
-        delete_action.triggered.connect(lambda: self.delete_entry(selected_text))
-        menu.addAction(delete_action)
-
-        menu.exec_(self.mapToGlobal(pos))
-
-    def duplicate_entry(self, entry_text):
         for entry in self.entries:
-            if self.entry_to_text(entry) == entry_text:
-                duplicated_entry = entry.copy()
-                self.entries.append(duplicated_entry)
-                self.update_content()
-                break
+            entry_widget = EntryWidget(entry)
+            self.scroll_layout.addWidget(entry_widget)
 
-    def edit_entry(self, entry_text):
-        # Implement editing logic here
-        pass
-
-    def delete_entry(self, entry_text):
-        self.entries = [entry for entry in self.entries if self.entry_to_text(entry) != entry_text]
-        self.update_content()
-
-    def entry_to_text(self, entry):
-        return f"{entry['opcode']} {entry.get('unicode', '')} {entry.get('dots', '')} {entry.get('comment', '')}"
+    def clear_layout(self):
+        # Clear all widgets from the scroll layout
+        for i in reversed(range(self.scroll_layout.count())):
+            widget = self.scroll_layout.itemAt(i).widget()
+            if widget:
+                widget.setParent(None)
