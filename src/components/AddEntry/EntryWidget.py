@@ -8,10 +8,10 @@ class EntryWidget(QWidget):
         self.initUI()
 
     def initUI(self):
-        entry_text = f"{self.entry['opcode']} {self.entry.get('unicode', '')} {self.entry.get('dots', '')} {self.entry.get('comment', '')}"
+        entry_text = f"{self.entry['opcode']} {self.entry.get('unicode', '')} {self.entry.get('braille', '')} {self.entry.get('comment', '')}"
 
         self.label_text = QLabel(entry_text)
-        self.label_text.setWordWrap(True)  # Allow wrapping within the label
+        self.label_text.setWordWrap(True)
 
         layout = QHBoxLayout(self)
         layout.addWidget(self.label_text, alignment=Qt.AlignTop)
