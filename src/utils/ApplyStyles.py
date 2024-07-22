@@ -4,7 +4,7 @@ from PyQt5.QtCore import QFile, QTextStream
 
 def apply_styles(widget):
     
-    stylesheet_path = "./src/styles.css"
+    stylesheet_path = "./src/styles.qss"
     style_file = QFile(stylesheet_path)
     if not style_file.open(QFile.ReadOnly | QFile.Text):
         print(f"Failed to open stylesheet: {stylesheet_path}")

@@ -104,6 +104,21 @@ QComboBox {
   color: #1a1a1a;
 }
 
+QComboBox::drop-down {
+  width: 30px; /* Adjust the width of the drop-down arrow area */
+}
+
+QComboBox::down-arrow {
+  image: url(./src/assets/icons/down-arrow.png);
+  height: 50px;
+  width: 100px;
+}
+
+QComboBox QAbstractItemView::item {
+  padding: 10px; /* Padding for the list items */
+  margin: 2px 0;
+}
+
 QPushButton {
   background-color: #f0f8ff;
   border: 1px solid #b0c6cf; /* Lighter border color */

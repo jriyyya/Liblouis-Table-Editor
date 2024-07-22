@@ -1,14 +1,17 @@
+import json
 from PyQt5.QtWidgets import (
-    QWidget, QVBoxLayout, QPushButton, QHBoxLayout, QTextEdit,
-    QLineEdit, QComboBox, QLabel, QSizePolicy
+    QWidget, QVBoxLayout, QHBoxLayout, QTextEdit,
+    QLineEdit, QComboBox, QLabel, QPushButton, QSizePolicy
 )
 from PyQt5.QtCore import Qt, QRegExp
 from PyQt5.QtGui import QRegExpValidator
-from components.ButtonTextInput import ButtonTextInput
-from components.AddEntry.OpcodeSelector import OpcodeSelector
 from components.AddEntry.UnicodeSelector import UnicodeSelector
 from utils.view import clearLayout
 from utils.ApplyStyles import apply_styles
+
+# Load opcodes from JSON file
+data = json.load(open('./src/assets/data/opcodes.json', 'r'))
+opcodes = data["codes"]
 
 class AddEntryWidget(QWidget):
     def __init__(self, parent=None):
@@ -19,18 +22,15 @@ class AddEntryWidget(QWidget):
         layout = QVBoxLayout(self)
         layout.setAlignment(Qt.AlignTop)
 
-        self.input_opcode = ButtonTextInput()
-        self.input_opcode.input.setReadOnly(True)
-        self.input_opcode.input.setPlaceholderText("Select Opcode")
-        self.input_opcode.button.setText("Select")
+        self.opcode_combo = QComboBox()
+        self.opcode_combo.setPlaceholderText("Select Opcode")
+        self.populate_opcode_combo()
+        self.opcode_combo.currentIndexChanged.connect(self.on_opcode_selected)
 
         opcode_layout = QHBoxLayout()
-        self.input_opcode.input.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
-        opcode_layout.addWidget(self.input_opcode.input)
-        opcode_layout.addWidget(self.input_opcode.button)
+        self.opcode_combo.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
+        opcode_layout.addWidget(self.opcode_combo)
         layout.addLayout(opcode_layout)
-
-        self.input_opcode.button.clicked.connect(self.showOpcodePopup)
 
         self.form_layout = QVBoxLayout()
         layout.addLayout(self.form_layout)
@@ -45,14 +45,18 @@ class AddEntryWidget(QWidget):
         self.setLayout(layout)
         apply_styles(self)
 
-    def showOpcodePopup(self):
-        def on_select(opcode):
-            self.input_opcode.input.setText(opcode["code"])
-            self.generateForm(opcode["fields"])
+    def populate_opcode_combo(self):
+        self.opcode_combo.clear()
+        self.opcode_combo.addItem("Select Opcode", None)  # Default placeholder item
+        for opcode in opcodes:
+            self.opcode_combo.addItem(opcode["code"], opcode)
 
-        self.popup = OpcodeSelector()
-        self.popup.on_select(on_select)
-        self.popup.show()
+    def on_opcode_selected(self, index):
+        if index > 0:  # Ignore the placeholder item
+            opcode = self.opcode_combo.itemData(index)
+            self.generateForm(opcode["fields"])
+        else:
+            clearLayout(self.form_layout)
 
     def generateForm(self, fields):
         clearLayout(self.form_layout)
@@ -112,7 +116,7 @@ class AddEntryWidget(QWidget):
 
     def collect_entry_data(self):
         entry_data = {
-            "opcode": self.input_opcode.input.text()
+            "opcode": self.opcode_combo.currentText()
         }
         for field, field_input in self.field_inputs.items():
             entry_data[field] = field_input.text()
