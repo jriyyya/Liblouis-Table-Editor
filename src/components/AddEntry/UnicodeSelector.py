@@ -1,101 +1,78 @@
-
-import math
-from PyQt5.QtWidgets import *
-from PyQt5.QtCore import *
-from utils.ApplyStyles import apply_styles
+import sys
+from PyQt5.QtWidgets import (
+    QApplication, QWidget, QVBoxLayout, QHBoxLayout,
+    QTreeWidget, QTreeWidgetItem, QTextEdit,
+    QLabel, QSizePolicy
+)
+from PyQt5.QtCore import Qt
 
 class UnicodeSelector(QWidget):
-    def __init__(self, parent=None):
-        super().__init__(parent)
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle('Unicode Character Map')
+        self.resize(800, 600)
+        self.initUI()
 
-        self.setWindowTitle('Unicode Viewer')
-        self.resize(400, 600)
+    def initUI(self):
+        layout = QHBoxLayout(self)
 
-        layout = QVBoxLayout()
+        # Create tree view for Unicode blocks
+        self.tree = QTreeWidget()
+        self.tree.setHeaderLabel("Unicode Blocks")
+        self.populate_tree()
+        self.tree.itemClicked.connect(self.display_characters)
+        layout.addWidget(self.tree, 1)
 
-        self.search = QLineEdit()
-        self.search.setPlaceholderText("Search for Unicode / Character")
-        self.search.textChanged.connect(self.update_pagination)
-
-        label = QLabel("Double click code to select")
-
-        self.unicodes_list = QListWidget()
-        self.unicodes_list.itemDoubleClicked.connect(self.on_item_double_clicked)
-
-
-        self.prev_button = QPushButton("Previous")
-        self.prev_button.clicked.connect(self.previous_page)
-        self.next_button = QPushButton("Next")
-        self.next_button.clicked.connect(self.next_page)
-        self.page_label = QLabel()
-
-        button_layout = QHBoxLayout()
-        button_layout.addWidget(self.prev_button)
-        button_layout.addWidget(self.page_label)
-        button_layout.addWidget(self.next_button)
-
-        layout.addWidget(self.search)
-        layout.addWidget(label)
-        layout.addWidget(self.unicodes_list)
-        layout.addLayout(button_layout)
+        # Create text widget to display characters
+        self.text = QTextEdit()
+        self.text.setReadOnly(True)
+        self.text.setFontPointSize(20)
+        self.text.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        self.text.mouseDoubleClickEvent = self.character_selected
+        layout.addWidget(self.text, 2)
 
         self.setLayout(layout)
 
-        self.full_unicode_list = []
-        self.filtered_unicode_list = []
-        self.current_page = 1
-        self.items_per_page = 50  # Adjust as needed
-        self.populate_full_list()
-        self.update_pagination()
-        apply_styles(self)
+        # Select the first item by default
+        if self.tree.topLevelItemCount() > 0:
+            first_item = self.tree.topLevelItem(0)
+            self.tree.setCurrentItem(first_item)
+            self.display_characters(first_item, 0)
 
-    def populate_full_list(self):
-        self.full_unicode_list = [
-            (chr(code), f"\\x{code:04X}", f"{chr(code)} (U+{code:04X})")
-            for code in range(0x0000, 0xFFFF)
-        ]
+    def populate_tree(self):
+        blocks = self.get_unicode_blocks()
+        for block_name, (start, end) in blocks.items():
+            item = QTreeWidgetItem([block_name])
+            item.setData(0, Qt.UserRole, (start, end))
+            self.tree.addTopLevelItem(item)
 
-    def filter_list(self):
-        search_text = self.search.text().lower()
-        self.filtered_unicode_list = [
-            item for item in self.full_unicode_list
-            if search_text in item[0].lower() or search_text in item[1].lower()
-        ]
+    def get_unicode_blocks(self):
+        # This is a predefined list of Unicode blocks
+        return {
+            "Basic Latin": (0x0000, 0x007F),
+            "Latin-1 Supplement": (0x0080, 0x00FF),
+            "Latin Extended-A": (0x0100, 0x017F),
+            "Latin Extended-B": (0x0180, 0x024F),
+            "IPA Extensions": (0x0250, 0x02AF),
+            "Spacing Modifier Letters": (0x02B0, 0x02FF),
+            "Greek and Coptic": (0x0370, 0x03FF),
+            "Cyrillic": (0x0400, 0x04FF),
+            # Add more blocks as needed
+        }
 
-    def update_list(self):
-        self.unicodes_list.clear()
-        start_index = (self.current_page - 1) * self.items_per_page
-        end_index = self.current_page * self.items_per_page
+    def display_characters(self, item, column):
+        self.text.clear()
+        start, end = item.data(0, Qt.UserRole)
+        characters = ''.join(chr(codepoint) for codepoint in range(start, end + 1))
+        self.text.setText(characters)
 
-        for char, unicode_code, _ in self.filtered_unicode_list[start_index:end_index]:
-            display_text = f"{char} (\\x{ord(char):04X})"
-            item = QListWidgetItem(display_text)
-            item.setData(Qt.UserRole, (char, unicode_code))
-            self.unicodes_list.addItem(item)
-            
-    def update_pagination(self):
-        self.filter_list()
-        total_pages = math.ceil(len(self.filtered_unicode_list) / self.items_per_page)
-        if total_pages == 0:
-            total_pages = 1  # Ensure at least 1 page
-        self.current_page = min(self.current_page, total_pages)
-        self.page_label.setText(f"Page {self.current_page} / {total_pages}")
-        self.update_list()
+    def character_selected(self, event):
+        cursor = self.text.cursorForPosition(event.pos())
+        cursor.select(cursor.WordUnderCursor)
+        selected_char = cursor.selectedText()
+        self.on_select_callback(selected_char, f"\\x{ord(selected_char):04X}")
+        self.close()
 
-    def previous_page(self):
-        self.current_page = max(1, self.current_page - 1)
-        self.update_pagination()
+    def on_select(self, callback):
+        self.on_select_callback = callback
 
-    def next_page(self):
-        total_pages = math.ceil(len(self.filtered_unicode_list) / self.items_per_page)
-        self.current_page = min(total_pages, self.current_page + 1)
-        self.update_pagination()
-
-    def on_item_double_clicked(self, item):
-        if self.callback and callable(self.callback):
-            char, code = item.data(Qt.UserRole)
-            self.callback(char, code)
-        self.hide()
-
-    def on_select(self, cb):
-        self.callback = cb
