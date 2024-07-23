@@ -1,8 +1,7 @@
 import sys
 from PyQt5.QtWidgets import (
     QApplication, QWidget, QVBoxLayout, QHBoxLayout,
-    QTreeWidget, QTreeWidgetItem, QTextEdit,
-    QLabel, QSizePolicy, QGridLayout, QScrollArea, QPushButton
+    QTreeWidget, QTreeWidgetItem, QGridLayout, QScrollArea, QPushButton, QSizePolicy
 )
 from PyQt5.QtCore import Qt, QSize
 from PyQt5.QtGui import QFont
@@ -11,30 +10,35 @@ class UnicodeSelector(QWidget):
     def __init__(self):
         super().__init__()
         self.setWindowTitle('Unicode Character Map')
-        self.resize(800, 600)
         self.initUI()
 
     def initUI(self):
         layout = QHBoxLayout(self)
 
-        # Create tree view for Unicode blocks
         self.tree = QTreeWidget()
         self.tree.setHeaderLabel("Unicode Blocks")
         self.populate_tree()
         self.tree.itemClicked.connect(self.display_characters)
-        layout.addWidget(self.tree, 1)
+        self.tree.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Expanding)
+        layout.addWidget(self.tree)
 
-        # Create a scroll area to contain the grid of characters
         scroll_area = QScrollArea()
         self.char_container = QWidget()
         self.char_layout = QGridLayout(self.char_container)
+        self.char_layout.setContentsMargins(0, 0, 0, 0)
+        self.char_layout.setSpacing(0)
+        self.char_container.setStyleSheet("background: white;")
         scroll_area.setWidgetResizable(True)
         scroll_area.setWidget(self.char_container)
-        layout.addWidget(scroll_area, 2)
+        scroll_area.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        layout.addWidget(scroll_area)
 
         self.setLayout(layout)
 
-        # Select the first item by default
+        self.setFixedSize(920, 600)
+
+        self.adjust_component_sizes()
+
         if self.tree.topLevelItemCount() > 0:
             first_item = self.tree.topLevelItem(0)
             self.tree.setCurrentItem(first_item)
@@ -48,7 +52,6 @@ class UnicodeSelector(QWidget):
             self.tree.addTopLevelItem(item)
 
     def get_unicode_blocks(self):
-        # This is a predefined list of Unicode blocks
         return {
             "Basic Latin": (0x0000, 0x007F),
             "Latin-1 Supplement": (0x0080, 0x00FF),
@@ -58,11 +61,10 @@ class UnicodeSelector(QWidget):
             "Spacing Modifier Letters": (0x02B0, 0x02FF),
             "Greek and Coptic": (0x0370, 0x03FF),
             "Cyrillic": (0x0400, 0x04FF),
-            # Add more blocks as needed
+            "Hindi": (0x0900, 0x097F),
         }
 
     def display_characters(self, item, column):
-        # Clear previous characters
         while self.char_layout.count():
             child = self.char_layout.takeAt(0)
             if child.widget():
@@ -70,21 +72,44 @@ class UnicodeSelector(QWidget):
 
         start, end = item.data(0, Qt.UserRole)
         characters = [chr(codepoint) for codepoint in range(start, end + 1)]
-        
-        row, col = 0, 0
-        for char in characters:
-            char_button = QPushButton(char)
-            char_button.setFont(QFont('Sans', 16))
-            char_button.setFixedSize(QSize(40, 40))
-            char_button.setStyleSheet(
-                "border: 1px solid black; margin: 5px; padding: 5px; text-align: center;"
-            )
-            char_button.clicked.connect(self.character_selected)
-            self.char_layout.addWidget(char_button, row, col)
-            col += 1
-            if col > 7:  # 8 characters per row
-                col = 0
-                row += 1
+
+        button_size = 60
+        num_columns = 10
+        padding = 0
+
+        num_rows = (len(characters) + num_columns - 1) // num_columns
+
+        container_width = num_columns * (button_size + padding) - padding
+        container_height = num_rows * (button_size + padding) - padding
+
+        available_width = self.width() - self.tree.sizeHint().width()
+        container_width = min(container_width, available_width)
+
+        self.char_container.setFixedSize(container_width, container_height)
+
+        for row in range(num_rows):
+            for col in range(num_columns):
+                index = row * num_columns + col
+                if index >= len(characters):
+                    break
+
+                char = characters[index]
+                char_button = QPushButton(char)
+                char_button.setFont(QFont('Sans', 16))
+                char_button.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+                char_button.setFixedSize(QSize(button_size, button_size))
+
+                char_button.setStyleSheet(
+                    "QPushButton {"
+                    "    border: 1px solid #b0c6cf;"
+                    "    background: white;"
+                    "}"
+                    "QPushButton:hover {"
+                    "    background: #d4e9f7;"
+                    "}"
+                )
+                char_button.clicked.connect(self.character_selected)
+                self.char_layout.addWidget(char_button, row, col)
 
     def character_selected(self):
         char_button = self.sender()
@@ -95,3 +120,6 @@ class UnicodeSelector(QWidget):
     def on_select(self, callback):
         self.on_select_callback = callback
 
+    def adjust_component_sizes(self):
+        self.tree.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Expanding)
+        self.char_container.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
