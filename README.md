@@ -1,5 +1,10 @@
 ## Liblouis Table Editor
 
+## Progress till now
+
+![image](https://github.com/user-attachments/assets/4933e5c1-0015-4445-bcf7-456826711ae8)
+
+
 ### UI Draft for the Editor
 
 #### 2 possible QT Designer Screen 
