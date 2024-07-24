@@ -1,10 +1,11 @@
 import sys
 from PyQt5.QtWidgets import (
-    QApplication, QWidget, QVBoxLayout, QHBoxLayout,
-    QTreeWidget, QTreeWidgetItem, QGridLayout, QScrollArea, QPushButton, QSizePolicy
+    QApplication, QWidget, QVBoxLayout, QHBoxLayout, QTreeWidget, QTreeWidgetItem,
+    QGridLayout, QScrollArea, QPushButton, QSizePolicy, QLineEdit, QLabel
 )
 from PyQt5.QtCore import Qt, QSize
 from PyQt5.QtGui import QFont
+from utils.ApplyStyles import apply_styles
 
 class UnicodeSelector(QWidget):
     def __init__(self):
@@ -13,14 +14,26 @@ class UnicodeSelector(QWidget):
         self.initUI()
 
     def initUI(self):
-        layout = QHBoxLayout(self)
+        main_layout = QHBoxLayout(self)
+
+        search_layout = QVBoxLayout()
+        self.search_bar = QLineEdit()
+        self.search_bar.setPlaceholderText("Search Unicode Blocks...")
+        self.search_bar.textChanged.connect(self.filter_blocks)
+        search_layout.addWidget(self.search_bar)
 
         self.tree = QTreeWidget()
         self.tree.setHeaderLabel("Unicode Blocks")
         self.populate_tree()
         self.tree.itemClicked.connect(self.display_characters)
         self.tree.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Expanding)
-        layout.addWidget(self.tree)
+        search_layout.addWidget(self.tree)
+
+        char_search_layout = QVBoxLayout()
+        self.char_search_bar = QLineEdit()
+        self.char_search_bar.setPlaceholderText("Search Characters...")
+        self.char_search_bar.textChanged.connect(self.filter_characters)
+        char_search_layout.addWidget(self.char_search_bar)
 
         scroll_area = QScrollArea()
         self.char_container = QWidget()
@@ -31,11 +44,14 @@ class UnicodeSelector(QWidget):
         scroll_area.setWidgetResizable(True)
         scroll_area.setWidget(self.char_container)
         scroll_area.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
-        layout.addWidget(scroll_area)
 
-        self.setLayout(layout)
+        char_search_layout.addWidget(scroll_area)
 
-        self.setFixedSize(920, 600)
+        main_layout.addLayout(search_layout)
+        main_layout.addLayout(char_search_layout)
+
+        self.setLayout(main_layout)
+        self.setFixedSize(960, 600)
 
         self.adjust_component_sizes()
 
@@ -45,11 +61,23 @@ class UnicodeSelector(QWidget):
             self.display_characters(first_item, 0)
 
     def populate_tree(self):
-        blocks = self.get_unicode_blocks()
-        for block_name, (start, end) in blocks.items():
+        self.blocks = self.get_unicode_blocks()
+        for block_name, (start, end) in self.blocks.items():
             item = QTreeWidgetItem([block_name])
             item.setData(0, Qt.UserRole, (start, end))
             self.tree.addTopLevelItem(item)
+
+    def filter_blocks(self):
+        search_text = self.search_bar.text().lower()
+        for i in range(self.tree.topLevelItemCount()):
+            item = self.tree.topLevelItem(i)
+            item.setHidden(search_text not in item.text(0).lower())
+
+    def filter_characters(self):
+        search_text = self.char_search_bar.text().lower()
+        for i in range(self.char_layout.count()):
+            button = self.char_layout.itemAt(i).widget()
+            button.setHidden(search_text not in button.text().lower())
 
     def get_unicode_blocks(self):
         return {
@@ -71,29 +99,33 @@ class UnicodeSelector(QWidget):
                 child.widget().deleteLater()
 
         start, end = item.data(0, Qt.UserRole)
-        characters = [chr(codepoint) for codepoint in range(start, end + 1)]
+        self.characters = [chr(codepoint) for codepoint in range(start, end + 1)]
 
+        self.update_character_display()
+
+    def update_character_display(self):
         button_size = 60
-        num_columns = 10
         padding = 0
+        available_width = self.width() - self.tree.sizeHint().width() - padding * 2
+        num_columns = available_width // button_size
 
-        num_rows = (len(characters) + num_columns - 1) // num_columns
+        if num_columns < 1:
+            num_columns = 1
 
-        container_width = num_columns * (button_size + padding) - padding
-        container_height = num_rows * (button_size + padding) - padding
+        num_rows = (len(self.characters) + num_columns - 1) // num_columns
 
-        available_width = self.width() - self.tree.sizeHint().width()
-        container_width = min(container_width, available_width)
+        container_width = num_columns * button_size
+        container_height = num_rows * button_size
 
         self.char_container.setFixedSize(container_width, container_height)
 
         for row in range(num_rows):
             for col in range(num_columns):
                 index = row * num_columns + col
-                if index >= len(characters):
+                if index >= len(self.characters):
                     break
 
-                char = characters[index]
+                char = self.characters[index]
                 char_button = QPushButton(char)
                 char_button.setFont(QFont('Sans', 16))
                 char_button.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
