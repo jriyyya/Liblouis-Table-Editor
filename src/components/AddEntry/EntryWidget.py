@@ -15,13 +15,12 @@ class EntryWidget(QWidget):
 
         layout = QHBoxLayout(self)
         layout.addWidget(self.label_text, alignment=Qt.AlignTop)
-        layout.setContentsMargins(0, 0, 0, 0)
+        layout.setContentsMargins(0, 0, 0, 0)  # Remove margins
+        layout.setSpacing(0)  # Remove spacing
         self.setLayout(layout)
 
-        # Set initial border style
-        self.setStyleSheet("border: 1px solid #b0c6cf; border-radius: 5px; padding: 10px;; background-color: white;")
-        
-        # Connect hover events
+        self.setStyleSheet("padding: 10px; background-color: white; margin: 0px")
+
         self.setMouseTracking(True)
         self.enterEvent = self.onHoverEnter
         self.leaveEvent = self.onHoverLeave
@@ -55,7 +54,7 @@ class EntryWidget(QWidget):
         self.deleteLater()
 
     def onHoverEnter(self, event):
-        self.setStyleSheet("border: 1px solid #b0c6cf; border-radius: 5px; padding: 10px; background-color: #f0f8ff;")
+        self.setStyleSheet("padding: 10px; background-color: #f0f8ff; margin: 0px")
 
     def onHoverLeave(self, event):
-        self.setStyleSheet("border: 1px solid #b0c6cf; border-radius: 5px; padding: 10px; background-color: white;")
+        self.setStyleSheet("padding: 10px; background-color: white; margin: 0px")

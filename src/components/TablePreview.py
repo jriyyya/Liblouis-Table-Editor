@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QWidget, QVBoxLayout, QScrollArea, QFrame
+from PyQt5.QtWidgets import QWidget, QVBoxLayout, QScrollArea
 from PyQt5.QtCore import Qt
 from components.AddEntry.EntryWidget import EntryWidget
 from utils.ApplyStyles import apply_styles
@@ -11,22 +11,23 @@ class TablePreview(QWidget):
         self.initUI()
 
     def initUI(self):
-        self.setStyleSheet("background-color: white; border: none;")  # Set white background and no border
+        self.setStyleSheet("background-color: white; border-bottom: 1px solid #b0c6cf;")
         
         self.layout = QVBoxLayout(self)
-        
-        # Create a scroll area
+        self.layout.setContentsMargins(0, 0, 0, 0)
+        self.layout.setSpacing(0)
+
         self.scroll_area = QScrollArea(self)
         self.scroll_area.setWidgetResizable(True)
         
-        # Container widget for scroll area contents
         self.scroll_widget = QWidget()
         self.scroll_layout = QVBoxLayout(self.scroll_widget)
-        self.scroll_layout.setAlignment(Qt.AlignTop)  # Align widgets to the top
-        
+        self.scroll_layout.setAlignment(Qt.AlignTop)
+        self.scroll_layout.setContentsMargins(0, 0, 0, 0)
+        self.scroll_layout.setSpacing(0)
+
         self.scroll_area.setWidget(self.scroll_widget)
         
-        # Add the scroll area to the main layout
         self.layout.addWidget(self.scroll_area)
         self.setLayout(self.layout)
 
@@ -42,7 +43,6 @@ class TablePreview(QWidget):
             self.scroll_layout.addWidget(entry_widget)
 
     def clear_layout(self):
-        # Clear all widgets from the scroll layout
         for i in reversed(range(self.scroll_layout.count())):
             widget = self.scroll_layout.itemAt(i).widget()
             if widget:
