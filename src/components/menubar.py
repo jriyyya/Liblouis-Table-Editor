@@ -27,10 +27,8 @@ def add_menu_with_actions(menubar, title, actions):
 def create_menubar(parent):
     menubar = QMenuBar(parent)
 
-    # Base path for icons
     icon_base_path = os.path.join(os.path.dirname(__file__), '..', 'assets', 'icons')
 
-    # Define menu structure with icon paths and actions
     menu_structure = {
         'File': [
             ('New', os.path.join(icon_base_path, 'new.png'), 'Ctrl+N', None, lambda: open_new_file_dialog(parent)),
@@ -82,10 +80,9 @@ def open_new_file_dialog(parent):
             file_path = file_names[0]
             try:
                 with open(file_path, 'w') as file:
-                    json.dump([], file)  # Save an empty list as the initial content
+                    json.dump([], file)
                 file_name = os.path.basename(file_path)
-                parent.table_editor.load_entries(file_path)  # Load the new file into the TableEditor
-                parent.add_tab(file_name, parent.table_editor.get_content())  # Add tab with file content
+                parent.add_tab(file_name, [])
             except Exception as e:
                 QMessageBox.warning(parent, 'Error', f'Failed to create file: {str(e)}')
         else:
@@ -103,8 +100,9 @@ def open_file_dialog(parent):
         if file_names:
             file_path = file_names[0]
             try:
-                parent.table_editor.load_entries(file_path)  # Load the selected file into the TableEditor
-                parent.add_tab(os.path.basename(file_path), parent.table_editor.get_content())  # Add tab with file content
+                with open(file_path, 'r') as file:
+                    content = json.load(file)
+                parent.add_tab(os.path.basename(file_path), content)
             except Exception as e:
                 QMessageBox.warning(parent, 'Error', f'Failed to open file: {str(e)}')
         else:
@@ -112,33 +110,28 @@ def open_file_dialog(parent):
 
     file_dialog.deleteLater()
 
-
 def save_file_dialog(parent):
-    file_path = parent.current_file_path  # Assuming you have a way to keep track of the current file path
-    if file_path:
-        try:
-            parent.table_editor.save_entries(file_path)
-        except Exception as e:
-            QMessageBox.warning(parent, 'Error', f'Failed to save file: {str(e)}')
+    table_editor = parent.get_current_table_editor()
+    if table_editor:
+        file_dialog = QFileDialog(parent)
+        file_dialog.setFileMode(QFileDialog.AnyFile)
+        file_dialog.setAcceptMode(QFileDialog.AcceptSave)
+        file_dialog.setNameFilter("JSON Files (*.json);;All Files (*)")
+
+        if file_dialog.exec_():
+            file_names = file_dialog.selectedFiles()
+            if file_names:
+                file_path = file_names[0]
+                try:
+                    table_editor.save_entries(file_path)
+                except Exception as e:
+                    QMessageBox.warning(parent, 'Error', f'Failed to save file: {str(e)}')
+            else:
+                QMessageBox.warning(parent, 'Error', 'No file selected.')
+
+        file_dialog.deleteLater()
     else:
-        save_as_file_dialog(parent)
+        QMessageBox.warning(parent, 'Error', 'No tab is currently open.')
 
 def save_as_file_dialog(parent):
-    file_dialog = QFileDialog(parent)
-    file_dialog.setFileMode(QFileDialog.AnyFile)
-    file_dialog.setAcceptMode(QFileDialog.AcceptSave)
-    file_dialog.setNameFilter("JSON Files (*.json);;All Files (*)")
-    
-    if file_dialog.exec_():
-        file_names = file_dialog.selectedFiles()
-        if file_names:
-            file_path = file_names[0]
-            try:
-                parent.table_editor.save_entries(file_path)
-                parent.current_file_path = file_path  # Update the current file path
-            except Exception as e:
-                QMessageBox.warning(parent, 'Error', f'Failed to save file: {str(e)}')
-        else:
-            QMessageBox.warning(parent, 'Error', 'No file selected.')
-
-    file_dialog.deleteLater()
+    save_file_dialog(parent)
