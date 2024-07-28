@@ -7,6 +7,7 @@ from PyQt5.QtCore import Qt
 from components.AddEntry.AddEntryWidget import createAddEntryWidget
 from components.TablePreview import TablePreview
 from utils.ApplyStyles import apply_styles
+from utils.Toast import Toast
 
 class TableEditor(QWidget):
     def __init__(self, parent=None):
@@ -14,7 +15,6 @@ class TableEditor(QWidget):
         self.initUI()
 
     def initUI(self):
-        
         main_layout = QVBoxLayout()
 
         top_layout = QHBoxLayout()
@@ -39,9 +39,12 @@ class TableEditor(QWidget):
 
         apply_styles(self)
 
+        self.toast = None
+
     def add_entry(self):
         entry_data = self.add_entry_widget.collect_entry_data()
         self.table_preview.add_entry(entry_data)
+        self.show_toast("Entry added successfully!", "./src/assets/icons/tick.png", 75, 175, 78)
 
     def save_entries(self, file_path):
         with open(file_path, 'w') as file:
@@ -63,3 +66,10 @@ class TableEditor(QWidget):
     def keyPressEvent(self, event):
         if event.key() == Qt.Key_Return and event.modifiers() == Qt.ControlModifier:
             self.add_entry()
+
+    def show_toast(self, text, icon_path, colorR, colorG, colorB):
+        if self.toast:
+            self.toast.close()
+        self.toast = Toast(text, icon_path, colorR, colorG, colorB,  self)
+        self.toast.move((self.width() - self.toast.width()), self.height() + 290)
+        self.toast.show_toast()
