@@ -90,6 +90,7 @@ class UnicodeSelector(QWidget):
             "Greek and Coptic": (0x0370, 0x03FF),
             "Cyrillic": (0x0400, 0x04FF),
             "Hindi": (0x0900, 0x097F),
+            "Malayalam": (0x0D02, 0x0D4D)
         }
 
     def display_characters(self, item, column):
@@ -104,8 +105,8 @@ class UnicodeSelector(QWidget):
         self.update_character_display()
 
     def update_character_display(self):
-        button_size = 60
-        padding = 0
+        button_size = 100
+        padding = 8
         available_width = self.width() - self.tree.sizeHint().width() - padding * 2
         num_columns = available_width // button_size
 
@@ -127,13 +128,13 @@ class UnicodeSelector(QWidget):
 
                 char = self.characters[index]
                 char_button = QPushButton(char)
-                char_button.setFont(QFont('Sans', 16))
+                char_button.setFont(QFont('', 20, QFont.Light))
                 char_button.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
                 char_button.setFixedSize(QSize(button_size, button_size))
 
                 char_button.setStyleSheet(
                     "QPushButton {"
-                    "    border: 1px solid #b0c6cf;"
+                    "    border: 1px solid #dfe8ec;"
                     "    background: white;"
                     "}"
                     "QPushButton:hover {"
