@@ -2,7 +2,8 @@
 
 ## Progress till now
 
-![image](https://github.com/user-attachments/assets/4933e5c1-0015-4445-bcf7-456826711ae8)
+![image](https://github.com/user-attachments/assets/1552c66f-35f1-409d-8ba6-2ee86bc63d93)
+
 
 
 ### UI Draft for the Editor
