@@ -2,6 +2,8 @@ import json
 from PyQt5.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout , QSizePolicy, QTextEdit
 )
+from PyQt5.QtGui import QKeyEvent
+from PyQt5.QtCore import Qt
 from components.AddEntry.AddEntryWidget import createAddEntryWidget
 from components.TablePreview import TablePreview
 from utils.ApplyStyles import apply_styles
@@ -57,3 +59,7 @@ class TableEditor(QWidget):
 
     def get_content(self):
         return self.table_preview.entries
+    
+    def keyPressEvent(self, event):
+        if event.key() == Qt.Key_Return and event.modifiers() == Qt.ControlModifier:
+            self.add_entry()
