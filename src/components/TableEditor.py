@@ -4,7 +4,7 @@ from PyQt5.QtWidgets import (
 )
 from PyQt5.QtGui import QKeyEvent
 from PyQt5.QtCore import Qt
-from components.AddEntry.AddEntryWidget import createAddEntryWidget
+from components.AddEntry.AddEntryWidget import AddEntryWidget
 from components.TablePreview import TablePreview
 from utils.ApplyStyles import apply_styles
 from utils.Toast import Toast
@@ -22,7 +22,7 @@ class TableEditor(QWidget):
         self.table_preview = TablePreview(self)
         top_layout.addWidget(self.table_preview)
 
-        self.add_entry_widget = createAddEntryWidget()
+        self.add_entry_widget = AddEntryWidget()
         
         self.add_entry_widget.add_button.clicked.connect(self.add_entry)
         top_layout.addWidget(self.add_entry_widget)

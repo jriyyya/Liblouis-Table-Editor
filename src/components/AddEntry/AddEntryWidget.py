@@ -5,6 +5,7 @@ from PyQt5.QtWidgets import (
 )
 from PyQt5.QtCore import Qt, QRegExp
 from PyQt5.QtGui import QRegExpValidator
+from components.AddEntry.BrailleInputWidget import BrailleInputWidget
 from components.AddEntry.UnicodeSelector import UnicodeSelector
 from utils.view import clearLayout
 from utils.ApplyStyles import apply_styles
@@ -92,27 +93,9 @@ class AddEntryWidget(QWidget):
                 self.field_inputs[field] = unicode_input
 
             elif field == "dots":
-                dots_type_combo = QComboBox()
-                dots_type_combo.addItems(["Standard Braille (6 dots)", "Extended Braille (8 dots)"])
-                dots_type_combo.currentTextChanged.connect(self.updateDotsInputPlaceholder)
-                self.form_layout.addWidget(dots_type_combo)
-
-                dots_container = QHBoxLayout()
-
-                dots_input = QLineEdit()
-                dots_input.setPlaceholderText("Enter Dots (1-6)")
-                dots_input.setValidator(QRegExpValidator(QRegExp("^(?=\\d{1,6}$)1?2?3?4?5?6?$")))
-                dots_input.setProperty("includeInEntry", True)
-                dots_input.textChanged.connect(self.updateBrailleDotsDisplay)
-                dots_container.addWidget(dots_input, 1)
-
-                dots_display = QLabel()
-                dots_display.setAlignment(Qt.AlignCenter)
-                dots_display.setText("○ ○\n○ ○\n○ ○")  # Default empty dots representation
-                dots_container.addWidget(dots_display, 1)
-
-                self.form_layout.addLayout(dots_container)
-                self.field_inputs[field] = dots_input
+                self.braille_input_widget = BrailleInputWidget()
+                self.form_layout.addWidget(self.braille_input_widget)
+                self.field_inputs[field] = self.braille_input_widget.braille_input
 
     def collect_entry_data(self):
         entry_data = {
@@ -147,44 +130,3 @@ class AddEntryWidget(QWidget):
         unicode_display.setText(char)
         code_value = int(code[2:], 16)
         unicode_input.setText(f"\\x{code_value:04X}")
-
-    def updateBrailleDotsDisplay(self):
-        text = self.sender().text()
-        text = ''.join(sorted(set(text)))  # Remove duplicates and sort
-        if not text.isdigit():
-            self.sender().setText('')
-            self.resetBrailleDotsDisplay()
-            return
-        dots = [int(d) for d in text if d in '123456']
-
-        braille_representation = [['○', '○'], ['○', '○'], ['○', '○']]
-        if 1 in dots:
-            braille_representation[0][0] = '●'
-        if 2 in dots:
-            braille_representation[1][0] = '●'
-        if 3 in dots:
-            braille_representation[2][0] = '●'
-        if 4 in dots:
-            braille_representation[0][1] = '●'
-        if 5 in dots:
-            braille_representation[1][1] = '●'
-        if 6 in dots:
-            braille_representation[2][1] = '●'
-
-        self.sender().parent().findChild(QLabel).setText(
-            f"{braille_representation[0][0]} {braille_representation[0][1]}\n"
-            f"{braille_representation[1][0]} {braille_representation[1][1]}\n"
-            f"{braille_representation[2][0]} {braille_representation[2][1]}"
-        )
-
-    def resetBrailleDotsDisplay(self):
-        self.sender().parent().findChild(QLabel).setText("○ ○\n○ ○\n○ ○")
-
-    def updateDotsInputPlaceholder(self, text):
-        if "6 dots" in text:
-            self.sender().setPlaceholderText("Enter Dots (1-6)")
-        else:
-            self.sender().setPlaceholderText("Enter Dots (1-8)")
-
-def createAddEntryWidget(parent=None):
-    return AddEntryWidget(parent)
