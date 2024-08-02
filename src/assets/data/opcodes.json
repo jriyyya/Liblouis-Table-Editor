@@ -6,72 +6,15 @@
                 "unicode",
                 "dots"
             ],
-            "description": "space: This is description"
+            "description": "Whitespace characters such as blank and tab"
         },
         {
-            "code": "punctuation",
+            "code": "always",
             "fields": [
                 "unicode",
                 "dots"
             ],
-            "description": "punctuation: This is description"
-        },
-        {
-            "code": "digit",
-            "fields": [
-                "unicode",
-                "dots"
-            ],
-            "description": "digit: This is description"
-        },
-        {
-            "code": "lowercase",
-            "fields": [
-                "unicode",
-                "dots"
-            ],
-            "description": "lowercase: This is description"
-        },
-        {
-            "code": "letter",
-            "fields": [
-                "unicode",
-                "dots"
-            ],
-            "description": "letter: uppercase"
-        },
-        {
-            "code": "word",
-            "fields": [
-                "unicode",
-                "dots"
-            ],
-            "description": "word: This is description"
-        },
-        {
-            "code": "litdigit",
-            "fields": [
-                "unicode",
-                "dots"
-            ],
-            "description": "litdigit: This is description"
-        },
-        {
-            "code": "sign",
-            "fields": [
-                "unicode",
-                "dots"
-            ],
-            "description": "sign: This is description"
-        },
-        {
-            "code": "math",
-            "fields": [
-                "unicode",
-                "dots",
-                "dots"
-            ],
-            "description": "math: This is description"
+            "description": "Replace the characters with the dot pattern no matter where they appear. Do NOT use an entry such as always a 1. Use the character definition opcodes instead."
         }
     ]
 }
