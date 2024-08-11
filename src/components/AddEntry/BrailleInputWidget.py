@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLineEdit, QHBoxLayout, QLabel
 from PyQt5.QtGui import QRegExpValidator
 from PyQt5.QtCore import QRegExp, Qt
+from utils.ApplyStyles import apply_styles
 
 class BrailleInputWidget(QWidget):
     def __init__(self, parent=None):
@@ -9,7 +10,7 @@ class BrailleInputWidget(QWidget):
 
     def initUI(self):
         self.layout = QVBoxLayout(self)
-        self.layout.setAlignment(Qt.AlignTop)
+        self.layout.setAlignment(Qt.AlignLeft)
 
         self.braille_input = QLineEdit()
         self.braille_input.setPlaceholderText("Enter Braille Dots (e.g., 12-34-56)")
@@ -25,6 +26,8 @@ class BrailleInputWidget(QWidget):
         self.layout.addLayout(self.braille_preview_container)
 
         self.setLayout(self.layout)
+
+        apply_styles(self)
 
     def updateBraillePreview(self):
         text = self.braille_input.text()

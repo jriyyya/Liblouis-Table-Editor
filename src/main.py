@@ -1,6 +1,6 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QTabWidget, QMessageBox
-from PyQt5.QtGui import QPalette, QColor
+from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QTabWidget, QLabel
+from PyQt5.QtGui import QPalette, QColor, QPixmap
 from PyQt5.QtCore import Qt
 from config import WINDOW_WIDTH, WINDOW_HEIGHT
 from components.Menubar import create_menubar
@@ -24,11 +24,19 @@ class TableManager(QWidget):
         self.tab_widget.setTabsClosable(True)
         self.tab_widget.tabCloseRequested.connect(self.close_tab)
 
+        self.background_label = QLabel(self)
+        self.background_label.setAlignment(Qt.AlignCenter)
+        self.background_label.setPixmap(QPixmap('src/assets/images/background.png'))
+        self.background_label.setScaledContents(True)
+
         layout.addWidget(self.tab_widget)
+        layout.addWidget(self.background_label)
 
         self.setLayout(layout)
 
         apply_styles(self)
+
+        self.update_background_visibility()
 
     def add_tab(self, file_name, file_content):
         new_tab = QWidget()
@@ -44,6 +52,8 @@ class TableManager(QWidget):
         self.tab_widget.addTab(new_tab, file_name)
         self.tab_widget.setCurrentWidget(new_tab)
 
+        self.update_background_visibility()
+
     def get_current_table_editor(self):
         current_widget = self.tab_widget.currentWidget()
         if current_widget:
@@ -52,6 +62,13 @@ class TableManager(QWidget):
 
     def close_tab(self, index):
         self.tab_widget.removeTab(index)
+        self.update_background_visibility()
+
+    def update_background_visibility(self):
+        if self.tab_widget.count() == 0:
+            self.background_label.show()
+        else:
+            self.background_label.hide()
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

@@ -5,7 +5,6 @@ from PyQt5.QtWidgets import (
 )
 from PyQt5.QtCore import Qt, QSize
 from PyQt5.QtGui import QFont
-from utils.ApplyStyles import apply_styles
 
 class UnicodeSelector(QWidget):
     def __init__(self):
