@@ -45,9 +45,13 @@ class UnicodeSelector(QWidget):
         char_search_layout.addWidget(scroll_area)
 
         self.selected_text_edit = QTextEdit()
-        self.selected_text_edit.setFont(QFont('', 12))
+        self.selected_text_edit.setFont(QFont('', 28))
         self.selected_text_edit.setPlaceholderText("Selected characters will appear here. You can also type in this box.")
+        self.selected_text_edit.setFixedHeight(50)
+        self.selected_text_edit.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.selected_text_edit.setHorizontalScrollBarPolicy(Qt.ScrollBarAsNeeded)
         char_search_layout.addWidget(self.selected_text_edit)
+
 
         self.done_button = QPushButton("Done")
         self.done_button.clicked.connect(self.confirm_selection)
