@@ -10,7 +10,6 @@ from components.AddEntry.UnicodeSelector import UnicodeSelector
 from utils.view import clearLayout
 from utils.ApplyStyles import apply_styles
 
-# Load opcodes from JSON file
 data = json.load(open('./src/assets/data/opcodes.json', 'r'))
 opcodes = data["codes"]
 
@@ -74,7 +73,6 @@ class AddEntryWidget(QWidget):
                 unicode_container = QHBoxLayout()
                 unicode_display = QLineEdit()
                 unicode_display.setPlaceholderText("Selected Character")
-                unicode_display.setMaxLength(1)
                 unicode_input = QLineEdit()
                 unicode_input.setPlaceholderText("Unicode Value")
                 unicode_input.setProperty("includeInEntry", True)
@@ -110,23 +108,38 @@ class AddEntryWidget(QWidget):
 
     def updateUnicodeInput(self, text, unicode_input):
         if text:
-            unicode_input.setText('\\x' + '{:04X}'.format(ord(text)))
+            hex_values = [f'\\x{ord(char):04X}' for char in text]
+            unicode_input.setText(''.join(hex_values))
         else:
             unicode_input.clear()
 
     def updateDisplayCharacter(self, unicode_display, text):
         try:
-            char = chr(int(text.replace('\\x', ''), 16))
-            unicode_display.setText(char)
-        except ValueError:
-            unicode_display.clear()
+            characters = []
+            hex_values = text.split('\\x')[1:]
+
+            for hex_value in hex_values:
+                if hex_value:
+                    hex_value = hex_value.zfill(4)
+                    code_point = int(hex_value, 16)
+                    if code_point > 0x10FFFF:
+                        raise ValueError(f"Code point {hex_value} is too large to be a valid Unicode character.")
+                    characters.append(chr(code_point))
+
+            unicode_display.setText("".join(characters))
+        
+        except (ValueError, OverflowError) as e:
+            unicode_display.setText("[Invalid Unicode]")
+            print(f"Error converting Unicode: {e}")
+
+
+
 
     def showUnicodePopup(self, unicode_display, unicode_input):
         self.unicode_popup = UnicodeSelector()
         self.unicode_popup.on_select(lambda char, code: self.setUnicode(unicode_display, unicode_input, char, code))
         self.unicode_popup.show()
-
+        
     def setUnicode(self, unicode_display, unicode_input, char, code):
         unicode_display.setText(char)
-        code_value = int(code[2:], 16)
-        unicode_input.setText(f"\\x{code_value:04X}")
+        unicode_input.setText(code)

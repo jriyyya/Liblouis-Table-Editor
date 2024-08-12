@@ -124,10 +124,22 @@ QPushButton {
   border: 1px solid #b0c6cf; /* Lighter border color */
   border-radius: 5px;
   padding: 10px;
-  min-width: 100px;
   color: #1a1a1a;
 }
 
 QPushButton:hover {
+  background-color: #d4e9f7;
+}
+
+.char-button {
+  font-size: 32px; /* Font size for specific buttons */
+  background-color: #f0f8ff;
+  border: 1px solid #b0c6cf; /* Lighter border color */
+  border-radius: 5px;
+  padding: 10px;
+  color: #1a1a1a;
+}
+
+.char-button:hover {
   background-color: #d4e9f7;
 }

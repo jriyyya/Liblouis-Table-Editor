@@ -1,15 +1,17 @@
 import sys
 from PyQt5.QtWidgets import (
     QApplication, QWidget, QVBoxLayout, QHBoxLayout, QTreeWidget, QTreeWidgetItem,
-    QGridLayout, QScrollArea, QPushButton, QSizePolicy, QLineEdit, QLabel
+    QGridLayout, QScrollArea, QPushButton, QSizePolicy, QLineEdit, QTextEdit, QLabel
 )
 from PyQt5.QtCore import Qt, QSize
 from PyQt5.QtGui import QFont
+from utils.ApplyStyles import apply_styles
 
 class UnicodeSelector(QWidget):
     def __init__(self):
         super().__init__()
         self.setWindowTitle('Unicode Character Map')
+        self.selected_characters = []
         self.initUI()
 
     def initUI(self):
@@ -29,10 +31,6 @@ class UnicodeSelector(QWidget):
         search_layout.addWidget(self.tree)
 
         char_search_layout = QVBoxLayout()
-        self.char_search_bar = QLineEdit()
-        self.char_search_bar.setPlaceholderText("Search Characters...")
-        self.char_search_bar.textChanged.connect(self.filter_characters)
-        char_search_layout.addWidget(self.char_search_bar)
 
         scroll_area = QScrollArea()
         self.char_container = QWidget()
@@ -46,6 +44,15 @@ class UnicodeSelector(QWidget):
 
         char_search_layout.addWidget(scroll_area)
 
+        self.selected_text_edit = QTextEdit()
+        self.selected_text_edit.setFont(QFont('', 12))
+        self.selected_text_edit.setPlaceholderText("Selected characters will appear here. You can also type in this box.")
+        char_search_layout.addWidget(self.selected_text_edit)
+
+        self.done_button = QPushButton("Done")
+        self.done_button.clicked.connect(self.confirm_selection)
+        char_search_layout.addWidget(self.done_button)
+
         main_layout.addLayout(search_layout)
         main_layout.addLayout(char_search_layout)
 
@@ -58,6 +65,9 @@ class UnicodeSelector(QWidget):
             first_item = self.tree.topLevelItem(0)
             self.tree.setCurrentItem(first_item)
             self.display_characters(first_item, 0)
+            
+        apply_styles(self)
+
 
     def populate_tree(self):
         self.blocks = self.get_unicode_blocks()
@@ -71,12 +81,6 @@ class UnicodeSelector(QWidget):
         for i in range(self.tree.topLevelItemCount()):
             item = self.tree.topLevelItem(i)
             item.setHidden(search_text not in item.text(0).lower())
-
-    def filter_characters(self):
-        search_text = self.char_search_bar.text().lower()
-        for i in range(self.char_layout.count()):
-            button = self.char_layout.itemAt(i).widget()
-            button.setHidden(search_text not in button.text().lower())
 
     def get_unicode_blocks(self):
         return {
@@ -105,7 +109,7 @@ class UnicodeSelector(QWidget):
 
     def update_character_display(self):
         button_size = 100
-        padding = 8
+        padding = 2
         available_width = self.width() - self.tree.sizeHint().width() - padding * 2
         num_columns = available_width // button_size
 
@@ -127,14 +131,15 @@ class UnicodeSelector(QWidget):
 
                 char = self.characters[index]
                 char_button = QPushButton(char)
-                char_button.setFont(QFont('', 20, QFont.Light))
                 char_button.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
                 char_button.setFixedSize(QSize(button_size, button_size))
 
                 char_button.setStyleSheet(
                     "QPushButton {"
-                    "    border: 1px solid #dfe8ec;"
+                    "    font-size: 32px;"
+                    "    font-weight: lighter;"
                     "    background: white;"
+                    
                     "}"
                     "QPushButton:hover {"
                     "    background: #d4e9f7;"
@@ -146,7 +151,19 @@ class UnicodeSelector(QWidget):
     def character_selected(self):
         char_button = self.sender()
         selected_char = char_button.text()
-        self.on_select_callback(selected_char, f"\\x{ord(selected_char):04X}")
+
+        self.selected_characters.append(selected_char)
+
+        self.selected_text_edit.setPlainText("".join(self.selected_characters))
+
+    def confirm_selection(self):
+        manual_input = self.selected_text_edit.toPlainText()
+        selected_string = "".join(self.selected_characters) + manual_input
+
+        selected_string = "".join(sorted(set(selected_string), key=selected_string.index))
+
+        if self.on_select_callback:
+            self.on_select_callback(selected_string, f"\\x{'\\x'.join(f'{ord(char):04X}' for char in selected_string)}")
         self.close()
 
     def on_select(self, callback):
@@ -155,3 +172,4 @@ class UnicodeSelector(QWidget):
     def adjust_component_sizes(self):
         self.tree.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Expanding)
         self.char_container.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+
