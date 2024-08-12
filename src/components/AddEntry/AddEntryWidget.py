@@ -89,6 +89,12 @@ class AddEntryWidget(QWidget):
 
                 self.form_layout.addLayout(unicode_container)
                 self.field_inputs[field] = unicode_input
+            
+            elif field == "name":
+                name_input = QLineEdit()
+                name_input.setPlaceholderText("Enter name")
+                self.form_layout.addWidget(name_input)
+                self.field_inputs[field] = name_input
 
             elif field == "dots":
                 self.braille_input_widget = BrailleInputWidget()
