@@ -30,17 +30,13 @@ class TablePreview(QWidget):
         
         self.layout.addWidget(self.scroll_area)
         self.setLayout(self.layout)
-
-    def add_entry(self, entry):
-        self.entries.append(entry)
-        self.update_content()
-
+        
     def update_content(self):
         self.clear_layout()
-
         for entry in self.entries:
             entry_widget = EntryWidget(entry)
             self.scroll_layout.addWidget(entry_widget)
+
 
     def clear_layout(self):
         for i in reversed(range(self.scroll_layout.count())):

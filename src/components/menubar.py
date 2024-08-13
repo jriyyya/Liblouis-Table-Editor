@@ -103,7 +103,7 @@ def open_file_dialog(parent):
             file_path = file_names[0]
             try:
                 with open(file_path, 'r') as file:
-                    content = json.load(file)
+                    content = file.read()
                 parent.add_tab(os.path.basename(file_path), content)
             except Exception as e:
                 QMessageBox.warning(parent, 'Error', f'Failed to open file: {str(e)}')

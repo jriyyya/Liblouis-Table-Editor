@@ -52,12 +52,12 @@ class TableEditor(QWidget):
 
     def load_entries(self, file_path):
         with open(file_path, 'r') as file:
-            entries = json.load(file)
+            entries = file.read()
             self.table_preview.entries = entries
             self.table_preview.update_content()
 
     def set_content(self, content):
-        self.table_preview.entries = content
+        self.table_preview.entries = content.splitlines()
         self.table_preview.update_content()
 
     def get_content(self):
