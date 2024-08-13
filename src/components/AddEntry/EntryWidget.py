@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QWidget, QLabel, QHBoxLayout, QMenu, QAction
+from PyQt5.QtWidgets import QWidget, QLabel, QHBoxLayout, QMenu, QAction, QLineEdit
 from PyQt5.QtCore import Qt
 
 class EntryWidget(QWidget):
@@ -11,17 +11,23 @@ class EntryWidget(QWidget):
         self.label_text = QLabel(self.entry)
         self.label_text.setWordWrap(False)  # Ensure it displays on a single line
 
-        layout = QHBoxLayout(self)
-        layout.addWidget(self.label_text, alignment=Qt.AlignTop)
-        layout.setContentsMargins(0, 0, 0, 0)  # Remove margins
-        layout.setSpacing(0)  # Remove spacing
-        self.setLayout(layout)
+        self.layout = QHBoxLayout(self)
+        self.layout.addWidget(self.label_text, alignment=Qt.AlignTop)
+        self.layout.setContentsMargins(0, 0, 0, 0)  # Remove margins
+        self.layout.setSpacing(0)  # Remove spacing
+        self.setLayout(self.layout)
 
         self.setStyleSheet("padding: 10px; background-color: white; margin: 0px")
 
         self.setMouseTracking(True)
         self.enterEvent = self.onHoverEnter
         self.leaveEvent = self.onHoverLeave
+
+        self.edit_line = QLineEdit(self.entry)
+        self.edit_line.setVisible(False)
+        self.edit_line.setStyleSheet("background-color: #e0f7fa;")  # Edit mode background color
+        self.layout.addWidget(self.edit_line)
+        self.edit_line.editingFinished.connect(self.save_entry)
 
     def contextMenuEvent(self, event):
         menu = QMenu(self)
@@ -45,7 +51,17 @@ class EntryWidget(QWidget):
         self.parentWidget().layout().insertWidget(self.parentWidget().layout().indexOf(self) + 1, new_entry_widget)
 
     def edit_entry(self):
-        pass
+        self.label_text.setVisible(False)
+        self.edit_line.setVisible(True)
+        self.edit_line.setText(self.entry)
+        self.edit_line.setFocus()
+        self.edit_line.selectAll()
+
+    def save_entry(self):
+        self.entry = self.edit_line.text()
+        self.label_text.setText(self.entry)
+        self.edit_line.setVisible(False)
+        self.label_text.setVisible(True)
 
     def delete_entry(self):
         self.setParent(None)
