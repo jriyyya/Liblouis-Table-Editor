@@ -74,22 +74,23 @@ def open_new_file_dialog(parent):
     file_dialog.setAcceptMode(QFileDialog.AcceptSave)
     file_dialog.setNameFilter("Table Files (*.cti *.ctb);;All Files (*)")
 
-    
     if file_dialog.exec_():
         file_names = file_dialog.selectedFiles()
         if file_names:
             file_path = file_names[0]
             try:
-                with open(file_path, 'w') as file:
-                    json.dump([], file)
+                # Create an empty file without writing any content
+                open(file_path, 'w').close()  
                 file_name = os.path.basename(file_path)
-                parent.add_tab(file_name, [])
+                parent.add_tab(file_name, "") 
             except Exception as e:
                 QMessageBox.warning(parent, 'Error', f'Failed to create file: {str(e)}')
         else:
             QMessageBox.warning(parent, 'Error', 'No file selected.')
 
     file_dialog.deleteLater()
+
+
 
 def open_file_dialog(parent):
     file_dialog = QFileDialog(parent)

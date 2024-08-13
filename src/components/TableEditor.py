@@ -56,8 +56,12 @@ class TableEditor(QWidget):
             self.table_preview.entries = entries
             self.table_preview.update_content()
         
+        
     def set_content(self, content):
-        self.table_preview.entries = [line for line in content.splitlines() if line.strip()]
+        if content.strip():  # Check if content is not just whitespace
+            self.table_preview.entries = [line for line in content.splitlines() if line.strip()]
+        else:
+            self.table_preview.entries = []
         self.table_preview.update_content()
 
     def get_content(self):
