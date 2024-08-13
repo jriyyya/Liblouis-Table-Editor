@@ -2,27 +2,36 @@
     "codes": [
         {
             "code": "space",
-            "fields": [
-                "unicode",
-                "dots"
-            ],
+            "fields": {
+                "unicode": "Input Character",
+                "dots": "Braille for above character"
+            },
             "description": "Whitespace characters such as blank and tab"
         },
         {
             "code": "always",
-            "fields": [
-                "unicode",
-                "dots"
-            ],
+            "fields": {
+                "unicode": "Input Character",
+                "dots": "Braille for above character"
+            },
             "description": "Replace the characters with the dot pattern no matter where they appear. Do NOT use an entry such as always a 1. Use the character definition opcodes instead."
         },
         {
             "code": "attribute",
-            "fields": [
-                "name",
-                "unicode"
-            ],
+            "fields": {
+                "name": "attribute name",
+                "dots": "Braille for above character"
+            },
             "description": "Add characters to a character class. The class may be one of the predefined classes listed above, a user-defined class previously created with this opcode, or a new one. The name operand must contain only letters (a-z and A-Z, case matters). For historical reasons and to support the match opcode (see match) it can also be a number between 0 and 7. The characters operand must be specified as a string. Each character in the string, as well as its dot counterpart if it occupies a single cell, is added to the character class."
+        },
+        {
+            "code": "base",
+            "fields": {
+                "base_attribute": "attribute name",
+                "unicode_1": "Base Character",
+                "unicode_2": "Derived Character"
+            },
+            "description": "Replace the characters with the dot pattern no matter where they appear. Do NOT use an entry such as always a 1. Use the character definition opcodes instead."
         }
     ]
 }

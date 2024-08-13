@@ -1,3 +1,4 @@
+from collections import OrderedDict
 import json
 from PyQt5.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout, QTextEdit,
@@ -10,8 +11,9 @@ from components.AddEntry.UnicodeSelector import UnicodeSelector
 from utils.view import clearLayout
 from utils.ApplyStyles import apply_styles
 
-data = json.load(open('./src/assets/data/opcodes.json', 'r'))
+data = json.load(open('./src/assets/data/opcodes.json', 'r'), object_pairs_hook=OrderedDict)
 opcodes = data["codes"]
+
 
 class AddEntryWidget(QWidget):
     def __init__(self, parent=None):
@@ -52,29 +54,25 @@ class AddEntryWidget(QWidget):
             self.opcode_combo.addItem(opcode["code"], opcode)
 
     def on_opcode_selected(self, index):
-        if index > 0:  # Ignore the placeholder item
+        if index > 0:
             opcode = self.opcode_combo.itemData(index)
             self.generateForm(opcode["fields"])
         else:
             clearLayout(self.form_layout)
+            
+    from PyQt5.QtWidgets import QComboBox
 
     def generateForm(self, fields):
         clearLayout(self.form_layout)
         self.field_inputs = {}
 
-        for field in fields:
-            if field == "characters":
-                inp = QTextEdit()
-                inp.setPlaceholderText("Add characters (string)")
-                self.form_layout.addWidget(inp)
-                self.field_inputs[field] = inp
-
-            elif field == "unicode":
+        for field, placeholder in fields.items():
+            if field == "unicode" or field.startswith("unicode"):
                 unicode_container = QHBoxLayout()
                 unicode_display = QLineEdit()
                 unicode_display.setPlaceholderText("Selected Character")
                 unicode_input = QLineEdit()
-                unicode_input.setPlaceholderText("Unicode Value")
+                unicode_input.setPlaceholderText(placeholder)
                 unicode_input.setProperty("includeInEntry", True)
 
                 unicode_input.textChanged.connect(lambda text, u_display=unicode_display: self.updateDisplayCharacter(u_display, text))
@@ -89,17 +87,41 @@ class AddEntryWidget(QWidget):
 
                 self.form_layout.addLayout(unicode_container)
                 self.field_inputs[field] = unicode_input
-            
+
             elif field == "name":
                 name_input = QLineEdit()
-                name_input.setPlaceholderText("Enter name")
+                name_input.setPlaceholderText(placeholder)
                 self.form_layout.addWidget(name_input)
                 self.field_inputs[field] = name_input
+
+            elif field == "characters":
+                inp = QTextEdit()
+                inp.setPlaceholderText(placeholder)
+                self.form_layout.addWidget(inp)
+                self.field_inputs[field] = inp
 
             elif field == "dots":
                 self.braille_input_widget = BrailleInputWidget()
                 self.form_layout.addWidget(self.braille_input_widget)
                 self.field_inputs[field] = self.braille_input_widget.braille_input
+
+            elif field == "base_attribute":
+                base_attr_dropdown = QComboBox()
+                base_attr_dropdown.addItems(["space",
+                                             "digit",
+                                             "letter",
+                                             "lowercase",
+                                             "uppercase",
+                                             "punctuation",
+                                             "sign",
+                                             "math",
+                                             "litdigit",
+                                             "attribute",
+                                             "before",
+                                             "after" ])
+                self.form_layout.addWidget(base_attr_dropdown)
+                self.field_inputs[field] = base_attr_dropdown
+
 
     def collect_entry_data(self):
         entry_data = {
@@ -137,9 +159,6 @@ class AddEntryWidget(QWidget):
         except (ValueError, OverflowError) as e:
             unicode_display.setText("[Invalid Unicode]")
             print(f"Error converting Unicode: {e}")
-
-
-
 
     def showUnicodePopup(self, unicode_display, unicode_input):
         self.unicode_popup = UnicodeSelector()
