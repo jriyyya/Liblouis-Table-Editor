@@ -124,15 +124,20 @@ class AddEntryWidget(QWidget):
 
 
     def collect_entry_data(self):
-        entry_data = {
-            "opcode": self.opcode_combo.currentText()
-        }
-        for field, field_input in self.field_inputs.items():
-            entry_data[field] = field_input.text()
-        comment = self.comment_input.text()
-        if comment:
-            entry_data["comment"] = comment
-        return entry_data
+        collected_data = [self.opcode_combo.currentText()]
+        
+        for field_input in self.field_inputs.values():
+            if isinstance(field_input, QLineEdit) or isinstance(field_input, QTextEdit):
+                collected_data.append(field_input.text())
+            elif isinstance(field_input, QComboBox):
+                collected_data.append(field_input.currentText())
+            elif isinstance(field_input, BrailleInputWidget):
+                collected_data.append(field_input.braille_input.text())
+        
+        collected_data.append(self.comment_input.text())
+        
+        return ' '.join(collected_data).strip()
+
 
     def updateUnicodeInput(self, text, unicode_input):
         if text:

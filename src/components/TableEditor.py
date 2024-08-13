@@ -63,11 +63,9 @@ class TableEditor(QWidget):
     def get_content(self):
         return self.table_preview.entries
     
-    def add_entry(self, entry):
-        self.entries.append(entry)
-        self.update_content()
     
     def keyPressEvent(self, event):
+        # Shortcut key to add entry - CTRL + Enter
         if event.key() == Qt.Key_Return and event.modifiers() == Qt.ControlModifier:
             self.add_entry()
 
