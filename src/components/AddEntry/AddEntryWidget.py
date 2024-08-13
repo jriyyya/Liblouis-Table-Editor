@@ -108,6 +108,7 @@ class OpcodeForm(QWidget):
             nested_form = OpcodeForm(opcode["fields"], self)
             self.form_layout.addWidget(nested_form)
             self.nested_forms.append(nested_form)
+            self.field_inputs["nested_form"] = nested_form
         else:
             clearLayout(self.form_layout)
 
@@ -205,12 +206,9 @@ class AddEntryWidget(QWidget):
 
     def collect_entry_data(self):
         collected_data = [self.opcode_combo.currentText()]
-        
-        # Collect data from nested form if present
-        if "nested_form" in self.field_inputs:
-            nested_form = self.field_inputs["nested_form"]
+
+        def collect_nested_form_data(nested_form):
             nested_data = []
-            
             for field, widget in nested_form.field_inputs.items():
                 if isinstance(widget, QLineEdit) or isinstance(widget, QTextEdit):
                     nested_data.append(widget.text())
@@ -218,20 +216,23 @@ class AddEntryWidget(QWidget):
                     nested_data.append(widget.currentText())
                 elif isinstance(widget, BrailleInputWidget):
                     nested_data.append(widget.braille_input.text())
-                elif isinstance(widget, QLineEdit) and widget.property("includeInEntry"):
-                    nested_data.append(widget.text())
+                # Recursive call for further nested forms
+                elif isinstance(widget, OpcodeForm):
+                    nested_data.extend(collect_nested_form_data(widget))
+            return nested_data
 
-            collected_data.extend(nested_data)
+        # Collect data from the main form
+        for field, widget in self.field_inputs.items():
+            if isinstance(widget, QLineEdit) or isinstance(widget, QTextEdit):
+                collected_data.append(widget.text())
+            elif isinstance(widget, QComboBox):
+                collected_data.append(widget.currentText())
+            elif isinstance(widget, BrailleInputWidget):
+                collected_data.append(widget.braille_input.text())
+            elif isinstance(widget, OpcodeForm):  # Nested form handling
+                collected_data.extend(collect_nested_form_data(widget))
 
-        # Collect data from main widget
-        for field_input in self.field_inputs.values():
-            if isinstance(field_input, QLineEdit) or isinstance(field_input, QTextEdit):
-                collected_data.append(field_input.text())
-            elif isinstance(field_input, QComboBox):
-                collected_data.append(field_input.currentText())
-            elif isinstance(field_input, BrailleInputWidget):
-                collected_data.append(field_input.braille_input.text())
-        
+        # Append any comment or additional input at the end
         collected_data.append(self.comment_input.text())
-        
+
         return ' '.join(collected_data).strip()
