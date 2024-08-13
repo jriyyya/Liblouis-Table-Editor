@@ -55,9 +55,9 @@ class TableEditor(QWidget):
             entries = file.read()
             self.table_preview.entries = entries
             self.table_preview.update_content()
-
+        
     def set_content(self, content):
-        self.table_preview.entries = content.splitlines()
+        self.table_preview.entries = [line for line in content.splitlines() if line.strip()]
         self.table_preview.update_content()
 
     def get_content(self):
