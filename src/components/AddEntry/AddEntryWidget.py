@@ -206,6 +206,24 @@ class AddEntryWidget(QWidget):
     def collect_entry_data(self):
         collected_data = [self.opcode_combo.currentText()]
         
+        # Collect data from nested form if present
+        if "nested_form" in self.field_inputs:
+            nested_form = self.field_inputs["nested_form"]
+            nested_data = []
+            
+            for field, widget in nested_form.field_inputs.items():
+                if isinstance(widget, QLineEdit) or isinstance(widget, QTextEdit):
+                    nested_data.append(widget.text())
+                elif isinstance(widget, QComboBox):
+                    nested_data.append(widget.currentText())
+                elif isinstance(widget, BrailleInputWidget):
+                    nested_data.append(widget.braille_input.text())
+                elif isinstance(widget, QLineEdit) and widget.property("includeInEntry"):
+                    nested_data.append(widget.text())
+
+            collected_data.extend(nested_data)
+
+        # Collect data from main widget
         for field_input in self.field_inputs.values():
             if isinstance(field_input, QLineEdit) or isinstance(field_input, QTextEdit):
                 collected_data.append(field_input.text())
