@@ -20,7 +20,7 @@
             "code": "attribute",
             "fields": {
                 "name": "attribute name",
-                "dots": "Braille for above character"
+                "unicode": "Enter Character"
             },
             "description": "Add characters to a character class. The class may be one of the predefined classes listed above, a user-defined class previously created with this opcode, or a new one. The name operand must contain only letters (a-z and A-Z, case matters). For historical reasons and to support the match opcode (see match) it can also be a number between 0 and 7. The characters operand must be specified as a string. Each character in the string, as well as its dot counterpart if it occupies a single cell, is added to the character class."
         },
