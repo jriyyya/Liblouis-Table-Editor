@@ -1,7 +1,6 @@
 import os
 from PyQt5.QtWidgets import QMenuBar, QAction, QFileDialog, QMessageBox
 from PyQt5.QtGui import QIcon
-import json
 
 def create_action(parent, title, icon_path=None, shortcut=None, status_tip=None, triggered=None):
     action = QAction(title, parent)
@@ -79,7 +78,6 @@ def open_new_file_dialog(parent):
         if file_names:
             file_path = file_names[0]
             try:
-                # Create an empty file without writing any content
                 open(file_path, 'w').close()  
                 file_name = os.path.basename(file_path)
                 parent.add_tab(file_name, "") 
@@ -89,7 +87,6 @@ def open_new_file_dialog(parent):
             QMessageBox.warning(parent, 'Error', 'No file selected.')
 
     file_dialog.deleteLater()
-
 
 
 def open_file_dialog(parent):

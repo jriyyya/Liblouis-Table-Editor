@@ -1,12 +1,12 @@
 {
     "codes": [
         {
-            "code": "space",
+            "code": "after",
             "fields": {
-                "unicode": "Input Character",
-                "dots": "Braille for above character"
+                "name": "Class Name",
+                "opcode": "Opcode"
             },
-            "description": "Whitespace characters such as blank and tab"
+            "description": "The specified opcode is further constrained in that the matched character sequence must be immediately preceded by a character belonging to the specified class. If this opcode is used more than once on the same line then the union of the characters in all the classes is used."
         },
         {
             "code": "always",
@@ -31,7 +31,23 @@
                 "unicode_1": "Base Character",
                 "unicode_2": "Derived Character"
             },
-            "description": "Replace the characters with the dot pattern no matter where they appear. Do NOT use an entry such as always a 1. Use the character definition opcodes instead."
+            "description": "This opcode is different in that it does not associate a character with a dot pattern, but it associates a character with another already defined character. The derived character inherits the dot pattern of the base character, and braille indicators (see Braille Indicator Opcodes) are used to distinguish them. The attribute operand refers to the character class (see Character-Class Opcodes) to which the character should be added. By defining braille indicator rules associated with this character class, you can determine the braille indicators to be inserted. "
+        },
+        {
+            "code": "before",
+            "fields": {
+                "name": "Class Name",
+                "opcode": "Select Opcode"
+            },
+            "description": "The specified opcode is further constrained in that the matched character sequence must be immediately followed by a character belonging to the specified class. If this opcode is used more than once on the same line then the union of the characters in all the classes is used."
+        },
+        {
+            "code": "space",
+            "fields": {
+                "unicode": "Input Character",
+                "dots": "Braille for above character"
+            },
+            "description": "Whitespace characters such as blank and tab"
         }
     ]
 }
