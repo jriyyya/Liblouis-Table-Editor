@@ -53,7 +53,14 @@
             "fields": {
                 "dots": "Braille"
             },
-            "description": "The dot pattern which indicates that a certain mode is entered for the following word or remainder of the current word. The mode is automatically terminated by the first character that is not a letter. For uppercase mode, you can define a list of characters that can appear within a word in capitals without terminating the block. Do this by using the capsmodechars opcode."
+            "description": "The dot pattern which indicates that a certain mode is entered for the following word or remainder of the current word. The mode is automatically terminated by the first character that is not a letter. For uppercase mode, you can define a list of characters that can appear within a word in capitals without terminating the block. Do this by using the capsmodechars opcode"
+        },
+        {
+            "code": "begcomp",
+            "fields": {
+                "dots": "Braille"
+            },
+            "description": "This braille indicator is placed before a sequence of characters translated in computer braille, whether this sequence is indicated in the typeform parameter (see typeform parameter) or inferred because it contains a subsequence specified by the compbrl opcode"
         },
         {
             "code": "space",
