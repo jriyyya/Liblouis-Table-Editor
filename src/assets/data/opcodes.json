@@ -42,6 +42,16 @@
             "description": "The specified opcode is further constrained in that the matched character sequence must be immediately followed by a character belonging to the specified class. If this opcode is used more than once on the same line then the union of the characters in all the classes is used."
         },
         {
+            "code": "begcaps",
+            "fields": {
+                "dots": "Braille"
+            },
+            "description": "The dot pattern which indicates that a mode is entered until it is terminated by a endmode indicator. It is used in some Braille codes to mark a whole sentence or several words as capital letters. The block can contain capital letters as well as non-alphabetic characters, punctuation, numbers etc. This is the most general opening mark, i.e. it can be used for opening at any position."
+        },
+        {
+
+        },
+        {
             "code": "space",
             "fields": {
                 "unicode": "Input Character",
