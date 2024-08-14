@@ -49,7 +49,11 @@
             "description": "The dot pattern which indicates that a mode is entered until it is terminated by a endmode indicator. It is used in some Braille codes to mark a whole sentence or several words as capital letters. The block can contain capital letters as well as non-alphabetic characters, punctuation, numbers etc. This is the most general opening mark, i.e. it can be used for opening at any position."
         },
         {
-
+            "code": "begcapsword",
+            "fields": {
+                "dots": "Braille"
+            },
+            "description": "The dot pattern which indicates that a certain mode is entered for the following word or remainder of the current word. The mode is automatically terminated by the first character that is not a letter. For uppercase mode, you can define a list of characters that can appear within a word in capitals without terminating the block. Do this by using the capsmodechars opcode."
         },
         {
             "code": "space",
