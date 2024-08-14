@@ -31,7 +31,7 @@ class OpcodeForm(QWidget):
             if field == "opcode":
                 nested_opcode_combo = QComboBox()
                 nested_opcode_combo.setPlaceholderText("Select Opcode")
-                self.populate_opcode_combo(nested_opcode_combo)
+                self.populate_opcode_combo(nested_opcode_combo, placeholder)
                 nested_opcode_combo.currentIndexChanged.connect(
                     lambda idx, combo=nested_opcode_combo: self.on_opcode_selected(idx, combo)
                 )
@@ -95,16 +95,21 @@ class OpcodeForm(QWidget):
                 self.form_layout.addWidget(base_attr_dropdown)
                 self.field_inputs[field] = base_attr_dropdown
 
-    def populate_opcode_combo(self, combo):
+    def populate_opcode_combo(self, combo, placeholder=None):
         combo.clear()
         combo.addItem("Select Opcode", None)  # Default placeholder item
         for opcode in opcodes:
             combo.addItem(opcode["code"], opcode)
+        
+        if placeholder:
+            index = combo.findText(placeholder)
+            if index != -1:
+                combo.setCurrentIndex(index)
 
     def on_opcode_selected(self, index, combo):
         if index > 0:
+            self.clear_nested_forms()
             opcode = combo.itemData(index)
-            self.clear_nested_forms()  # Clear previously added nested forms
             nested_form = OpcodeForm(opcode["fields"], self)
             self.form_layout.addWidget(nested_form)
             self.nested_forms.append(nested_form)
@@ -114,8 +119,8 @@ class OpcodeForm(QWidget):
 
     def clear_nested_forms(self):
         for form in self.nested_forms:
-            form.deleteLater()  # Remove from layout
-        self.nested_forms.clear()  # Clear list
+            form.deleteLater()
+        self.nested_forms.clear()
 
     def updateUnicodeInput(self, text, unicode_input):
         if text:
@@ -192,7 +197,7 @@ class AddEntryWidget(QWidget):
         if combo is None:
             combo = self.opcode_combo
         combo.clear()
-        combo.addItem("Select Opcode", None)  # Default placeholder item
+        combo.addItem("Select Opcode", None)
         for opcode in opcodes:
             combo.addItem(opcode["code"], opcode)
 
@@ -216,12 +221,10 @@ class AddEntryWidget(QWidget):
                     nested_data.append(widget.currentText())
                 elif isinstance(widget, BrailleInputWidget):
                     nested_data.append(widget.braille_input.text())
-                # Recursive call for further nested forms
                 elif isinstance(widget, OpcodeForm):
                     nested_data.extend(collect_nested_form_data(widget))
             return nested_data
 
-        # Collect data from the main form
         for field, widget in self.field_inputs.items():
             if isinstance(widget, QLineEdit) or isinstance(widget, QTextEdit):
                 collected_data.append(widget.text())
@@ -232,7 +235,6 @@ class AddEntryWidget(QWidget):
             elif isinstance(widget, OpcodeForm):  # Nested form handling
                 collected_data.extend(collect_nested_form_data(widget))
 
-        # Append any comment or additional input at the end
         collected_data.append(self.comment_input.text())
 
         return ' '.join(collected_data).strip()

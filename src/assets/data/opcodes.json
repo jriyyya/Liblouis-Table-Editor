@@ -63,6 +63,23 @@
             "description": "This braille indicator is placed before a sequence of characters translated in computer braille, whether this sequence is indicated in the typeform parameter (see typeform parameter) or inferred because it contains a subsequence specified by the compbrl opcode"
         },
         {
+            "code": "begemph",
+            "fields": {
+                "name": "Emphasis class",
+                "dots": "Dot Pattern",
+                "opcode": "endemph"
+            },
+            "description": "Braille dot pattern to indicate the beginning of emphasis. A begemph rule must always be combined with a endemph rule."
+        },
+        {
+            "code": "endemph",
+            "fields": {
+                "name": "Emphasis class",
+                "dots": "Dot Pattern"
+            },
+            "description": "Braille dot pattern to indicate the end of emphasis."
+        },
+        {
             "code": "space",
             "fields": {
                 "unicode": "Input Character",
