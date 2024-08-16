@@ -87,6 +87,14 @@
             "description": "Braille dot pattern to indicate the beginning of an emphasized word or the beginning of emphasized characters within a word."
         },
         {
+            "code": "begmidword",
+            "fields": {
+                "unicode": "Enter Characters",
+                "dots": "Dot Pattern"
+            },
+            "description": "Replace the characters with the dot pattern if they are either at the beginning or in the middle of a word."
+        },
+        {
             "code": "endemph",
             "fields": {
                 "name": "Emphasis class",
