@@ -105,10 +105,18 @@
         {
             "code": "begmodeword",
             "fields": {
-                "unicode": "Attribute name",
+                "name": "Attribute name",
                 "dots": "Dot Pattern"
             },
             "description": "The dot pattern which indicates that a certain mode is entered for the following word or remainder of the current word. The mode is automatically terminated by the first character that is not a letter. For uppercase mode, you can define a list of characters that can appear within a word in capitals without terminating the block. Do this by using the capsmodechars opcode"
+        },
+        {
+            "code": "begnum",
+            "fields": {
+                "unicode": "Enter Character",
+                "dots": "Dot Pattern"
+            },
+            "description": "Replace the characters with the dot pattern if they are at the beginning of a number, that is, before all its digits. For example, in en-us-g1.ctb we have begnum # 4."
         },
         {
             "code": "endemph",
