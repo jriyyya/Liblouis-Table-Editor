@@ -113,10 +113,18 @@
         {
             "code": "begnum",
             "fields": {
-                "unicode": "Enter Character",
+                "unicode": "Enter number Character",
                 "dots": "Dot Pattern"
             },
             "description": "Replace the characters with the dot pattern if they are at the beginning of a number, that is, before all its digits. For example, in en-us-g1.ctb we have begnum # 4."
+        },
+        {
+            "code": "begword",
+            "fields": {
+                "unicode": "Enter word Character",
+                "dots": "Dot Pattern"
+            },
+            "description": "Replace the characters with the dot pattern if they are at the beginning of a word."
         },
         {
             "code": "endemph",
