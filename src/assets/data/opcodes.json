@@ -79,6 +79,14 @@
             "description": "Braille dot pattern to indicate the beginning of a phrase. A begemphphrase rule must always be combined with a endemphphrase rule."
         },
         {
+            "code": "begemphword",
+            "fields": {
+                "name": "Emphasis class",
+                "dots": "Dot Pattern"
+            },
+            "description": "Braille dot pattern to indicate the beginning of an emphasized word or the beginning of emphasized characters within a word."
+        },
+        {
             "code": "endemph",
             "fields": {
                 "name": "Emphasis class",
