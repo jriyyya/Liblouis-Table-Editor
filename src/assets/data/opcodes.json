@@ -156,9 +156,16 @@
         {
             "code": "compbrl",
             "fields": {
-                "unicode": "Enter word Character"
+                "unicode": "Enter Character"
             },
             "description": "If the characters are found within a block of text surrounded by whitespace the entire block is translated according to the default braille representations defined by the Character-Definition Opcodes, if 8-dot computer braille is enabled or according to the dot patterns given in the comp6 opcode"
+        },
+        {
+            "code": "contraction",
+            "fields": {
+                "unicode": "Enter Characters"
+            },
+            "description": "If you look at en-us-g2.ctb you will see that some words are actually contracted into some of their own letters. A famous example among braille transcribers is also, which is contracted as al. But this is also the name of a person. To take another example, altogether is contracted as alt, but this is the abbreviation for the alternate key on a computer keyboard. Similarly could is contracted into cd, but this is the abbreviation for compact disk. To prevent confusion in such cases, the letter sign (see letsign opcode (see letsign)) is placed before such letter combinations when they actually are abbreviations, not contractions. The contraction opcode tells the translator to do this."
         },
         {
             "code": "endemph",
