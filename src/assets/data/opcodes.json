@@ -154,6 +154,13 @@
             "description": "This opcode specifies the translation of characters in 6-dot computer braille. The first operand must be a single character. The second operand may specify as many cells as necessary. The opcode is somewhat of a misnomer, since any dots, not just dots 1 through 6, can be specified. This even includes virtual dots "
         },
         {
+            "code": "compbrl",
+            "fields": {
+                "unicode": "Enter word Character"
+            },
+            "description": "If the characters are found within a block of text surrounded by whitespace the entire block is translated according to the default braille representations defined by the Character-Definition Opcodes, if 8-dot computer braille is enabled or according to the dot patterns given in the comp6 opcode"
+        },
+        {
             "code": "endemph",
             "fields": {
                 "name": "Emphasis class",
