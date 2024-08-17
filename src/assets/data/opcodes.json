@@ -168,6 +168,14 @@
             "description": "If you look at en-us-g2.ctb you will see that some words are actually contracted into some of their own letters. A famous example among braille transcribers is also, which is contracted as al. But this is also the name of a person. To take another example, altogether is contracted as alt, but this is the abbreviation for the alternate key on a computer keyboard. Similarly could is contracted into cd, but this is the abbreviation for compact disk. To prevent confusion in such cases, the letter sign (see letsign opcode (see letsign)) is placed before such letter combinations when they actually are abbreviations, not contractions. The contraction opcode tells the translator to do this."
         },
         {
+            "code": "decpoint",
+            "fields": {
+                "unicode": "Enter Characters",
+                "dots": "Braille for above character"
+            },
+            "description": "This opcode defines the decimal point. It is useful if your Braille code requires the decimal separator to show as a dot pattern different from the normal representation of this character, i.e. period or comma. In addition, it allows the notation .001 to be translated correctly. This notation is common in some languages instead of 0.001 (no leading 0). When you use the decpoint opcode, the decimal point will be taken to be part of the number and correctly preceded by number sign."
+        },
+        {
             "code": "endemph",
             "fields": {
                 "name": "Emphasis class",
