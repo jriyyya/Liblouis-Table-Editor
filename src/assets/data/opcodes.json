@@ -127,6 +127,13 @@
             "description": "Replace the characters with the dot pattern if they are at the beginning of a word."
         },
         {
+            "code": "capsletter",
+            "fields": {
+                "dots": "Dot Pattern"
+            },
+            "description": "The dot pattern which indicates that a certain mode is entered and ends after a single character. A “mode” is a state in which dot patterns must be interpreted a certain way. For example, in uppercase mode dots ‘1’ is to be interpreted as a capital “A” and not a small “a”. In numeric mode dots ‘1’ is to be interpreted as a “1”. The attribute operand identifies the mode and corresponds with the name of the character class that determines when the mode must be entered and exited. capsletter is an alias for modeletter uppercase"
+        },
+        {
             "code": "endemph",
             "fields": {
                 "name": "Emphasis class",
