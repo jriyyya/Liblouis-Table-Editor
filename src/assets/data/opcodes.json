@@ -199,6 +199,14 @@
             "description": "Define an emphasis class to be used later in other emphasis related opcodes in the table."
         },
         {
+            "code": "emphletter",
+            "fields": {
+                "name": "Emphasis class",
+                "dots": "Dot Pattern"
+            },
+            "description": "Braille dot pattern to indicate that the next character is emphasized."
+        },
+        {
             "code": "endemph",
             "fields": {
                 "name": "Emphasis class",
