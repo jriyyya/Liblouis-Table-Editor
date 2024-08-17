@@ -184,6 +184,14 @@
             "description": "Associates a digit with a dot pattern and defines the character as a digit"
         },
         {
+            "code": "display",
+            "fields": {
+                "unicode": "Enter Characters",
+                "dots": "Braille for above character"
+            },
+            "description": "Associates dot patterns with the characters which will be sent to a braille embosser, display or screen font. The character must be in the range 0-255 and the dots must specify a single cell."
+        },
+        {
             "code": "endemph",
             "fields": {
                 "name": "Emphasis class",
