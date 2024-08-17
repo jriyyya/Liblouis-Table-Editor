@@ -141,11 +141,17 @@
             "description": "Normally, any character other than a letter will automatically cancel the begcapsword indicator. However, by using the capsmodechars opcode, you can specify a list of characters that are legal within a capitalized word. In some Braille codes, this might be the case for the hyphen character"
         },
         {
-            "code": "capsmodechars",
-            "fields": {
-                
-            },
+            "code": "capsnocont",
+            "fields": {},
             "description": "This opcode has no operands. If it is specified, words or parts of words in all caps are not contracted. This is needed for languages such as Norwegian."
+        },
+        {
+            "code": "comp6",
+            "fields": {
+                "unicode": "Enter word Character",
+                "dots": "Dot Pattern"
+            },
+            "description": "This opcode specifies the translation of characters in 6-dot computer braille. The first operand must be a single character. The second operand may specify as many cells as necessary. The opcode is somewhat of a misnomer, since any dots, not just dots 1 through 6, can be specified. This even includes virtual dots "
         },
         {
             "code": "endemph",
