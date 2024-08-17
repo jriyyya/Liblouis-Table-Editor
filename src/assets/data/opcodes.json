@@ -207,6 +207,14 @@
             "description": "Braille dot pattern to indicate that the next character is emphasized."
         },
         {
+            "code": "emphmodechars",
+            "fields": {
+                "name": "Emphasis class",
+                "unicode": "Characters"
+             },
+            "description": "Normally, only spaces and unemphasizable characters (see space and noemphchars) will cancel the begemphword indicator (see begemphword). However this can be overruled with the emphmodechars opcode. If emphmodechars is specified, any character that is not in the specified list and is not a letter (see uppercase, lowercase or letter) will cancel the begemphword indicator. Conversely, letters and characters that are in the list will not cancel the word indicator."
+        },
+        {
             "code": "endemph",
             "fields": {
                 "name": "Emphasis class",
