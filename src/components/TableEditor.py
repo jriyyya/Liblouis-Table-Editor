@@ -98,6 +98,11 @@ class TableEditor(QWidget):
                 form_data = parts[1:]
                 self.fill_form_data(nested_form, form_data)
         
+                filled_fields_count = len(nested_form.field_inputs)
+                remaining_parts = form_data[filled_fields_count:]
+                if remaining_parts:
+                    remaining_comment = " ".join(remaining_parts)
+                    self.add_entry_widget.comment_input.setText(remaining_comment)
         else:
             self.add_entry_widget.comment_input.setText(entry)
 
