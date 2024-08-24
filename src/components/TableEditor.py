@@ -1,10 +1,11 @@
 import json
 from PyQt5.QtWidgets import (
-    QWidget, QVBoxLayout, QHBoxLayout , QSizePolicy, QTextEdit
+    QWidget, QVBoxLayout, QHBoxLayout , QSizePolicy, QTextEdit, QLineEdit, QComboBox
 )
 from PyQt5.QtGui import QKeyEvent
 from PyQt5.QtCore import Qt
 from components.AddEntry.AddEntryWidget import AddEntryWidget
+from components.AddEntry.BrailleInputWidget import BrailleInputWidget
 from components.TablePreview import TablePreview
 from utils.ApplyStyles import apply_styles
 from utils.Toast import Toast
@@ -79,3 +80,37 @@ class TableEditor(QWidget):
         self.toast = Toast(text, icon_path, colorR, colorG, colorB,  self)
         self.toast.move((self.width() - self.toast.width()), self.height() + 290)
         self.toast.show_toast()
+
+    def load_entry_into_editor(self, entry):
+        self.add_entry_widget.clear_form()
+
+        parts = entry.split()
+        if not parts:
+            return
+
+        opcode = parts[0]
+        index = self.add_entry_widget.opcode_combo.findText(opcode)
+        if index != -1 and index != 0:
+            self.add_entry_widget.opcode_combo.setCurrentIndex(index)
+
+            nested_form = self.add_entry_widget.field_inputs.get("nested_form")
+            if nested_form:
+                form_data = parts[1:]
+                self.fill_form_data(nested_form, form_data)
+        
+        else:
+            self.add_entry_widget.comment_input.setText(entry)
+
+    def fill_form_data(self, form, data):
+        field_index = 0
+        for field, widget in form.field_inputs.items():
+            if field_index < len(data):
+                if isinstance(widget, QLineEdit) or isinstance(widget, QTextEdit):
+                    widget.setText(data[field_index])
+                elif isinstance(widget, QComboBox):
+                    index = widget.findText(data[field_index])
+                    if index != -1:
+                        widget.setCurrentIndex(index)
+                elif isinstance(widget, BrailleInputWidget):
+                    widget.braille_input.setText(data[field_index])
+                field_index += 1

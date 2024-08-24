@@ -2,14 +2,15 @@ from PyQt5.QtWidgets import QWidget, QLabel, QHBoxLayout, QMenu, QAction, QLineE
 from PyQt5.QtCore import Qt
 
 class EntryWidget(QWidget):
-    def __init__(self, entry, parent=None):
+    def __init__(self, entry, table_editor, parent=None):
         super().__init__(parent)
         self.entry = entry
+        self.table_editor = table_editor
         self.initUI()
 
     def initUI(self):
         self.label_text = QLabel(self.entry)
-        self.label_text.setWordWrap(False)  # Ensure it displays on a single line
+        self.label_text.setWordWrap(False)
 
         self.layout = QHBoxLayout(self)
         self.layout.addWidget(self.label_text, alignment=Qt.AlignTop)
@@ -25,9 +26,11 @@ class EntryWidget(QWidget):
 
         self.edit_line = QLineEdit(self.entry)
         self.edit_line.setVisible(False)
-        self.edit_line.setStyleSheet("background-color: #e0f7fa;")  # Edit mode background color
+        self.edit_line.setStyleSheet("background-color: #e0f7fa;")
         self.layout.addWidget(self.edit_line)
         self.edit_line.editingFinished.connect(self.save_entry)
+
+        self.label_text.mousePressEvent = self.load_into_editor
 
     def contextMenuEvent(self, event):
         menu = QMenu(self)
@@ -47,7 +50,7 @@ class EntryWidget(QWidget):
         menu.exec_(self.mapToGlobal(event.pos()))
 
     def duplicate_entry(self):
-        new_entry_widget = EntryWidget(self.entry, parent=self.parentWidget())
+        new_entry_widget = EntryWidget(self.entry, self.table_editor, parent=self.parentWidget())
         self.parentWidget().layout().insertWidget(self.parentWidget().layout().indexOf(self) + 1, new_entry_widget)
 
     def edit_entry(self):
@@ -62,6 +65,7 @@ class EntryWidget(QWidget):
         self.label_text.setText(self.entry)
         self.edit_line.setVisible(False)
         self.label_text.setVisible(True)
+        self.load_into_editor()
 
     def delete_entry(self):
         self.setParent(None)
@@ -72,3 +76,6 @@ class EntryWidget(QWidget):
 
     def onHoverLeave(self, event):
         self.setStyleSheet("padding: 10px; background-color: white; margin: 0px")
+
+    def load_into_editor(self, event=None):
+        self.table_editor.load_entry_into_editor(self.entry)

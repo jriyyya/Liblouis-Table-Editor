@@ -164,6 +164,22 @@ class AddEntryWidget(QWidget):
         self.field_inputs = {}
         self.initUI()
 
+    def clear_form(self):
+        self.opcode_combo.setCurrentIndex(0)
+
+        for field, widget in self.field_inputs.items():
+            if isinstance(widget, QLineEdit) or isinstance(widget, QTextEdit):
+                widget.clear()
+            elif isinstance(widget, QComboBox):
+                widget.setCurrentIndex(0)
+            elif isinstance(widget, BrailleInputWidget):
+                widget.braille_input.clear()
+
+        self.comment_input.clear()
+
+        clearLayout(self.form_layout)
+        self.field_inputs.clear()
+
     def initUI(self):
         main_layout = QVBoxLayout(self)
         main_layout.setAlignment(Qt.AlignTop)

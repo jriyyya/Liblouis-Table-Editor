@@ -4,8 +4,9 @@ from components.AddEntry.EntryWidget import EntryWidget
 from utils.ApplyStyles import apply_styles
 
 class TablePreview(QWidget):
-    def __init__(self, parent=None):
+    def __init__(self, table_editor, parent=None):
         super().__init__(parent)
+        self.table_editor = table_editor
         self.entries = []
         apply_styles(self)
         self.initUI()
@@ -34,7 +35,7 @@ class TablePreview(QWidget):
     def update_content(self):
         self.clear_layout()
         for entry in self.entries:
-            entry_widget = EntryWidget(entry)
+            entry_widget = EntryWidget(entry, self.table_editor)
             self.scroll_layout.addWidget(entry_widget)
             
     def add_entry(self, entry):
