@@ -215,6 +215,20 @@
             "description": "Normally, only spaces and unemphasizable characters (see space and noemphchars) will cancel the begemphword indicator (see begemphword). However this can be overruled with the emphmodechars opcode. If emphmodechars is specified, any character that is not in the specified list and is not a letter (see uppercase, lowercase or letter) will cancel the begemphword indicator. Conversely, letters and characters that are in the list will not cancel the word indicator."
         },
         {
+            "code": "endcaps",
+            "fields": {
+                "dots": "Dot Pattern"
+             },
+            "description": "The dot pattern which terminates a mode."
+        },
+        {
+            "code": "endcapsword",
+            "fields": {
+                "dots": "Dot Pattern"
+             },
+            "description": "The dot pattern which terminates a mode within a word. It is used in cases where the block is not terminated automatically by a word boundary, a number or punctuation. A common case is when an uppercase block is followed directly by a lowercase letter.."
+        },
+        {
             "code": "endemph",
             "fields": {
                 "name": "Emphasis class",
