@@ -226,8 +226,16 @@
             "fields": {
                 "dots": "Dot Pattern"
              },
-            "description": "The dot pattern which terminates a mode within a word. It is used in cases where the block is not terminated automatically by a word boundary, a number or punctuation. A common case is when an uppercase block is followed directly by a lowercase letter.."
+            "description": "The dot pattern which terminates a mode within a word. It is used in cases where the block is not terminated automatically by a word boundary, a number or punctuation. A common case is when an uppercase block is followed directly by a lowercase letter."
         },
+        {
+            "code": "endcomp",
+            "fields": {
+                "dots": "Dot Pattern"
+             },
+            "description": "This braille indicator is placed after a sequence of characters translated in computer braille, whether this sequence is indicated in the typeform parameter (see typeform parameter) or inferred because it contains a subsequence specified by the compbrl opcode (see compbrl)."
+        },
+       
         {
             "code": "endemph",
             "fields": {
@@ -235,6 +243,14 @@
                 "dots": "Dot Pattern"
             },
             "description": "Braille dot pattern to indicate the end of emphasis."
+        },
+        {
+            "code": "endemphword",
+            "fields": {
+                "name": "Emphasis class",
+                "dots": "Dot Pattern"
+            },
+            "description": "Word emphasis ends implicitly when the word ends. When an indication is required to close word emphasis, i.e. when emphasis ends in the middle of a word, then this opcode defines the braille dot pattern that is used."
         },
         {
             "code": "space",
