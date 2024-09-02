@@ -108,9 +108,16 @@ class TableEditor(QWidget):
 
     def fill_form_data(self, form, data):
         field_index = 0
-        for field, widget in form.field_inputs.items():
+        fields_widgets = list(form.field_inputs.items())
+
+        for field, widget in fields_widgets:
             if field_index < len(data):
-                if isinstance(widget, QLineEdit) or isinstance(widget, QTextEdit):
+                if isinstance(widget, tuple) and field == "exactdots":
+                    at_symbol, braille_input = widget
+                    exactdots_value = data[field_index]
+                    if exactdots_value.startswith("@"):
+                        braille_input.setText(exactdots_value[1:])
+                elif isinstance(widget, QLineEdit) or isinstance(widget, QTextEdit):
                     widget.setText(data[field_index])
                 elif isinstance(widget, QComboBox):
                     index = widget.findText(data[field_index])

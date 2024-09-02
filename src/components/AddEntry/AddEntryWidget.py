@@ -86,6 +86,23 @@ class OpcodeForm(QWidget):
                 self.braille_input_widget = BrailleInputWidget()
                 self.form_layout.addWidget(self.braille_input_widget)
                 self.field_inputs[field] = self.braille_input_widget.braille_input
+            
+            elif field == "exactdots":
+                exactdots_container = QHBoxLayout()
+
+                # Read-only field with '@'
+                at_symbol = QLineEdit("@")
+                at_symbol.setReadOnly(True)
+                at_symbol.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Preferred)
+
+                self.braille_input_widget = BrailleInputWidget()  # Reuse the BrailleInputWidget
+
+                exactdots_container.addWidget(at_symbol)
+                exactdots_container.addWidget(self.braille_input_widget)
+
+                self.form_layout.addLayout(exactdots_container)
+                self.field_inputs[field] = (at_symbol, self.braille_input_widget.braille_input)
+
 
             elif field == "base_attribute":
                 base_attr_dropdown = QComboBox()
@@ -237,6 +254,9 @@ class AddEntryWidget(QWidget):
                     nested_data.append(widget.currentText())
                 elif isinstance(widget, BrailleInputWidget):
                     nested_data.append(widget.braille_input.text())
+                elif field == "exactdots":
+                    at_symbol, braille_input = widget
+                    nested_data.append(at_symbol.text() + braille_input.text())
                 elif isinstance(widget, OpcodeForm):
                     nested_data.extend(collect_nested_form_data(widget))
             return nested_data
@@ -248,7 +268,10 @@ class AddEntryWidget(QWidget):
                 collected_data.append(widget.currentText())
             elif isinstance(widget, BrailleInputWidget):
                 collected_data.append(widget.braille_input.text())
-            elif isinstance(widget, OpcodeForm):  # Nested form handling
+            elif field == "exactdots":
+                at_symbol, braille_input = widget
+                collected_data.append(at_symbol.text() + braille_input.text())
+            elif isinstance(widget, OpcodeForm):
                 collected_data.extend(collect_nested_form_data(widget))
 
         collected_data.append(self.comment_input.text())

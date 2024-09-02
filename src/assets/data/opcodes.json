@@ -274,7 +274,7 @@
                 "unicode": "Enter Characters",
                 "dots": "Dot Pattern"
             },
-            "description": "Replace the characters with the dot pattern if they are at the end of a number. For example en-us-g1.ctb has endnum th 1456. This handles things like ‘4th’. A letter sign is NOT inserted.."
+            "description": "Replace the characters with the dot pattern if they are at the end of a number. For example en-us-g1.ctb has endnum th 1456. This handles things like 4th. A letter sign is NOT inserted.."
         },
         {
             "code": "endword",
@@ -283,6 +283,13 @@
                 "dots": "Dot Pattern"
             },
             "description": "Replace the characters with the dot pattern if they are at the end of a word."
+        },
+        {
+            "code": "exactdots",
+            "fields": {
+                "exactdots": "Dot Pattern"
+            },
+            "description": "Note that the operand must begin with an at sign (@). The dot pattern following it is evaluated for validity. If it is valid, whenever an at sign followed by this dot pattern appears in the source document it is replaced by the characters corresponding to the dot pattern in the output. This opcode is intended for use in liblouisutdml semantic-action files to specify exact dot patterns, as in mathematical codes."
         },
         {
             "code": "space",
