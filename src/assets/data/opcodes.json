@@ -269,6 +269,14 @@
             "description": "The dot pattern which terminates a mode within a word. It is used in cases where the block is not terminated automatically by a word boundary, a number or punctuation. A common case is when an uppercase block is followed directly by a lowercase letter. endemphword (see endemphword) is the counterpart of endmodeword for indication of emphasis."
         },
         {
+            "code": "endnum",
+            "fields": {
+                "unicode": "Enter Characters",
+                "dots": "Dot Pattern"
+            },
+            "description": "Replace the characters with the dot pattern if they are at the end of a number. For example en-us-g1.ctb has endnum th 1456. This handles things like ‘4th’. A letter sign is NOT inserted.."
+        },
+        {
             "code": "space",
             "fields": {
                 "unicode": "Input Character",
