@@ -253,6 +253,22 @@
             "description": "Word emphasis ends implicitly when the word ends. When an indication is required to close word emphasis, i.e. when emphasis ends in the middle of a word, then this opcode defines the braille dot pattern that is used."
         },
         {
+            "code": "endmode",
+            "fields": {
+                "name": "Attribute name",
+                "dots": "Dot Pattern"
+            },
+            "description": "The dot pattern which terminates a mode."
+        },
+        {
+            "code": "endmodeword",
+            "fields": {
+                "name": "Attribute name",
+                "dots": "Dot Pattern"
+            },
+            "description": "The dot pattern which terminates a mode within a word. It is used in cases where the block is not terminated automatically by a word boundary, a number or punctuation. A common case is when an uppercase block is followed directly by a lowercase letter. endemphword (see endemphword) is the counterpart of endmodeword for indication of emphasis."
+        },
+        {
             "code": "space",
             "fields": {
                 "unicode": "Input Character",
