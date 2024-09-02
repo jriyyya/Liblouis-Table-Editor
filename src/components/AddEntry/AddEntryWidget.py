@@ -102,7 +102,24 @@ class OpcodeForm(QWidget):
 
                 self.form_layout.addLayout(exactdots_container)
                 self.field_inputs[field] = (at_symbol, self.braille_input_widget.braille_input)
+                
+            elif field == "groupDots":
+                groupdots_container = QHBoxLayout()
+                
+                for i in range(placeholder):
+                    braille_input_widget = BrailleInputWidget()
+                    groupdots_container.addWidget(braille_input_widget)
+                    self.field_inputs[f"{field}_{i+1}"] = braille_input_widget.braille_input
+                    
+                    if i < placeholder - 1:
+                        comma_label = QLineEdit(",")
+                        comma_label.setReadOnly(True)
+                        comma_label.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Preferred)
+                        comma_label.setFixedWidth(30)
+                        comma_label.setFixedHeight(50)
+                        groupdots_container.addWidget(comma_label)
 
+                self.form_layout.addLayout(groupdots_container)
 
             elif field == "base_attribute":
                 base_attr_dropdown = QComboBox()
