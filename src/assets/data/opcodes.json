@@ -277,6 +277,14 @@
             "description": "Replace the characters with the dot pattern if they are at the end of a number. For example en-us-g1.ctb has endnum th 1456. This handles things like ‘4th’. A letter sign is NOT inserted.."
         },
         {
+            "code": "endword",
+            "fields": {
+                "unicode": "Enter Characters",
+                "dots": "Dot Pattern"
+            },
+            "description": "Replace the characters with the dot pattern if they are at the end of a word."
+        },
+        {
             "code": "space",
             "fields": {
                 "unicode": "Input Character",
