@@ -425,6 +425,14 @@
             "description": "Replace the characters with the dot pattern if they are in the middle of a word."
         },
         {
+            "code": "modeletter",
+            "fields": {
+                "name": "Enter Attribute",
+                "dots": "Dot Pattern"
+            },
+            "description": "The dot pattern which indicates that a certain mode is entered and ends after a single character. A “mode” is a state in which dot patterns must be interpreted a certain way."
+        },
+        {
             "code": "space",
             "fields": {
                 "unicode": "Input Character",
