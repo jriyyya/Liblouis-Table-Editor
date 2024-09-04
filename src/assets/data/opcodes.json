@@ -394,6 +394,13 @@
             "description": "Associates a character and a dot pattern and defines them as a mathematical symbol. It should be used for less than (<), greater than(>), equals(=), plus(+), etc."
         },
         {
+            "code": "midendnumericmodechars",
+            "fields": {
+                "unicode": "Enter Character"
+            },
+            "description": "Any of these characters can appear within a number without terminating the effect of the number sign (see numsign). In other words, they dont cancel numeric mode."
+        },
+        {
             "code": "space",
             "fields": {
                 "unicode": "Input Character",
