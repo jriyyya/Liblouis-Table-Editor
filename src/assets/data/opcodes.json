@@ -386,6 +386,14 @@
             "description": "Replace the characters with the dot pattern if they are a word preceded and followed by whitespace. No punctuation either before or after the word is allowed. "
         },
         {
+            "code": "math",
+            "fields": {
+                "unicode": "Enter Character",
+                "dots": "Dot Pattern"
+            },
+            "description": "Associates a character and a dot pattern and defines them as a mathematical symbol. It should be used for less than (<), greater than(>), equals(=), plus(+), etc."
+        },
+        {
             "code": "space",
             "fields": {
                 "unicode": "Input Character",
