@@ -401,6 +401,14 @@
             "description": "Any of these characters can appear within a number without terminating the effect of the number sign (see numsign). In other words, they dont cancel numeric mode."
         },
         {
+            "code": "midendword",
+            "fields": {
+                "unicode": "Enter Character",
+                "dots": "Dot Pattern"
+            },
+            "description": "Replace the characters with the dot pattern if they are either in the middle or at the end of a word."
+        },
+        {
             "code": "space",
             "fields": {
                 "unicode": "Input Character",
