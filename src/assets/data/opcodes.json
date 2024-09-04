@@ -309,6 +309,13 @@
             "description": "This opcode defines the hyphen, that is, the character used in compound words such as ‘have-nots’. The back-translator uses it to determine the end of individual words."
         },
         {
+            "code": "include",
+            "fields": {
+                "name": "File Name"
+             },
+            "description": "Read the file indicated by filename and incorporate or include its entries into the table. Included files can include other files, which can include other files, etc."
+        },
+        {
             "code": "space",
             "fields": {
                 "unicode": "Input Character",
