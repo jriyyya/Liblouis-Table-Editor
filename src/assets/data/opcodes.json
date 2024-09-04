@@ -331,6 +331,14 @@
             "description": "Replace the characters with the dot pattern if they are a word which is followed by whitespace and a letter. In addition remove the whitespace. For example, en-us-g2.ctb has joinword to 235. This means that if the word ‘to’ is followed by another word the contraction is to be used and the space is to be omitted. If these conditions are not met, the word is translated according to any other opcodes that may apply to it."
         },
         {
+            "code": "largesign",
+            "fields": {
+                "unicode": "Enter Characters",
+                "dots": "Dot Pattern"
+            },
+            "description": "Replace the characters with the dot pattern no matter where they appear. In addition, if two words defined as large signs follow each other, remove the space between them."
+        },
+        {
             "code": "space",
             "fields": {
                 "unicode": "Input Character",
