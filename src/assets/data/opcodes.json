@@ -354,6 +354,14 @@
             "description": "This indicator is needed in Grade 2 to show that a single letter is not a contraction. It is also used when an abbreviation happens to be a sequence of letters that is the same as a contraction."
         },
         {
+            "code": "letter",
+            "fields": {
+                "unicode": "Enter Character",
+                "dots": "Dot Pattern"
+            },
+            "description": "Associates a letter in the language with a braille representation and defines the character as a letter. This is intended for letters which are neither uppercase nor lowercase."
+        },
+        {
             "code": "space",
             "fields": {
                 "unicode": "Input Character",
