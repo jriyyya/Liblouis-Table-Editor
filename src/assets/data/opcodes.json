@@ -323,6 +323,14 @@
             "description": "Replace the characters with the dot pattern. In addition, if whitespace and a number follows omit the whitespace. This opcode can be used to join currency symbols to numbers."
         },
         {
+            "code": "joinword",
+            "fields": {
+                "unicode": "Enter Characters",
+                "dots": "Dot Pattern"
+            },
+            "description": "Replace the characters with the dot pattern if they are a word which is followed by whitespace and a letter. In addition remove the whitespace. For example, en-us-g2.ctb has joinword to 235. This means that if the word ‘to’ is followed by another word the contraction is to be used and the space is to be omitted. If these conditions are not met, the word is translated according to any other opcodes that may apply to it."
+        },
+        {
             "code": "space",
             "fields": {
                 "unicode": "Input Character",
