@@ -417,6 +417,14 @@
             "description": "Replace the characters with the dot pattern if they are in the middle of a number. For example, en-us-g1.ctb has midnum . 46. This is because the decimal point has a different dot pattern than the period."
         },
         {
+            "code": "midword",
+            "fields": {
+                "unicode": "Enter Character",
+                "dots": "Dot Pattern"
+            },
+            "description": "Replace the characters with the dot pattern if they are in the middle of a word."
+        },
+        {
             "code": "space",
             "fields": {
                 "unicode": "Input Character",
