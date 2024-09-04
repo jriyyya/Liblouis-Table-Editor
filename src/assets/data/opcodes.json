@@ -370,6 +370,14 @@
             "description": "Associates a digit with the dot pattern which should be used to represent it in literary texts."
         },
         {
+            "code": "lowercase",
+            "fields": {
+                "unicode": "Enter Character",
+                "dots": "Dot Pattern"
+            },
+            "description": "Associates a character with a dot pattern and defines the character as a lowercase letter. Both the character and the dot pattern have the attributes lowercase and letter."
+        },
+        {
             "code": "space",
             "fields": {
                 "unicode": "Input Character",
