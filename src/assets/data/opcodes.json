@@ -339,6 +339,14 @@
             "description": "Replace the characters with the dot pattern no matter where they appear. In addition, if two words defined as large signs follow each other, remove the space between them."
         },
         {
+            "code": "lenemphphrase",
+            "fields": {
+                "name": "Emphasis class",
+                "dots": "Dot Pattern"
+            },
+            "description": "Define how many words are required before a sequence of words is considered a phrase."
+        },
+        {
             "code": "space",
             "fields": {
                 "unicode": "Input Character",
