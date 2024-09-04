@@ -211,31 +211,30 @@
             "fields": {
                 "name": "Emphasis class",
                 "unicode": "Characters"
-             },
+            },
             "description": "Normally, only spaces and unemphasizable characters (see space and noemphchars) will cancel the begemphword indicator (see begemphword). However this can be overruled with the emphmodechars opcode. If emphmodechars is specified, any character that is not in the specified list and is not a letter (see uppercase, lowercase or letter) will cancel the begemphword indicator. Conversely, letters and characters that are in the list will not cancel the word indicator."
         },
         {
             "code": "endcaps",
             "fields": {
                 "dots": "Dot Pattern"
-             },
+            },
             "description": "The dot pattern which terminates a mode."
         },
         {
             "code": "endcapsword",
             "fields": {
                 "dots": "Dot Pattern"
-             },
+            },
             "description": "The dot pattern which terminates a mode within a word. It is used in cases where the block is not terminated automatically by a word boundary, a number or punctuation. A common case is when an uppercase block is followed directly by a lowercase letter."
         },
         {
             "code": "endcomp",
             "fields": {
                 "dots": "Dot Pattern"
-             },
+            },
             "description": "This braille indicator is placed after a sequence of characters translated in computer braille, whether this sequence is indicated in the typeform parameter (see typeform parameter) or inferred because it contains a subsequence specified by the compbrl opcode (see compbrl)."
         },
-       
         {
             "code": "endemph",
             "fields": {
@@ -297,7 +296,7 @@
                 "name": "Group Name",
                 "unicode": "Characters",
                 "groupDots": 2
-             },
+            },
             "description": "Note that the operand must begin with an at sign (@). The dot pattern following it is evaluated for validity. If it is valid, whenever an at sign followed by this dot pattern appears in the source document it is replaced by the characters corresponding to the dot pattern in the output. This opcode is intended for use in liblouisutdml semantic-action files to specify exact dot patterns, as in mathematical codes."
         },
         {
@@ -305,15 +304,23 @@
             "fields": {
                 "unicode": "Characters",
                 "dots": "Enter Braille Translation"
-             },
+            },
             "description": "This opcode defines the hyphen, that is, the character used in compound words such as ‘have-nots’. The back-translator uses it to determine the end of individual words."
         },
         {
             "code": "include",
             "fields": {
                 "name": "File Name"
-             },
+            },
             "description": "Read the file indicated by filename and incorporate or include its entries into the table. Included files can include other files, which can include other files, etc."
+        },
+        {
+            "code": "joinnum",
+            "fields": {
+                "unicode": "Enter Characters",
+                "dots": "Dot Pattern"
+            },
+            "description": "Replace the characters with the dot pattern. In addition, if whitespace and a number follows omit the whitespace. This opcode can be used to join currency symbols to numbers."
         },
         {
             "code": "space",
