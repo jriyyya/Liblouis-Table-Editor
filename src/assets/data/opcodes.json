@@ -362,6 +362,14 @@
             "description": "Associates a letter in the language with a braille representation and defines the character as a letter. This is intended for letters which are neither uppercase nor lowercase."
         },
         {
+            "code": "litdigit",
+            "fields": {
+                "unicode": "Enter Character",
+                "dots": "Dot Pattern"
+            },
+            "description": "Associates a digit with the dot pattern which should be used to represent it in literary texts."
+        },
+        {
             "code": "space",
             "fields": {
                 "unicode": "Input Character",
