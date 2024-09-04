@@ -378,6 +378,14 @@
             "description": "Associates a character with a dot pattern and defines the character as a lowercase letter. Both the character and the dot pattern have the attributes lowercase and letter."
         },
         {
+            "code": "lowword",
+            "fields": {
+                "unicode": "Enter Character",
+                "dots": "Dot Pattern"
+            },
+            "description": "Replace the characters with the dot pattern if they are a word preceded and followed by whitespace. No punctuation either before or after the word is allowed. "
+        },
+        {
             "code": "space",
             "fields": {
                 "unicode": "Input Character",
