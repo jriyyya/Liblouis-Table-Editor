@@ -301,6 +301,14 @@
             "description": "Note that the operand must begin with an at sign (@). The dot pattern following it is evaluated for validity. If it is valid, whenever an at sign followed by this dot pattern appears in the source document it is replaced by the characters corresponding to the dot pattern in the output. This opcode is intended for use in liblouisutdml semantic-action files to specify exact dot patterns, as in mathematical codes."
         },
         {
+            "code": "hyphen",
+            "fields": {
+                "unicode": "Characters",
+                "dots": "Enter Braille Translation"
+             },
+            "description": "This opcode defines the hyphen, that is, the character used in compound words such as ‘have-nots’. The back-translator uses it to determine the end of individual words."
+        },
+        {
             "code": "space",
             "fields": {
                 "unicode": "Input Character",
