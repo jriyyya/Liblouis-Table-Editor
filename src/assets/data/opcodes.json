@@ -430,7 +430,7 @@
                 "name": "Enter Attribute",
                 "dots": "Dot Pattern"
             },
-            "description": "The dot pattern which indicates that a certain mode is entered and ends after a single character. A “mode” is a state in which dot patterns must be interpreted a certain way."
+            "description": "The dot pattern which indicates that a certain mode is entered and ends after a single character. A mode is a state in which dot patterns must be interpreted a certain way."
         },
         {
             "code": "space",
