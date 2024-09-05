@@ -71,7 +71,7 @@ def open_new_file_dialog(parent):
     file_dialog = QFileDialog(parent)
     file_dialog.setFileMode(QFileDialog.AnyFile)
     file_dialog.setAcceptMode(QFileDialog.AcceptSave)
-    file_dialog.setNameFilter("Table Files (*.cti *.ctb);;All Files (*)")
+    file_dialog.setNameFilter("Table Files (*.cti *.ctb *.utb);;All Files (*)")
 
     if file_dialog.exec_():
         file_names = file_dialog.selectedFiles()
@@ -92,7 +92,7 @@ def open_new_file_dialog(parent):
 def open_file_dialog(parent):
     file_dialog = QFileDialog(parent)
     file_dialog.setFileMode(QFileDialog.ExistingFile)
-    file_dialog.setNameFilter("Table Files (*.cti *.ctb);;All Files (*)")
+    file_dialog.setNameFilter("Table Files (*.cti *.ctb *.utb);;All Files (*)")
 
     
     if file_dialog.exec_():
@@ -116,7 +116,7 @@ def save_file_dialog(parent):
         file_dialog = QFileDialog(parent)
         file_dialog.setFileMode(QFileDialog.AnyFile)
         file_dialog.setAcceptMode(QFileDialog.AcceptSave)
-        file_dialog.setNameFilter("Table Files (*.cti *.ctb);;All Files (*)")
+        file_dialog.setNameFilter("Table Files (*.cti *.ctb *.utb);;All Files (*)")
 
         if file_dialog.exec_():
             file_names = file_dialog.selectedFiles()
