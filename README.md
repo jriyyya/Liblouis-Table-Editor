@@ -49,10 +49,11 @@ cd liblouis-table-editor
 ```
 
 ### Running the Application
-To run the editor, simply execute the main Python script:
+To start the application, use the 
+```bash
+mingw32-make
 ```
-python3 main.py
-````
+command, which is a build tool commonly used in development environments that rely on the MinGW (Minimalist GNU for Windows) toolchain
 
 ## Usage
 
