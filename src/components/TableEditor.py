@@ -7,8 +7,10 @@ from PyQt5.QtCore import Qt
 from components.AddEntry.AddEntryWidget import AddEntryWidget
 from components.AddEntry.BrailleInputWidget import BrailleInputWidget
 from components.TablePreview import TablePreview
+from components.TestingWidget import TestingWidget
 from utils.ApplyStyles import apply_styles
 from utils.Toast import Toast
+
 
 class TableEditor(QWidget):
     def __init__(self, parent=None):
@@ -32,9 +34,8 @@ class TableEditor(QWidget):
 
         main_layout.addLayout(top_layout)
 
-        self.testing = QTextEdit(self)
-        self.testing.setPlaceholderText("Testing")
-        main_layout.addWidget(self.testing)
+        self.testing_widget = TestingWidget(self)
+        main_layout.addWidget(self.testing_widget)
 
         self.setLayout(main_layout)
 
