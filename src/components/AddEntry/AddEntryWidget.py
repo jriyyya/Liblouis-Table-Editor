@@ -93,6 +93,8 @@ class OpcodeForm(QWidget):
                 # Read-only field with '@'
                 at_symbol = QLineEdit("@")
                 at_symbol.setReadOnly(True)
+                at_symbol.setFixedWidth(40)
+                at_symbol.setFixedHeight(50)
                 at_symbol.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Preferred)
 
                 self.braille_input_widget = BrailleInputWidget()  # Reuse the BrailleInputWidget
