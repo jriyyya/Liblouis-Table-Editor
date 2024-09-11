@@ -1,6 +1,6 @@
 # Liblouis Table Editor
 
-Liblouis Table Editor is an intuitive, accessible, and user-friendly tool designed to simplify the creation, editing, and management of translation tables used by the Liblouis Braille translation system. This project was developed as part of the Google Summer of Code (GSoC) 2024 by [Riya Jain](https://github.com/jriyyya) under the Mentorship of [Nalin Sathyan](https://github.com/nalin-x-linux) initiative with the aim of providing both novice and experienced users with a more straightforward way to interact with and manage Liblouis tables.
+Liblouis Table Editor is an intuitive, accessible, and user-friendly tool designed to simplify the creation, editing, and management of translation tables used by the Liblouis Braille translation system. This project was developed as part of the Google Summer of Code (GSoC) 2024 by [Riya Jain](https://github.com/jriyyya) under the Mentorship of [Nalin Sathyan](https://github.com/nalin-x-linux), [Samuel Thibault](https://github.com/sthibaul) and K Sathaseelan initiative with the aim of providing both novice and experienced users with a more straightforward way to interact with and manage Liblouis tables.
 
 ## Table of Contents
 
@@ -18,7 +18,7 @@ Liblouis Table Editor is an intuitive, accessible, and user-friendly tool design
 
 Liblouis is a library that provides braille translation and back-translation. It is used by various screen readers and braille translation tools. However, creating and managing the translation tables used by Liblouis can be a complex and error-prone process. The Liblouis Table Editor aims to simplify this process by offering an intuitive graphical interface that allows users to create, modify, and test translation tables without needing to manually edit text files.
 
-This project was developed during the Google Summer of Code 2024 by [Riya Jain](https://github.com/jriyyya) under the Mentorship of [Nalin Sathyan](https://github.com/nalin-x-linux), and it addresses the need for a more accessible and user-friendly way to interact with Liblouis translation tables.
+This project was developed during the Google Summer of Code 2024 by [Riya Jain](https://github.com/jriyyya) under the Mentorship of [Nalin Sathyan](https://github.com/nalin-x-linux), [Samuel Thibault](https://github.com/sthibaul) and K Sathaseelan, and it addresses the need for a more accessible and user-friendly way to interact with Liblouis translation tables.
 
 ## Features
 
