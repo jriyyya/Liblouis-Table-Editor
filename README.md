@@ -49,11 +49,34 @@ cd liblouis-table-editor
 ```
 
 ### Running the Application
-To start the application, use the 
+
+#### Install the Requirements
+```bash
+pip3 install -r requirements.txt
+```
+
+
+#### Running in Windows
+To start the application, run
 ```bash
 mingw32-make
 ```
 command, which is a build tool commonly used in development environments that rely on the MinGW (Minimalist GNU for Windows) toolchain
+
+
+#### For running it in Linux/WSL
+
+1. First make sure that Make is installed
+```bash
+sudo apt update
+sudo apt install build-essential
+```
+
+2. To start the application run
+```bash
+make -f Makefile run
+```
+
 
 ## Usage
 
