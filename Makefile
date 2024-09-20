@@ -1,4 +1,9 @@
-.PHONY: run
+.PHONY: run cleanmake 
+PYTHON=python3
 
 run:
-	@python3 src/main.py
+	@$(PYTHON) src/main.py
+
+clean:
+	@echo "Cleaning up..."
+	# Add commands to clean up files if necessary
