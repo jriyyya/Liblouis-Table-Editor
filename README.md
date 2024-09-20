@@ -50,11 +50,6 @@ cd liblouis-table-editor
 
 ### Running the Application
 
-#### Install the Requirements
-```bash
-pip3 install -r requirements.txt
-```
-
 
 #### Running in Windows
 To start the application, run
