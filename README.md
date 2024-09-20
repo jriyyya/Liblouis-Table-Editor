@@ -66,15 +66,9 @@ command, which is a build tool commonly used in development environments that re
 
 #### For running it in Linux/WSL
 
-1. First make sure that Make is installed
+1. To start the application run
 ```bash
-sudo apt update
-sudo apt install build-essential
-```
-
-2. To start the application run
-```bash
-make -f Makefile run
+make run
 ```
 
 
