@@ -466,7 +466,8 @@ class UnicodeSelector(QWidget):
         selected_string = "".join(sorted(set(selected_string), key=selected_string.index))
 
         if self.on_select_callback:
-            self.on_select_callback(selected_string, f"\\x{'\\x'.join(f'{ord(char):04X}' for char in selected_string)}")
+            hex_representation = "\\x" + "\\x".join(f"{ord(char):04X}" for char in selected_string)
+            self.on_select_callback(selected_string, hex_representation)
         self.close()
 
     def on_select(self, callback):
